@@ -1,0 +1,11 @@
+{
+    "files.associations": {
+        "getMean.C": "cpp",
+        "reactor.C": "cpp",
+        "iostream": "cpp",
+        "iosfwd": "cpp",
+        "t23.C": "cpp",
+        "Nij_vuCC.C": "cpp",
+        "ostream": "cpp"
+    }
+}
