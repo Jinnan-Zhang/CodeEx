@@ -12,22 +12,24 @@
 #include <TCanvas.h>
 #include <TH1.h>
 #include <iostream>
-#define NUMBIN 40
+#include "timeMacro.h"
+#define NUMBIN 20000
+#define DENBIN 100
 using namespace std;
 
-const UInt_t poolSize = 4U;
+const UInt_t poolSize = 8U;
 double x_0, y_0, z_0;
 double wrapx0(const double *x)
 {
     double y = x[0];
     double z = x[1];
-    return 2 * x_0 * x_0 + y * y + z * z*z*z+10;
+    return 2 * x_0 * x_0 + y * y + z * z * z * z + 10;
 }
 double wrapx1(const double *x)
 {
     double x1 = x[0];
     double z = x[1];
-    return 2 * x1 * x1 + y_0 * y_0 + z * z*z*z+10;
+    return 2 * x1 * x1 + y_0 * y_0 + z * z * z * z + 10;
 }
 
 double min_x(double x_v, int par)
@@ -72,29 +74,44 @@ double min_x(double x_v, int par)
     return 0;
 }
 
+// auto h = new TH1F("myHist", "Filled in parallel", NUMBIN, -8, 8);
 int min_parallel()
 {
+    StartTimeChrono(1);
 
     ROOT::EnableThreadSafety();
     TH1::AddDirectory(false);
     ROOT::TThreadExecutor pool(poolSize);
     auto fillRandomHisto = [](int seed = 0) {
         auto h = new TH1F("myHist", "Filled in parallel", NUMBIN, -8, 8);
-        for (auto i : ROOT::TSeqI(NUMBIN))
-        {
-            double aa = -8. + i *16./ NUMBIN;
-            printf("?: %d\n",i);
-            h->SetBinContent(i+1,min_x(aa,0));
-        }
+        // for (auto i : ROOT::TSeqI(NUMBIN / DENBIN))
+        // {
+        double aa = -8. + seed * 16. / NUMBIN;
+        // printf("?: %d\n", i);
+        h->SetBinContent(seed + 1, min_x(aa, 0));
+        // }
         return h;
     };
-
-    auto seeds = ROOT::TSeqI(1);
+    auto seeds = ROOT::TSeqI(NUMBIN);
     ROOT::ExecutorUtils::ReduceObjects<TH1F *> redfunc;
-    auto sumRandomHisto = pool.MapReduce(fillRandomHisto, seeds, redfunc);
+    // pool.Foreach(fillRandomHisto, seeds);
+    auto h1 = pool.MapReduce(fillRandomHisto, seeds, redfunc);
+    StopTimeChrono(1);
 
-    auto c = new TCanvas();
-    sumRandomHisto->Draw();
-    
+    StartTimeChrono(2);
+    TH1F *h2 = new TH1F("myHist", "Filled in parallel", NUMBIN, -8, 8);
+    for (int i = 0; i < NUMBIN; i++)
+    {
+        double aa = -8. + i * 16. / NUMBIN;
+        h2->SetBinContent(i + 1, min_x(aa, 0));
+    }
+    StopTimeChrono(2);
+
+    h1->Draw();
+    h2->Draw("Same");
+
+    PrintTimeChrono(1, "Parallel");
+    PrintTimeChrono(2, "Sequence");
+
     return 0;
 }
