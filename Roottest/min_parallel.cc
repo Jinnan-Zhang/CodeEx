@@ -12,6 +12,7 @@
 #include <TCanvas.h>
 #include <TH1.h>
 #include <iostream>
+#define NUMBIN 40
 using namespace std;
 
 const UInt_t poolSize = 4U;
@@ -20,13 +21,13 @@ double wrapx0(const double *x)
 {
     double y = x[0];
     double z = x[1];
-    return 10 * x_0 * x_0 + y * y + z * z*z*z;
+    return 2 * x_0 * x_0 + y * y + z * z*z*z+10;
 }
 double wrapx1(const double *x)
 {
     double x1 = x[0];
     double z = x[1];
-    return 10 * x1 * x1 + y_0 * y_0 + z * z*z*z;
+    return 2 * x1 * x1 + y_0 * y_0 + z * z*z*z+10;
 }
 
 double min_x(double x_v, int par)
@@ -36,7 +37,7 @@ double min_x(double x_v, int par)
     miniChi->SetMaxFunctionCalls(100000); // for Minuit/Minuit2
     miniChi->SetMaxIterations(1000);      // for GSL
     miniChi->SetTolerance(0.001);
-    miniChi->SetPrintLevel(4);
+    miniChi->SetPrintLevel(0);
     //create function wrapper for minimizer
     //a IMultiGenFunction type
     int SN4par = 0;
@@ -78,11 +79,12 @@ int min_parallel()
     TH1::AddDirectory(false);
     ROOT::TThreadExecutor pool(poolSize);
     auto fillRandomHisto = [](int seed = 0) {
-        auto h = new TH1F("myHist", "Filled in parallel", 40, -8, 8);
-        for (auto i : ROOT::TSeqI(200))
+        auto h = new TH1F("myHist", "Filled in parallel", NUMBIN, -8, 8);
+        for (auto i : ROOT::TSeqI(NUMBIN))
         {
-            double aa = -8. + i * 0.4 / 200.;
-            h->Fill(aa, min_x(aa, 0));
+            double aa = -8. + i *16./ NUMBIN;
+            printf("?: %d\n",i);
+            h->SetBinContent(i+1,min_x(aa,0));
         }
         return h;
     };
@@ -93,7 +95,6 @@ int min_parallel()
 
     auto c = new TCanvas();
     sumRandomHisto->Draw();
-
     
     return 0;
 }
