@@ -1,5 +1,6 @@
 #include <TFile.h>
 #include <TH1.h>
+#include <TH2.h>
 #include <TLegend.h>
 #define NumBins 200
 double E_LP = 1.022;    //E_Lower-0.78233108;
@@ -7,6 +8,7 @@ double E_UP = 9.217;    //E_Upper-0.78233108;//energy cut for prompt energy
 
 int histra()
 {
+    
     TFile *f_YBNO=TFile::Open("NOYB.root","READ");
     TFile *f_YBIO=TFile::Open("IOYB.root","READ");
     TFile *f_2019NO=TFile::Open("NO2019.root","READ");
