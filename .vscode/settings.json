@@ -3,6 +3,7 @@
     "python.linting.pylintEnabled": true,
     "python.linting.enabled": true,
     "files.associations": {
-        "*.tcc": "cpp"
+        "*.tcc": "cpp",
+        "mtbb201_parallelHistoFill.C": "cpp"
     }
 }
