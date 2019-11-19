@@ -4,6 +4,9 @@
     "python.linting.enabled": true,
     "files.associations": {
         "*.tcc": "cpp",
-        "mtbb201_parallelHistoFill.C": "cpp"
+        "mtbb201_parallelHistoFill.C": "cpp",
+        "mt001_fillHistos.C": "cpp",
+        "deque": "cpp",
+        "vector": "cpp"
     }
 }

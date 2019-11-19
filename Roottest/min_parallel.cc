@@ -8,16 +8,19 @@
 #include "Math/Functor.h"
 #include "TRandom3.h"
 #include "TError.h"
+#include <thread>
+#include <vector>
 
 #include <TCanvas.h>
 #include <TH1.h>
 #include <iostream>
 #include "timeMacro.h"
-#define NUMBIN 20000
-#define DENBIN 100
+#define NUMBIN 20 //worker number
+#define DENBIN 2000
 using namespace std;
 
-const UInt_t poolSize = 8U;
+// The number of workers
+// const UInt_t nWorkers = 4U;
 double x_0, y_0, z_0;
 double wrapx0(const double *x)
 {
@@ -31,7 +34,6 @@ double wrapx1(const double *x)
     double z = x[1];
     return 2 * x1 * x1 + y_0 * y_0 + z * z * z * z + 10;
 }
-
 double min_x(double x_v, int par)
 {
     ROOT::Math::Minimizer *miniChi = ROOT::Math::Factory::CreateMinimizer("Minuit2", "Migrad");
@@ -73,42 +75,64 @@ double min_x(double x_v, int par)
     }
     return 0;
 }
-
-// auto h = new TH1F("myHist", "Filled in parallel", NUMBIN, -8, 8);
+auto h = new TH1F("myHist", "Filled in parallel", NUMBIN *DENBIN, -8, 8);
+double tema[NUMBIN*DENBIN];
 int min_parallel()
 {
     StartTimeChrono(1);
 
     ROOT::EnableThreadSafety();
-    TH1::AddDirectory(false);
-    ROOT::TThreadExecutor pool(poolSize);
-    auto fillRandomHisto = [](int seed = 0) {
-        auto h = new TH1F("myHist", "Filled in parallel", NUMBIN, -8, 8);
-        // for (auto i : ROOT::TSeqI(NUMBIN / DENBIN))
-        // {
-        double aa = -8. + seed * 16. / NUMBIN;
-        // printf("?: %d\n", i);
-        h->SetBinContent(seed + 1, min_x(aa, 0));
-        // }
-        return h;
+
+    auto workItem = [](UInt_t workerID) {
+        // auto h = new TH1F("myHist", "Filled in parallel", NUMBIN*DENBIN, -8, 8);
+        for (int i = 0; i < DENBIN; i++)
+        {
+            double aa = 0;
+            aa = -8. + (workerID * DENBIN + i) * 16. / NUMBIN / DENBIN;
+            tema[(workerID * DENBIN + i)]=min_x(aa,0);
+            // printf("?: %d\n", (workerID * DENBIN + i));
+            // h->SetBinContent((workerID * DENBIN + i + 1), min_x(aa, 0));
+        }
+        // printf("?: %d\n", workerID);
+        // return h;
     };
-    auto seeds = ROOT::TSeqI(NUMBIN);
-    ROOT::ExecutorUtils::ReduceObjects<TH1F *> redfunc;
-    // pool.Foreach(fillRandomHisto, seeds);
-    auto h1 = pool.MapReduce(fillRandomHisto, seeds, redfunc);
+    // Create the collection which will hold the threads, our "pool"
+    std::vector<std::thread> workers;
+
+    // Fill the "pool" with workers
+    for (auto workerID : ROOT::TSeqI(NUMBIN))
+    {
+        workers.emplace_back(workItem, workerID);
+    }
+
+    // Now join them
+    for (auto &&worker : workers)
+        worker.join();
+    for(int i=0;i<NUMBIN*DENBIN;i++)
+        h->SetBinContent(i,tema[i]);
+
     StopTimeChrono(1);
 
     StartTimeChrono(2);
-    TH1F *h2 = new TH1F("myHist", "Filled in parallel", NUMBIN, -8, 8);
-    for (int i = 0; i < NUMBIN; i++)
+    TH1F *h2 = new TH1F("myHist2", "Filled in parallel", NUMBIN * DENBIN, -8, 8);
+    for (int i = 0; i < NUMBIN * DENBIN; i++)
     {
-        double aa = -8. + i * 16. / NUMBIN;
+        double aa = 0;
+        aa = -8. + i * 16. / NUMBIN / DENBIN;
+        // printf("??:%f\n",aa);
         h2->SetBinContent(i + 1, min_x(aa, 0));
     }
     StopTimeChrono(2);
 
-    h1->Draw();
-    h2->Draw("Same");
+    h->SetLineColor(kRed);
+    TCanvas *a = new TCanvas("c1", "Candle Decay", 800, 600);
+    a->Divide(2, 1);
+    a->cd(1);
+    h->Draw();
+    // h2->Draw("Same");
+    a->cd(2);
+    h2->Draw();
+    // h->Draw("SAME");
 
     PrintTimeChrono(1, "Parallel");
     PrintTimeChrono(2, "Sequence");
