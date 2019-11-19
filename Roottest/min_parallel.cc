@@ -16,7 +16,7 @@
 #include <iostream>
 #include "timeMacro.h"
 #define NUMBIN 20 //worker number
-#define DENBIN 2000
+#define DENBIN 200
 using namespace std;
 
 // The number of workers
@@ -75,7 +75,7 @@ double min_x(double x_v, int par)
     }
     return 0;
 }
-auto h = new TH1F("myHist", "Filled in parallel", NUMBIN *DENBIN, -8, 8);
+
 double tema[NUMBIN*DENBIN];
 int min_parallel()
 {
@@ -108,13 +108,15 @@ int min_parallel()
     // Now join them
     for (auto &&worker : workers)
         worker.join();
+    
+    auto h = new TH1F("myHist", "Filled in parallel", NUMBIN *DENBIN, -8, 8);
     for(int i=0;i<NUMBIN*DENBIN;i++)
-        h->SetBinContent(i,tema[i]);
+        h->SetBinContent(i+1,tema[i]);
 
     StopTimeChrono(1);
 
     StartTimeChrono(2);
-    TH1F *h2 = new TH1F("myHist2", "Filled in parallel", NUMBIN * DENBIN, -8, 8);
+    TH1F *h2 = new TH1F("myHist2", "Filled without parallel", NUMBIN * DENBIN, -8, 8);
     for (int i = 0; i < NUMBIN * DENBIN; i++)
     {
         double aa = 0;
@@ -137,5 +139,11 @@ int min_parallel()
     PrintTimeChrono(1, "Parallel");
     PrintTimeChrono(2, "Sequence");
 
+    double diffsum=0;
+    for(int i=0;i<NUMBIN*DENBIN;i++)
+    {
+        diffsum += (tema[i]-h2->GetBinContent(i+1));
+    }
+    cout<<diffsum<<endl;
     return 0;
 }
