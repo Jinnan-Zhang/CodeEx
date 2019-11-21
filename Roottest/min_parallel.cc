@@ -21,7 +21,7 @@ using namespace std;
 
 // The number of workers
 // const UInt_t nWorkers = 4U;
-double x_0, y_0, z_0;
+double x_0=1, y_0, z_0;
 double wrapx0(const double *x)
 {
     double y = x[0];
@@ -50,13 +50,15 @@ double min_x(double x_v, int par)
     {
     case 0: //
     {
-        x_0 = x_v;
+        // x_0 = x_v;
         ROOT::Math::Functor fG(&wrapx0, 2);
+        // x_0 = x_v;
         miniChi->SetFunction(fG);
         double steps = 0.01;
         double starts = 0;
         miniChi->SetVariable(SN4par++, "y", starts, steps);
         miniChi->SetVariable(SN4par++, "z", starts, steps);
+        
         miniChi->Minimize();
         return miniChi->MinValue();
     }
@@ -81,33 +83,33 @@ int min_parallel()
 {
     StartTimeChrono(1);
 
-    ROOT::EnableThreadSafety();
+    // ROOT::EnableThreadSafety();
 
-    auto workItem = [](UInt_t workerID) {
-        // auto h = new TH1F("myHist", "Filled in parallel", NUMBIN*DENBIN, -8, 8);
-        for (int i = 0; i < DENBIN; i++)
-        {
-            double aa = 0;
-            aa = -8. + (workerID * DENBIN + i) * 16. / NUMBIN / DENBIN;
-            tema[(workerID * DENBIN + i)]=min_x(aa,0);
-            // printf("?: %d\n", (workerID * DENBIN + i));
-            // h->SetBinContent((workerID * DENBIN + i + 1), min_x(aa, 0));
-        }
-        // printf("?: %d\n", workerID);
-        // return h;
-    };
-    // Create the collection which will hold the threads, our "pool"
-    std::vector<std::thread> workers;
+    // auto workItem = [](UInt_t workerID) {
+    //     // auto h = new TH1F("myHist", "Filled in parallel", NUMBIN*DENBIN, -8, 8);
+    //     for (int i = 0; i < DENBIN; i++)
+    //     {
+    //         double aa = 0;
+    //         aa = -8. + (workerID * DENBIN + i) * 16. / NUMBIN / DENBIN;
+    //         tema[(workerID * DENBIN + i)]=min_x(aa,0);
+    //         // printf("?: %d\n", (workerID * DENBIN + i));
+    //         // h->SetBinContent((workerID * DENBIN + i + 1), min_x(aa, 0));
+    //     }
+    //     // printf("?: %d\n", workerID);
+    //     // return h;
+    // };
+    // // Create the collection which will hold the threads, our "pool"
+    // std::vector<std::thread> workers;
 
-    // Fill the "pool" with workers
-    for (auto workerID : ROOT::TSeqI(NUMBIN))
-    {
-        workers.emplace_back(workItem, workerID);
-    }
+    // // Fill the "pool" with workers
+    // for (auto workerID : ROOT::TSeqI(NUMBIN))
+    // {
+    //     workers.emplace_back(workItem, workerID);
+    // }
 
-    // Now join them
-    for (auto &&worker : workers)
-        worker.join();
+    // // Now join them
+    // for (auto &&worker : workers)
+    //     worker.join();
     
     auto h = new TH1F("myHist", "Filled in parallel", NUMBIN *DENBIN, -8, 8);
     for(int i=0;i<NUMBIN*DENBIN;i++)
@@ -127,23 +129,22 @@ int min_parallel()
     StopTimeChrono(2);
 
     h->SetLineColor(kRed);
-    TCanvas *a = new TCanvas("c1", "Candle Decay", 800, 600);
-    a->Divide(2, 1);
-    a->cd(1);
-    h->Draw();
-    // h2->Draw("Same");
-    a->cd(2);
-    h2->Draw();
+    // TCanvas *a = new TCanvas("c1", "Candle Decay", 800, 600);
+    // a->Divide(2, 1);
+    // a->cd(1);
+    // // h->Draw();
+    // // h2->Draw("Same");
+    // a->cd(2);
+    // h2->Draw();
     // h->Draw("SAME");
-
     PrintTimeChrono(1, "Parallel");
     PrintTimeChrono(2, "Sequence");
-
-    double diffsum=0;
-    for(int i=0;i<NUMBIN*DENBIN;i++)
-    {
-        diffsum += (tema[i]-h2->GetBinContent(i+1));
-    }
-    cout<<diffsum<<endl;
-    return 0;
+    cout<<min_x(0,0)<<endl;
+    // double diffsum=0;
+    // // for(int i=0;i<NUMBIN*DENBIN;i++)
+    // // {
+    // //     diffsum += (tema[i]-h2->GetBinContent(i+1));
+    // // }
+    // // cout<<diffsum<<endl;
+    return 1;
 }
