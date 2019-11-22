@@ -32,7 +32,7 @@ double wrapx1(const double *x)
 {
     double x1 = x[0];
     double z = x[1];
-    return 2 * x1 * x1 + y_0 * y_0 + z * z * z * z + 10;
+    return 2 * x1 * x1 + y_0 * y_0 + z * z * z * z + 15;
 }
 double min_x(double x_v, int par)
 {
@@ -52,6 +52,7 @@ double min_x(double x_v, int par)
     {
         // x_0 = x_v;
         ROOT::Math::Functor fG(&wrapx0, 2);
+        ROOT::Math::Functor fG1(&wrapx1, 2);
         // x_0 = x_v;
         miniChi->SetFunction(fG);
         double steps = 0.01;
@@ -60,6 +61,10 @@ double min_x(double x_v, int par)
         miniChi->SetVariable(SN4par++, "z", starts, steps);
         
         miniChi->Minimize();
+        cout<<"1st: "<<miniChi->MinValue()<<endl;
+        miniChi->SetFunction(fG1);
+        miniChi->Minimize();
+        cout<<"2rd: "<<miniChi->MinValue()<<endl;
         return miniChi->MinValue();
     }
     case 1:
@@ -124,7 +129,7 @@ int min_parallel()
         double aa = 0;
         aa = -8. + i * 16. / NUMBIN / DENBIN;
         // printf("??:%f\n",aa);
-        h2->SetBinContent(i + 1, min_x(aa, 0));
+        // h2->SetBinContent(i + 1, min_x(aa, 0));
     }
     StopTimeChrono(2);
 
