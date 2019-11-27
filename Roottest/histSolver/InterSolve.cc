@@ -5,7 +5,7 @@
 
 using namespace std;
 using namespace std::placeholders;
-double bisection(double a, double b, double Value, TH1 *func, double EPSILON = 1e-6);
+double bisection(double a, double b, double Value, TH1 *datahist, double EPSILON = 1e-6);
 
 int InterSolve()
 {
@@ -15,18 +15,18 @@ int InterSolve()
     cout<<bisection(0,10,50,h1);
     return 0;
 }
-double bisection(double a, double b, double Value,  TH1 *func, double EPSILON)
+double bisection(double a, double b, double Value,  TH1 *datahist, double EPSILON)
 {
     double c = (a + b) / 2.;
-    double fa = func->Interpolate(a)-Value;
-    double fb = func->Interpolate(b)-Value;
-    double fc = func->Interpolate(c)-Value;
+    double fa = datahist->Interpolate(a)-Value;
+    double fb = datahist->Interpolate(b)-Value;
+    double fc = datahist->Interpolate(c)-Value;
     do
     {
         c = (a + b) / 2.;
-        fa = func->Interpolate(a)-Value;
-        fb = func->Interpolate(b)-Value;
-        fc = func->Interpolate(c)-Value;
+        fa = datahist->Interpolate(a)-Value;
+        fb = datahist->Interpolate(b)-Value;
+        fc = datahist->Interpolate(c)-Value;
         if (fa * fc < 0)
         {
             b = c;
@@ -40,6 +40,6 @@ double bisection(double a, double b, double Value,  TH1 *func, double EPSILON)
             break;
         }
         
-    } while (abs(func->Interpolate(c)-Value) > EPSILON);
+    } while (abs(datahist->Interpolate(c)-Value) > EPSILON);
     return c;
 }
