@@ -4,7 +4,6 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/**",
-                "${workspaceFolder}/RecreateCode/Re_JunoARCon/",
                 "~/tools/include/"
             ],
             "defines": [],

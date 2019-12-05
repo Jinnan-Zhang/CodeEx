@@ -9,6 +9,7 @@
         "deque": "cpp",
         "vector": "cpp",
         "iostream": "cpp",
-        ".rootlogon.C": "cpp"
+        ".rootlogon.C": "cpp",
+        "mp001_fillHistos.C": "cpp"
     }
 }
