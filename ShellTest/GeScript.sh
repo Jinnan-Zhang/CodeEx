@@ -4,9 +4,9 @@ while [ $int -le 5 ]
     do
     job=`printf "%d\n" $int`
     echo dealing.... job:$job
-    sed "s/NUM/$job/g"  Pre2D.sh > Pre2D$job.sh
-    chmod 755 Pre2D$job.sh
-    # hep_sub -u juno Pre2D$job.sh
+    sed "s/NUM/$job/g"  $1.sh > $1$job.sh
+    chmod 755 $1$job.sh
+    # hep_sub -u juno $1$job.sh
     int=`expr $int + 1`
 done
 
