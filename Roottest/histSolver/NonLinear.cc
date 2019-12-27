@@ -9,6 +9,9 @@ const int BinNUM = 500;
 using namespace std;
 double Sfunc(double x);
 
+//purpose:
+//to get a proper pseudo function to describe Nonlinearity
+//and generate pseudo data for that.
 int NonLinear()
 {
     TFile *fl = TFile::Open("JunoNonL.root", "RECREATE");

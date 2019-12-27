@@ -31,3 +31,4 @@ int vect()
     // avec();
     return 0;
 }
+//结论： 函数内部的vector在函数执行完之后内存会被释放。
