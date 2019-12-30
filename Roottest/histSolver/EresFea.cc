@@ -17,7 +17,7 @@ int EresFea()
 {
     TF1 *f0 = new TF1("f0", simpleEres, E_Lower,E_Upper,1);
     TF1* f1=new TF1("f1",ThreeEres,E_Lower,E_Upper,3);
-    f0->SetParameter(0,0.03);
+    // f0->SetParameter(0,0.03);
     f1->SetParameters(1,1,1);
     f0->SetLineColor(kRed);
     f1->SetLineColor(kBlue);
@@ -34,9 +34,10 @@ int EresFea()
 double simpleEres(double *Es, double *par)
 {
     double sigma;
-    double res = par[0];
-    sigma = res * sqrt(Es[0]);
-    return sigma;
+    double res ;
+    // = par[0];
+    res= sqrt(Es[0]);
+    return res;
 }
 double ThreeEres(double *Es, double *par)
 {
