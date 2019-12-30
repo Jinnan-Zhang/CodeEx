@@ -3,8 +3,8 @@
 #include <TH1.h>
 #include <math.h>
 
-double E_low = 1.806;
-double E_up = 10;
+double E_low = 1.;
+double E_up = 12;
 const int BinNUM = 500;
 using namespace std;
 double Sfunc(double x);
@@ -31,9 +31,9 @@ int NonLinear()
 }
 double Sfunc(double x)
 {
-    double K = 0.15;
-    double a = 1;
-    double b = 0.5;
-    double inp = 0.9;
+    double K = 0.4;
+    double a = 0.5;
+    double b = 0.95;
+    double inp = 0.63;
     return inp + K / (1 + exp(a - b * x));
 }
