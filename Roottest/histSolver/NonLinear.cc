@@ -2,9 +2,10 @@
 #include <TFile.h>
 #include <TH1.h>
 #include <math.h>
+#include <TPad.h>
 
-double E_low = 1.;
-double E_up = 12;
+double E_low = 0.3;
+double E_up = 10;
 const int BinNUM = 500;
 using namespace std;
 double Sfunc(double x);
@@ -36,7 +37,7 @@ public:
         return resl;
     }
     double GetVisibleEnergy_gamma(double E_dep);
-    double GetVisibleEnergy_electron(double E_dep) { ; }
+    double GetVisibleEnergy_electron(double E_dep);
     double GetElecNL(double E_vis)
     {
         double res;
@@ -45,7 +46,7 @@ public:
     }
     double GetScintNL(double E_dep)
     {
-        ;
+        return 0;
     }
 
 private:
@@ -63,7 +64,7 @@ private:
 //and generate pseudo data for that.
 int NonLinear()
 {
-    TFile *fl = TFile::Open("JunoNonL.root", "RECREATE");
+    // TFile *fl = TFile::Open("JunoNonL.root", "RECREATE");
     TH1D *h1 = new TH1D("JunoNonL", "Nonlinear data", BinNUM, E_low, E_up);
     double xi, yi;
     double width = (E_up - E_low) / BinNUM;
@@ -74,8 +75,10 @@ int NonLinear()
         h1->SetBinContent(i + 1, yi);
     }
     h1->Draw();
-    h1->Write();
+    // gPad->SetLogy();
+    // h1->Write();
     // fl->Close();
+    cout << Sfunc(0.5) << endl;
     return 0;
 }
 double Sfunc(double x)
@@ -85,11 +88,21 @@ double Sfunc(double x)
     // double b = 0.95;
     // double inp = 0.63;
     // return inp + K / (1 + exp(a - b * x));
-    double a = 1;
-    double b = 1;
-    double c = 1;
-    double d = 1;
-    double resl;
-    resl = a + b * log(c + d * x * x);
-    return resl;
+
+    // double a = 1;
+    // double b = 1;
+    // double c = 1;
+    // double d = 1;
+    // double resl;
+    // resl = a + b * log(c + d * x * x);
+    // return resl;
+    //切仑科夫
+    double Coe =1;
+    double n = 1.6;
+    x = x + 0.511;
+    double beta = sqrt(x * x - 0.511 * 0.511) / x;
+    
+    double res;
+    res = Coe * (1. - pow(1. / beta / n, 2));
+    return res;
 }
