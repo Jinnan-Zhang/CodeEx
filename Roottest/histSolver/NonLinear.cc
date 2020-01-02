@@ -8,7 +8,7 @@ double E_low = 0.;
 double E_up = 10;
 const int BinNUM = 500;
 using namespace std;
-double Sfunc(double x);
+double Sfunc(double E_dep);
 class JunoNonLinearity
 {
 public:
@@ -19,7 +19,7 @@ public:
     void SetAbsCherenkov(double k_C) { this->k_C = k_C; }
     void SetElecNonLinearAMP(double alpha_EleNL) { alpha_NL = alpha_EleNL; }
     void SetDecayConstant_ElecNL(double tau_NL) { this->tau_NL = tau_NL; }
-    //Full nonlinearity: E_dep x this =E_vis (central value)
+    //Full nonlinearity: E_dep E_dep this =E_vis (central value)
     double GetFullNLEdep2Erec(double E_dep)
     {
         double FullNL = 0;
@@ -81,26 +81,26 @@ int NonLinear()
     cout << Sfunc(0.5) << endl;
     return 0;
 }
-double Sfunc(double x)
+double Sfunc(double E_dep)
 {
     // double K = 0.4;
     // double a = 0.5;
     // double b = 0.95;
     // double inp = 0.63;
-    // return inp + K / (1 + exp(a - b * x));
+    // return inp + K / (1 + exp(a - b * E_dep));
 
     // double a = 1;
     // double b = 1;
     // double c = 1;
     // double d = 1;
     // double resl;
-    // resl = a + b * log(c + d * x * x);
+    // resl = a + b * log(c + d * E_dep * E_dep);
     // return resl;
     //切仑科夫
     double Coe = 2.104;
     double n = 1.6;
-    x = x + 0.511;
-    double beta = sqrt(x * x - 0.511 * 0.511) / x;
+    E_dep = E_dep + 0.511;
+    double beta = sqrt(E_dep * E_dep - 0.511 * 0.511) / E_dep;
 
     double res;
     res = Coe * (1. - pow(1. / (beta * n), 2));
