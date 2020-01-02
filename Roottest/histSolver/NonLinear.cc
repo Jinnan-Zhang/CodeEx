@@ -4,7 +4,7 @@
 #include <math.h>
 #include <TPad.h>
 
-double E_low = 0.3;
+double E_low = 0.;
 double E_up = 10;
 const int BinNUM = 500;
 using namespace std;
@@ -70,12 +70,12 @@ int NonLinear()
     double width = (E_up - E_low) / BinNUM;
     for (int i = 0; i < BinNUM; i++)
     {
-        xi = E_low + i * width;
+        xi = E_low + (i + 0.5) * width;
         yi = Sfunc(xi);
         h1->SetBinContent(i + 1, yi);
     }
     h1->Draw();
-    // gPad->SetLogy();
+    gPad->SetLogy();
     // h1->Write();
     // fl->Close();
     cout << Sfunc(0.5) << endl;
@@ -97,12 +97,12 @@ double Sfunc(double x)
     // resl = a + b * log(c + d * x * x);
     // return resl;
     //切仑科夫
-    double Coe =1;
+    double Coe = 2.104;
     double n = 1.6;
     x = x + 0.511;
     double beta = sqrt(x * x - 0.511 * 0.511) / x;
-    
+
     double res;
-    res = Coe * (1. - pow(1. / beta / n, 2));
+    res = Coe * (1. - pow(1. / (beta * n), 2));
     return res;
 }
