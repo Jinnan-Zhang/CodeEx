@@ -21,14 +21,22 @@ void avec()
     double give = 0;
     for (int i = 0; i < 5; i++)
     {
-        give += BkgRatio[i] * sigma[i]*BkgRatio[i] * sigma[i];
+        give += BkgRatio[i] * sigma[i] * BkgRatio[i] * sigma[i];
     }
-    cout <<sqrt(give)<<endl;
+    cout << sqrt(give) << endl;
+}
+void nvec(int NN, vector<double> &a)
+{
+    vector<double> tnv(NN);
+    a = tnv;
 }
 int vect()
 {
-    avec();
-    // avec();
+
+    vector<double> av;
+    nvec(5, av);
+    cout << av.size() << endl;
     return 0;
 }
 //结论： 函数内部的vector在函数执行完之后内存会被释放。
+//引用的vector的赋值不会消失
