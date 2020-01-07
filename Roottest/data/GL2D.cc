@@ -1,22 +1,21 @@
-#include <iostream>
 #include <math.h>
+#include <iostream>
 #define PI 3.14159265358979323846
 
 using namespace std;
-double tff(double x);
-double Gdiff(int N);
+double a1 = 0, b1 = 1;
+double a2 = 0, b2 = 1;
 
-//test the necessary number of sample points of Gauss Legendre method
-int GLint()
+double in2D(int N);
+double funt(double x, double y);
+int GL2D()
 {
-    // Given the number of sampling points this routine fills the
-    // arrays x and w.
-    for (int i = 1; i < 500; i += 10)
-        cout << "n: " << i << '\t' << Gdiff(i) << endl;
-
-    return 1;
+    for (int i = 10; i < 300; i += 100)
+        cout << "n: " << i << '\t' <<0.158529 - in2D(i) << endl;
+    return 0;
 }
-double Gdiff(int N)
+
+double in2D(int N)
 {
     int fNum = N;
     double *fX, *fW;
@@ -75,24 +74,27 @@ double Gdiff(int N)
         fW[i] = 2.0 / ((1.0 - z * z) * pp * pp);
         fW[fNum - i - 1] = fW[i];
     }
-    double a, b;
-    a = 0;
-    b = PI / 2.;
-    double a0 = (a + b) / 2.;
-    double b0 = (b - a) / 2.;
-    double xx, result = 0;
-    for (int i = 0; i < fNum; i++)
+
+    const double a01 = (b1 + a1) / 2;
+    const double b01 = (b1 - a1) / 2;
+    const double a02 = (b2 + a2) / 2;
+    const double b02 = (b2 - a2) / 2;
+
+    double tSum = 0;
+    double x, y;
+    for (int ij = 0; ij < fNum * fNum; ij++)
     {
-        xx = a0 + b0 * fX[i];
-        result += fW[i] * tff(xx);
+        int i = ij / fNum;
+        int j = ij % fNum;
+        x = a01 + b01 * fX[i];
+        y = a02 + b02 * fX[j];
+
+        tSum += (fW[i] * fW[j] * funt(x, y));
     }
-    result *= b0;
-    return result;
+    tSum = tSum * b01 * b02;
+    return tSum;
 }
-double tff(double x)
+double funt(double x, double y)
 {
-    double a = sin(1001 * x);
-    double b = sin(x);
-    return a * b;
+    return x * sin(y*x);
 }
-//结论：500个点精度就差不多了
