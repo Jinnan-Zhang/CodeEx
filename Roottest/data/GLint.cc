@@ -11,7 +11,7 @@ int GLint()
 {
     // Given the number of sampling points this routine fills the
     // arrays x and w.
-    for (int i = 1; i < 2000; i += 40)
+    for (int i = 1; i < 500; i += 10)
         cout << "n: " << i << '\t' << Gdiff(i) << endl;
 
     return 1;
