@@ -11,6 +11,7 @@
         "iostream": "cpp",
         ".rootlogon.C": "cpp",
         "mp001_fillHistos.C": "cpp",
-        "cmath": "cpp"
+        "cmath": "cpp",
+        "average.C": "cpp"
     }
 }
