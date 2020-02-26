@@ -13,6 +13,11 @@
         "mp001_fillHistos.C": "cpp",
         "cmath": "cpp",
         "average.C": "cpp",
-        "fitConvolution.C": "cpp"
+        "fitConvolution.C": "cpp",
+        "h1analysis.C": "cpp",
+        "h1chain.C": "cpp",
+        "h1analysisProxy.C": "cpp",
+        "h1analysisTreeReader.C": "cpp",
+        "h1analysisProxyCut.C": "cpp"
     }
 }
