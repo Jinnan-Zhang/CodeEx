@@ -12,6 +12,7 @@
         ".rootlogon.C": "cpp",
         "mp001_fillHistos.C": "cpp",
         "cmath": "cpp",
-        "average.C": "cpp"
+        "average.C": "cpp",
+        "fitConvolution.C": "cpp"
     }
 }
