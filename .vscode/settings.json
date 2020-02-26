@@ -18,6 +18,7 @@
         "h1chain.C": "cpp",
         "h1analysisProxy.C": "cpp",
         "h1analysisTreeReader.C": "cpp",
-        "h1analysisProxyCut.C": "cpp"
+        "h1analysisProxyCut.C": "cpp",
+        "AtmJUNO.C": "cpp"
     }
 }

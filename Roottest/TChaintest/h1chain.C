@@ -8,17 +8,27 @@
 /// \macro_code
 ///
 /// \author Rene Brun
+#include <TChain.h>
+#include <TROOT.h>
+#include <TTree.h>
+#include <TFile.h>
+#include <TSelector.h>
+#include <TH1.h>
+#include <TH2.h>
+#include <TEntryList.h>
+#include <TF1.h>
+#include "TStyle.h"
+#include "TCanvas.h"
+#include "TPaveStats.h"
+#include "TLine.h"
+#include "TMath.h"
+// #include "h1analysis.h"
 
-TChain chain("h42");
-
-void h1chain(const char *h1dir = 0)
+int h1chain()
 {
-   if (h1dir) {
-      gSystem->Setenv("H1",h1dir);
-   }
-   chain.SetCacheSize(20*1024*1024);
-   chain.Add("$H1/dstarmb.root");
-   chain.Add("$H1/dstarp1a.root");
-   chain.Add("$H1/dstarp1b.root");
-   chain.Add("$H1/dstarp2.root");
+   TChain chain("h42");
+   chain.Add("dstar*.root");
+   // chain.MakeSelector("h1analysis");
+   chain.Process("h1analysis.C");
+   return 0;
 }
