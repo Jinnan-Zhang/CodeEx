@@ -13,4 +13,5 @@ step[1::3] = np.nan
 blank.loc["net"] = 0
 my_plot = trans.plot(kind='bar', stacked=True, bottom=blank,legend=None, title="2014 Sales Waterfall")
 my_plot.plot(step.index, step.values,'k')
-my_plot.get_figure().savefig("waterfall.png",dpi=200,bbox_inches='tight')
+# my_plot.get_figure().savefig("waterfall.png",dpi=200,bbox_inches='tight')
+plt.show()
