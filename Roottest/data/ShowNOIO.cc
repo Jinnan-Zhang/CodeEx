@@ -19,8 +19,11 @@ int ShowNOIO()
     ff_IO->cd();
     ff_IO->GetObject("h_NMO",h_IO);
     h_IO->SetLineColor(kBlue);
+    TH1D *h_new0=new TH1D("h_ratio","",200,E_LP,E_UP);
     TH1D *h_new=new TH1D("h_ratio","",200,E_LP,E_UP);
-    h_new->Divide(h_IO,h_NO);
+
+    h_new0->Add(h_IO,h_NO,1.,-1.);
+    h_new->Divide(h_new0,h_NO);
     h_new->SetLineColor(kRed);
 
     // h_NO->Draw();
@@ -31,8 +34,8 @@ int ShowNOIO()
     TLegend leg(5,10);
     // leg.AddEntry(h_NO,"Normal Ordering");
     // leg.AddEntry(h_IO,"Invert Ordering");
-    leg.AddEntry(h_new,"IH/NH");
-    leg.Draw("SAME");
+    leg.AddEntry(h_new,"(IH-NH)/NH");
+    leg.DrawClone("SAME");
     TFile *ff_r=TFile::Open("NOIOratio.root","RECREATE");
     ff_r->cd();
     h_new->Write();
