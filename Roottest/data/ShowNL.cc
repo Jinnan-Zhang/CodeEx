@@ -15,9 +15,15 @@ int ShowNL()
 {
     TH1::AddDirectory(false);
     TFile *ff = TFile::Open("energymodel_Apr2018_newE.root", "READ");
-    // TFile *ff_h = TFile::Open("JunoFullNL.root", "RECREATE");
-    TFile *ff_h = TFile::Open("JunoFullNL.root", "READ");
-    // TH1D *h1 = new TH1D("positronFullNL", "Positron Full NL", NBINS, E_LP, E_UP);
+    TFile *ff_h = TFile::Open("JunoFullNL.root", "RECREATE");
+    // TFile *ff_h = TFile::Open("JunoFullNL.root", "READ");
+    TH1D *h1 = new TH1D("positronFullNL", "Positron Full NL", NBINS, E_LP, E_UP);
+    int nform = 1;
+    TH1D *h2 = new TH1D(Form("NLpull_%d", nform++), "Positron Full NL", NBINS, E_LP, E_UP);
+    TH1D *h3 = new TH1D(Form("NLpull_%d", nform++), "Positron Full NL", NBINS, E_LP, E_UP);
+    TH1D *h4 = new TH1D(Form("NLpull_%d", nform++), "Positron Full NL", NBINS, E_LP, E_UP);
+    TH1D *h5 = new TH1D(Form("NLpull_%d", nform++), "Positron Full NL", NBINS, E_LP, E_UP);
+
     // ff_h->GetObject("h1",h1);
 
     // clock_t start, finish;
@@ -30,22 +36,54 @@ int ShowNL()
     // printf( "%f seconds\n",(double)(finish - start)/1000.);
 
     TGraph *g0 = 0;
+    TGraph *g1 = 0;
+    TGraph *g2 = 0;
+    TGraph *g3 = 0;
+    TGraph *g4 = 0;
+
     ff->GetObject("positronFullNL", g0);
+    nform = 0;
+    ff->GetObject(Form("pull%d", nform++), g1);
+    ff->GetObject(Form("pull%d", nform++), g2);
+    ff->GetObject(Form("pull%d", nform++), g3);
+    ff->GetObject(Form("pull%d", nform++), g4);
+
     // start=clock();
-    // double c(0);
-    // for (int i = 0; i < NBINS; i++)
-    // {
-    //     c = E_LP + i * (BINw);
-    //     h1->SetBinContent(i+1,g0->Eval(c));
-    // }
-    // h1->Write();
-    // ff_h->cd();
-    // ff_h->Close();
-    TH1D *h2 = 0;
-    ff_h->GetObject("positronFullNL", h2);
-    h2->SetLineColor(kRed);
-    h2->Draw();
-    g0->Draw("SAME");
+    double c(0);
+    for (int i = 0; i < NBINS; i++)
+    {
+        c = E_LP + i * (BINw);
+        h1->SetBinContent(i + 1, g0->Eval(c));
+        h2->SetBinContent(i + 1, g1->Eval(c));
+        h3->SetBinContent(i + 1, g2->Eval(c));
+        h4->SetBinContent(i + 1, g3->Eval(c));
+        h5->SetBinContent(i + 1, g4->Eval(c));
+    }
+    ff_h->cd();
+
+    h1->Write();
+    h2->Write();
+    h3->Write();
+    h4->Write();
+    h5->Write();
+
+    h2->SetLineColor(kBlue);
+    h3->SetLineColor(kRed);
+    h4->SetLineColor(kGreen);
+    h5->SetLineColor(kYellow);
+
+    h1->Draw();
+    h2->Draw("SAME");
+    h3->Draw("SAME");
+    h4->Draw("SAME");
+    h5->Draw("SAME");
+
+    ff_h->Close();
+    // TH1D *h2 = 0;
+    // ff_h->GetObject("positronFullNL", h2);
+    // h2->SetLineColor(kRed);
+    // h2->Draw();
+    // g0->Draw("SAME");
 
     // finish=clock();
     // printf("%f seconds\n", (double)(finish - start) / 1000.);
