@@ -5,6 +5,7 @@
 #include <TTreeReaderValue.h>
 #include <TROOT.h>
 #include <TTreeReaderArray.h>
+#include <TBranch.h>
 #include <iostream>
 #define HXD1 "/junofs/users/huangx/production/J19v1r0-Pre3bk/IBD/uniform/IBD/detsim/user-detsim-10939.root"
 #define HXD2 "/junofs/users/huangx/production/J19v1r0-Pre3bk/IBD/uniform/IBD/detsim/user-detsim-10938.root"
