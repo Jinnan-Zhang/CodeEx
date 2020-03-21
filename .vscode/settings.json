@@ -19,6 +19,7 @@
         "h1analysisProxy.C": "cpp",
         "h1analysisTreeReader.C": "cpp",
         "h1analysisProxyCut.C": "cpp",
-        "AtmJUNO.C": "cpp"
+        "AtmJUNO.C": "cpp",
+        "E_vis_r.C": "cpp"
     }
 }
