@@ -1,1 +1,3 @@
 *.o
+*.root
+!/Roottest/EnergyLeakage/JUNOEnergyLeakage.root
