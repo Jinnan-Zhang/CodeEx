@@ -13,15 +13,17 @@
 #define HXD1 "/junofs/users/huangx/production/J19v1r0-Pre3bk/IBD/uniform/IBD/detsim/user-detsim-10939.root"
 #define HXD2 "/junofs/users/huangx/production/J19v1r0-Pre3bk/IBD/uniform/IBD/detsim/user-detsim-10938.root"
 #define HXD "/junofs/users/huangx/production/J19v1r0-Pre3bk/IBD/uniform/IBD/detsim/user-detsim-"
+
 double M_electron_sq = 0.26111993;
 double M_e = 0.51099895;
-double LightYeild=1200.;
+double n_capture = 2.2; //MeV
+double LightYeild = 1200.;
 using namespace std;
 
-double Ran_vis[2]={0,13};
-double Ran_true[2]={0,13};
-int NBinx=400;
-int NBiny=400;
+double Ran_vis[2] = {0, 13};
+double Ran_true[2] = {0, 13};
+int NBinx = 400;
+int NBiny = 400;
 
 int ELout()
 {
@@ -54,19 +56,20 @@ int ELout()
     double E_true(0), E_vis(0);
     // TH1D *h_true = new TH1D("E_True", "True Eernergy", 500, 1, 13);
     // TH1D *h_vis = new TH1D("E_vis", "Visible Eernergy", 500, 1, 13);
-    TH2D *h_el=new TH2D("EnergyProfile","Simulation",NBinx,Ran_true[0],Ran_true[1],NBiny,Ran_vis[0],Ran_vis[1]);
-    h_el->SetXTitle("Visible Energy(nPhotons/1200)");
-    h_el->SetYTitle("Visible Energy (MeV)");
+    TH2D *h_el = new TH2D("EnergyProfile", "Simulation", NBinx, Ran_true[0], Ran_true[1], NBiny, Ran_vis[0], Ran_vis[1]);
+    h_el->SetXTitle("True Energy (MeV)");
+    h_el->SetYTitle("Visible Energy(nPhotons/1200)");
     for (int i = 0; i < tE_vis.GetEntries(); i++)
     {
+
         tE_vis.GetEntry(i);
         tE_true.GetEntry(i);
-        E_true = TMath::Sqrt(Px[0] * Px[0] + Py[0] * Py[0] + Pz[0] * Pz[0] + M_electron_sq)+M_e;
+        E_true = TMath::Sqrt(Px[0] * Px[0] + Py[0] * Py[0] + Pz[0] * Pz[0] + M_electron_sq) + M_e;
 
         // h_true->Fill(E_true);
 
         E_vis = nPhotons / LightYeild;
-        h_el->Fill(E_true,E_vis);
+        h_el->Fill(E_true, E_vis);
         // printf("this entry: %e\n", E_vis);
         // h_vis->Fill(E_vis);
     }
