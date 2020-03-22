@@ -18,16 +18,16 @@ double M_e = 0.51099895;
 double LightYeild=1200.;
 using namespace std;
 
-double Ran_vis[2]={0,15};
-double Ran_true[2]={0,15};
-int NBinx=600;
-int NBiny=600;
+double Ran_vis[2]={0,13};
+double Ran_true[2]={0,13};
+int NBinx=400;
+int NBiny=400;
 
 int ELout()
 {
     TChain tE_vis("evt");
     TChain tE_true("geninfo");
-    for (int nn = 10000; nn < 10250; nn++)
+    for (int nn = 10000; nn < 10350; nn++)
     {
         tE_vis.Add(Form("%s%d.root", HXD, nn));
         tE_true.Add(Form("%s%d.root", HXD, nn));
