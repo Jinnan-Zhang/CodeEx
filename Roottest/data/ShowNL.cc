@@ -18,11 +18,11 @@ int ShowNL()
     TFile *ff_h = TFile::Open("JunoFullNL.root", "RECREATE");
     // TFile *ff_h = TFile::Open("JunoFullNL.root", "READ");
     TH1D *h1 = new TH1D("positronFullNL", "Positron Full NL", NBINS, E_LP, E_UP);
-    int nform = 1;
-    TH1D *h2 = new TH1D(Form("NLpull_%d", nform++), "Positron Full NL", NBINS, E_LP, E_UP);
-    TH1D *h3 = new TH1D(Form("NLpull_%d", nform++), "Positron Full NL", NBINS, E_LP, E_UP);
-    TH1D *h4 = new TH1D(Form("NLpull_%d", nform++), "Positron Full NL", NBINS, E_LP, E_UP);
-    TH1D *h5 = new TH1D(Form("NLpull_%d", nform++), "Positron Full NL", NBINS, E_LP, E_UP);
+    int nform = 0;
+    TH1D *h2 = new TH1D(Form("NLpull%d", nform++), "Positron Full NL", NBINS, E_LP, E_UP);
+    TH1D *h3 = new TH1D(Form("NLpull%d", nform++), "Positron Full NL", NBINS, E_LP, E_UP);
+    TH1D *h4 = new TH1D(Form("NLpull%d", nform++), "Positron Full NL", NBINS, E_LP, E_UP);
+    TH1D *h5 = new TH1D(Form("NLpull%d", nform++), "Positron Full NL", NBINS, E_LP, E_UP);
 
     // ff_h->GetObject("h1",h1);
 
