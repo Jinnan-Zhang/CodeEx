@@ -68,7 +68,7 @@ int ELout()
 
         // h_true->Fill(E_true);
 
-        E_vis = nPhotons / LightYeild;
+        E_vis = nPhotons / LightYeild-n_capture;
         h_el->Fill(E_true, E_vis);
         // printf("this entry: %e\n", E_vis);
         // h_vis->Fill(E_vis);
