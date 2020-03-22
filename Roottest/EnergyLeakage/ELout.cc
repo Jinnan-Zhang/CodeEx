@@ -15,7 +15,7 @@
 #define HXD "/junofs/users/huangx/production/J19v1r0-Pre3bk/IBD/uniform/IBD/detsim/user-detsim-"
 double M_electron_sq = 0.26111993;
 double M_e = 0.51099895;
-double LightYeild=1500.;
+double LightYeild=1200.;
 using namespace std;
 
 double Ran_vis[2]={0,13};
