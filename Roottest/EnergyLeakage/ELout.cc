@@ -27,9 +27,10 @@ int NBiny = 400;
 
 int ELout()
 {
-    TChain tE_vis("evt");
+    // TChain tE_vis("evt");
+    TChain tE_vis("prmtrkdep");
     TChain tE_true("geninfo");
-    for (int nn = 10000; nn < 10030; nn++)
+    for (int nn = 10000; nn < 10999; nn++)
     {
         tE_vis.Add(Form("%s%d.root", HXD, nn));
         tE_true.Add(Form("%s%d.root", HXD, nn));
@@ -43,8 +44,8 @@ int ELout()
     tE_true.SetBranchStatus("*", 0);
     int nPhotons;
     float E_dep;
-    tE_vis.SetBranchStatus("nPhotons", 1);
-    tE_vis.SetBranchAddress("nPhotons", &nPhotons);
+    // tE_vis.SetBranchStatus("nPhotons", 1);
+    // tE_vis.SetBranchAddress("nPhotons", &nPhotons);
     tE_vis.SetBranchStatus("edep", 1);
     tE_vis.SetBranchAddress("edep", &E_dep);
 
