@@ -29,7 +29,7 @@ int ELout()
 {
     TChain tE_vis("evt");
     TChain tE_true("geninfo");
-    for (int nn = 10000; nn < 10999; nn++)
+    for (int nn = 10000; nn < 10030; nn++)
     {
         tE_vis.Add(Form("%s%d.root", HXD, nn));
         tE_true.Add(Form("%s%d.root", HXD, nn));
@@ -42,8 +42,12 @@ int ELout()
     tE_vis.SetBranchStatus("*", 0);
     tE_true.SetBranchStatus("*", 0);
     int nPhotons;
+    float E_dep;
     tE_vis.SetBranchStatus("nPhotons", 1);
     tE_vis.SetBranchAddress("nPhotons", &nPhotons);
+    tE_vis.SetBranchStatus("edep", 1);
+    tE_vis.SetBranchAddress("edep", &E_dep);
+
     int PDGid[2];
     float Px[2], Py[2], Pz[2];
     tE_true.SetBranchStatus("InitPDGID", 1);
@@ -58,7 +62,8 @@ int ELout()
     // TH1D *h_vis = new TH1D("E_vis", "Visible Eernergy", 500, 1, 13);
     TH2D *h_el = new TH2D("EnergyProfile", "Simulation", NBinx, Ran_true[0], Ran_true[1], NBiny, Ran_vis[0], Ran_vis[1]);
     h_el->SetXTitle("True Energy (MeV)");
-    h_el->SetYTitle("Visible Energy(nPhotons/1200)");
+    // h_el->SetYTitle("Visible Energy(nPhotons/1200)");
+    h_el->SetYTitle("Deposited Energy(MeV)");
     for (int i = 0; i < tE_vis.GetEntries(); i++)
     {
 
@@ -68,8 +73,10 @@ int ELout()
 
         // h_true->Fill(E_true);
 
-        E_vis = nPhotons / LightYeild-n_capture;
-        h_el->Fill(E_true, E_vis);
+        // E_vis = nPhotons / LightYeild - n_capture;
+        // h_el->Fill(E_true, E_vis);
+        h_el->Fill(E_true, E_dep);
+
         // printf("this entry: %e\n", E_vis);
         // h_vis->Fill(E_vis);
     }
