@@ -1,4 +1,5 @@
 //目标：指针传参会被改变吗
+//clone 和copy都不行
 #include <TH1.h>
 #include <iostream>
 
