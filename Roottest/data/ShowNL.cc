@@ -2,6 +2,7 @@
 #include <TGraph.h>
 #include <iostream>
 #include <TH1.h>
+#include<TLegend.h>
 // using std::cout, std::endl;
 #include <time.h>
 double E_Lower = 1.807; //energy threshold of IBD
@@ -71,12 +72,21 @@ int ShowNL()
     h3->SetLineColor(kRed);
     h4->SetLineColor(kGreen);
     h5->SetLineColor(kYellow);
-
+    
+    h1->SetXTitle("E(MeV)");
     h1->Draw();
     h2->Draw("SAME");
     h3->Draw("SAME");
     h4->Draw("SAME");
     h5->Draw("SAME");
+    TLegend leg(3,2);
+    leg.AddEntry(h1,"Nominal");
+    nform=0;
+    leg.AddEntry(h2,Form("pull%d", nform++));
+    leg.AddEntry(h3,Form("pull%d", nform++));
+    leg.AddEntry(h4,Form("pull%d", nform++));
+    leg.AddEntry(h5,Form("pull%d", nform++));
+    leg.DrawClone("SAME");
 
     ff_h->Close();
     // TH1D *h2 = 0;
