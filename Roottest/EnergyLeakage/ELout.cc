@@ -30,7 +30,7 @@ int ELout()
     // TChain tE_vis("evt");
     TChain tE_vis("prmtrkdep");
     TChain tE_true("geninfo");
-    for (int nn = 10000; nn < 10999; nn++)
+    for (int nn = 10000; nn < 10003; nn++)
     {
         tE_vis.Add(Form("%s%d.root", HXD, nn));
         tE_true.Add(Form("%s%d.root", HXD, nn));
@@ -66,7 +66,7 @@ int ELout()
     // h_el->SetYTitle("Visible Energy(nPhotons/1200)");
     // h_el->SetYTitle("Deposited Energy(MeV)");
     // h_vis->SetXTitle("E (MeV)");
-    TH1D *h_ra=new TH1D("ratio","",2000,0,1.2);
+    TH1D *h_ra=new TH1D("ratio","",2000,0.1,1.3);
     double E_ratio(0);
     for (int i = 0; i < tE_vis.GetEntries(); i++)
     {
