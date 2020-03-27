@@ -9,6 +9,7 @@
 #include <TH1.h>
 #include <TH2.h>
 #include <TMath.h>
+#include <cmath>
 #include <iostream>
 #define HXD1 "/junofs/users/huangx/production/J19v1r0-Pre3bk/IBD/uniform/IBD/detsim/user-detsim-10939.root"
 #define HXD2 "/junofs/users/huangx/production/J19v1r0-Pre3bk/IBD/uniform/IBD/detsim/user-detsim-10938.root"
@@ -66,17 +67,18 @@ int ELout()
     // h_el->SetYTitle("Visible Energy(nPhotons/1200)");
     // h_el->SetYTitle("Deposited Energy(MeV)");
     // h_vis->SetXTitle("E (MeV)");
-    TH1D *h_ra=new TH1D("ratio","",2000,0.1,1.3);
+    TH1D *h_ra = new TH1D("ratio", "", 2000, 0.1, 1.3);
     double E_ratio(0);
     for (int i = 0; i < tE_vis.GetEntries(); i++)
     {
         tE_vis.GetEntry(i);
         tE_true.GetEntry(i);
         E_true = TMath::Sqrt(Px[0] * Px[0] + Py[0] * Py[0] + Pz[0] * Pz[0] + M_electron_sq) + M_e;
-        if (E_true < 4.5 && E_true > 3.5)
+        if (E_true < 4.5 && E_true > 3.5 && E_dep <= E_true)
         {
             E_ratio = E_dep / E_true;
-            h_ra->Fill(E_ratio,1);
+            h_ra->Fill(E_ratio, 1);
+            // printf("which: %0.15f\n", E_ratio);
             // h_vis->Fill(E_true, E_ratio);
         }
         // h_true->Fill(E_true);
