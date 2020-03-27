@@ -67,7 +67,7 @@ int ELout()
     // h_el->SetYTitle("Visible Energy(nPhotons/1200)");
     // h_el->SetYTitle("Deposited Energy(MeV)");
     // h_vis->SetXTitle("E (MeV)");
-    TH1D *h_ra = new TH1D("ratio", "", 2000, 0.1, 1.3);
+    TH1D *h_ra = new TH1D("ratio", "", 20000, 0.1, 1.001);
     double E_ratio(0);
     for (int i = 0; i < tE_vis.GetEntries(); i++)
     {
