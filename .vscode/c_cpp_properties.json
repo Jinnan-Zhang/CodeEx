@@ -6,7 +6,7 @@
                 "${workspaceFolder}/**",
                 "~/tools/include/",
                 "/mnt/f/Share-D/Generator-master",
-                "/afs/ihep.ac.cn/soft/juno/JUNO-ALL-SLC7/Pre-Release/J19v1r1-branch/ExternalLibs/ROOT/6.18.00/include/**"
+                "/afs/ihep.ac.cn/soft/lqcd/root/6.18.00/include/**"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",

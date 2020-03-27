@@ -59,24 +59,27 @@ int ELout()
     tE_true.SetBranchAddress("InitPY", &Pz);
 
     double E_true(0), E_vis(0);
-    // TH1D *h_true = new TH1D("E_True", "True Eernergy", 500, 1, 13);
-    // TH1D *h_vis = new TH1D("E_vis", "Visible Eernergy", 500, 1, 13);
-    TH2D *h_el = new TH2D("EnergyProfile", "Simulation", NBinx, Ran_true[0], Ran_true[1], NBiny, Ran_vis[0], Ran_vis[1]);
-    h_el->SetXTitle("True Energy (MeV)");
+    // TH1D *h_true = new TH1D("E_True", "True Eernergy",NBiny, Ran_vis[0], Ran_vis[1]);
+    TH1D *h_vis = new TH1D("E_vis", "Visible Eernergy", NBinx, Ran_true[0], Ran_true[1]);
+    // TH2D *h_el = new TH2D("EnergyProfile", "Simulation", NBinx, Ran_true[0], Ran_true[1], NBiny, Ran_vis[0], Ran_vis[1]);
+    // h_el->SetXTitle("True Energy (MeV)");
     // h_el->SetYTitle("Visible Energy(nPhotons/1200)");
-    h_el->SetYTitle("Deposited Energy(MeV)");
+    // h_el->SetYTitle("Deposited Energy(MeV)");
+    h_vis->SetXTitle("E (MeV)");
+    double E_ratio(0);
     for (int i = 0; i < tE_vis.GetEntries(); i++)
     {
 
         tE_vis.GetEntry(i);
         tE_true.GetEntry(i);
         E_true = TMath::Sqrt(Px[0] * Px[0] + Py[0] * Py[0] + Pz[0] * Pz[0] + M_electron_sq) + M_e;
-
+        E_ratio=E_dep/E_true;
+        h_vis->Fill(E_true,E_ratio);
         // h_true->Fill(E_true);
 
         // E_vis = nPhotons / LightYeild - n_capture;
         // h_el->Fill(E_true, E_vis);
-        h_el->Fill(E_true, E_dep);
+        // h_el->Fill(E_true, E_dep);
 
         // printf("this entry: %e\n", E_vis);
         // h_vis->Fill(E_vis);
@@ -84,8 +87,9 @@ int ELout()
     TFile *ff_EL = TFile::Open("JUNOEnergyLeakage.root", "RECREATE");
     ff_EL->cd();
     // h_true->Write();
-    // h_vis->Write();
-    h_el->Write();
+    h_vis->Write();
+    // h_el->Write();
+
     ff_EL->Close();
 
     return 0;
