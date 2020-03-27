@@ -60,21 +60,25 @@ int ELout()
 
     double E_true(0), E_vis(0);
     // TH1D *h_true = new TH1D("E_True", "True Eernergy",NBiny, Ran_vis[0], Ran_vis[1]);
-    TH1D *h_vis = new TH1D("E_vis", "Visible Eernergy", NBinx, Ran_true[0], Ran_true[1]);
+    // TH1D *h_vis = new TH1D("E_vis", "Visible Eernergy", NBinx, Ran_true[0], Ran_true[1]);
     // TH2D *h_el = new TH2D("EnergyProfile", "Simulation", NBinx, Ran_true[0], Ran_true[1], NBiny, Ran_vis[0], Ran_vis[1]);
     // h_el->SetXTitle("True Energy (MeV)");
     // h_el->SetYTitle("Visible Energy(nPhotons/1200)");
     // h_el->SetYTitle("Deposited Energy(MeV)");
-    h_vis->SetXTitle("E (MeV)");
+    // h_vis->SetXTitle("E (MeV)");
+    TH1D *h_ra=new TH1D("ratio","",200,-2,2);
     double E_ratio(0);
     for (int i = 0; i < tE_vis.GetEntries(); i++)
     {
-
         tE_vis.GetEntry(i);
         tE_true.GetEntry(i);
         E_true = TMath::Sqrt(Px[0] * Px[0] + Py[0] * Py[0] + Pz[0] * Pz[0] + M_electron_sq) + M_e;
-        E_ratio=E_dep/E_true;
-        h_vis->Fill(E_true,E_ratio);
+        if (E_true < 4.5 && E_true > 3.5)
+        {
+            E_ratio = E_dep / E_true;
+            h_ra->Fill(E_ratio,1);
+            // h_vis->Fill(E_true, E_ratio);
+        }
         // h_true->Fill(E_true);
 
         // E_vis = nPhotons / LightYeild - n_capture;
@@ -87,8 +91,9 @@ int ELout()
     TFile *ff_EL = TFile::Open("JUNOEnergyLeakage.root", "RECREATE");
     ff_EL->cd();
     // h_true->Write();
-    h_vis->Write();
+    // h_vis->Write();
     // h_el->Write();
+    h_ra->Write();
 
     ff_EL->Close();
 
