@@ -67,14 +67,14 @@ int ELout()
     // h_el->SetYTitle("Visible Energy(nPhotons/1200)");
     // h_el->SetYTitle("Deposited Energy(MeV)");
     // h_vis->SetXTitle("E (MeV)");
-    TH1D *h_ra = new TH1D("Eratio", "", 200, 0.6, 1.01);
+    TH1D *h_ra = new TH1D("Eratio", "", 200, 0.5, 1.01);
     double E_ratio(0);
     for (int i = 0; i < tE_vis.GetEntries(); i++)
     {
         tE_vis.GetEntry(i);
         tE_true.GetEntry(i);
         E_true = TMath::Sqrt(Px[0] * Px[0] + Py[0] * Py[0] + Pz[0] * Pz[0] + M_electron_sq) + M_e;
-        if ( E_dep <= E_true)
+        if ( E_dep < E_true)
         {
             E_ratio = E_dep / E_true;
             h_ra->Fill(E_ratio, 1);
