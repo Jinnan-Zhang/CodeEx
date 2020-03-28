@@ -67,8 +67,11 @@ int ELout()
     // h_el->SetYTitle("Visible Energy(nPhotons/1200)");
     // h_el->SetYTitle("Deposited Energy(MeV)");
     // h_vis->SetXTitle("E (MeV)");
-    TH1D *h_ra = new TH1D("Eratio", "", 200, 0.6, 1.1);
+    TH1D *h_ra = new TH1D("Eratio", "", 200, 0.6, 0.98);
+    h_ra->SetXTitle("E_{dep}/E_{true}");
     double E_ratio(0);
+    double SE_true(0), SE_dep(0);
+    int ELnum(0),Tnum(0);
     for (int i = 0; i < tE_vis.GetEntries(); i++)
     {
         tE_vis.GetEntry(i);
@@ -76,10 +79,10 @@ int ELout()
         E_true = TMath::Sqrt(Px[0] * Px[0] + Py[0] * Py[0] + Pz[0] * Pz[0] + M_electron_sq) + M_e;
         // if ( E_dep < E_true)
         // {
-            E_ratio = E_dep / E_true;
-            h_ra->Fill(E_ratio, 1);
-            // printf("which: %0.15f\n", E_ratio);
-            // h_vis->Fill(E_true, E_ratio);
+        E_ratio = E_dep / E_true;
+        h_ra->Fill(E_ratio, 1);
+        // printf("which: %0.15f\n", E_ratio);
+        // h_vis->Fill(E_true, E_ratio);
         // }
         // h_true->Fill(E_true);
 
@@ -89,7 +92,14 @@ int ELout()
 
         // printf("this entry: %e\n", E_vis);
         // h_vis->Fill(E_vis);
+        if (E_dep < E_true)
+            ELnum++;
+        SE_true += E_true;
+        SE_dep += E_dep;
+        Tnum++;
     }
+    printf("Total leakage: %f\n", 1.-SE_dep / SE_true);
+    printf("total Leakage NUM:%f\n",(float)ELnum/Tnum);
     TFile *ff_EL = TFile::Open("JUNOEnergyLeakage.root", "RECREATE");
     ff_EL->cd();
     // h_true->Write();
