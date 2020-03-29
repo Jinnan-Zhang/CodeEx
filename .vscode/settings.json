@@ -68,6 +68,8 @@
         "utility": "cpp",
         "typeinfo": "cpp",
         "atomic": "cpp",
-        "typeindex": "cpp"
+        "typeindex": "cpp",
+        "draw_dyb.C": "cpp",
+        "draw_dyb1.C": "cpp"
     }
 }
