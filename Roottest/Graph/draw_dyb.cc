@@ -1,19 +1,19 @@
-#include <TGraph.h>
-#include <iostream>
-#include <fstream>
-#include <vector>
-#include <strstream>
-#include <TCanvas.h>
-#include <TLegend.h>
-#include <TLine.h>
-#include <TMarker.h>
-#include <TAxis.h>
-#include <TH1.h>
-#include <TROOT.h>
-#include <TGaxis.h>
-#include <TMultiGraph.h>
-using namespace std;
-int draw_day()
+// #include <TGraph.h>
+// #include <iostream>
+// #include <fstream>
+// #include <vector>
+// #include <strstream>
+// #include <TCanvas.h>
+// #include <TLegend.h>
+// #include <TLine.h>
+// #include <TMarker.h>
+// #include <TAxis.h>
+// #include <TH1.h>
+// #include <TROOT.h>
+// #include <TGaxis.h>
+// #include <TMultiGraph.h>
+// using namespace std;
+// void draw_dyb()
 {
      double DYBrateDay[6] = {56, 84, 112, 140, 168, 217};
      double DYBrate[6] = {0.0171092, 0.0137752, 0.0121306, 0.0110435, 0.0104718, 0.00950983};

@@ -1,21 +1,21 @@
-#include <TGraph.h>
-#include <iostream>
-#include <fstream>
-#include <vector>
-#include <strstream>
-#include <TCanvas.h>
-#include <TLegend.h>
-#include <TLine.h>
-#include <TMarker.h>
-#include <TAxis.h>
-#include <TH1.h>
-#include <TROOT.h>
-#include <TGaxis.h>
-#include <TMultiGraph.h>
+// #include <TGraph.h>
+// #include <iostream>
+// #include <fstream>
+// #include <vector>
+// #include <strstream>
+// #include <TCanvas.h>
+// #include <TLegend.h>
+// #include <TLine.h>
+// #include <TMarker.h>
+// #include <TAxis.h>
+// #include <TH1.h>
+// #include <TROOT.h>
+// #include <TGaxis.h>
+// #include <TMultiGraph.h>
 
-using namespace std;
+// using namespace std;
 
-int draw_dyb1()
+// void draw_dyb1()
 {
    const Double_t mk_size = 1.4;
    double DYBrateDay[6] = {2011.978 + 56 * 1. / 365, 2011.978 + 84 * 1. / 365, 2011.978 + 112 * 1. / 365, 2011.978 + 140 * 1. / 365, 2011.978 + 168 * 1. / 365, 2011.978 + 217 * 1. / 365};
@@ -109,7 +109,7 @@ int draw_dyb1()
    //
 
    gROOT->ForceStyle(0);
-   c1 = new TCanvas("c1", "gerrors2", 200, 10, 700, 500);
+   TCanvas *c1 = new TCanvas("c1", "gerrors2", 200, 10, 700, 500);
    TPad *pad = new TPad("pad", "", 0, 0, 1, 1);
    pad->SetGrid();
    pad->Draw();
