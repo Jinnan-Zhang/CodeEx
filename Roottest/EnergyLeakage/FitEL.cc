@@ -3,6 +3,7 @@
 #include <TF1.h>
 #include <TLegend.h>
 #include <iostream>
+#include<TROOT.h>
 using namespace std;
 
 TF1 *f_EL = new TF1("f_EL", "[0]+[1]*TMath::Exp([2]*x*x+[3]*x+[4])", 0, 1);
@@ -19,11 +20,13 @@ int FitEL()
         h_dat->SetBinContent(i+1,h_EL->GetBinContent(i+1));
     }
     h_dat->SetLineColor(kRed);
-    h_dat->Fit(f_EL);
+    // h_dat->Fit(f_EL);
+    h_EL->Draw("CO");
+    gPad->SetLogy();
     TLegend leg0(1,0.5);
     leg0.AddEntry(f_EL,"Fit function");
     leg0.AddEntry(h_dat,"Data");
-    leg0.DrawClone("SAME");
+    // leg0.DrawClone("SAME");
 
     return 0;
 }
