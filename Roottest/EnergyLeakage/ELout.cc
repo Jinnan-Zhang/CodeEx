@@ -117,8 +117,9 @@ int ELout()
     // h_true->Write();
     // h_vis->Write();
     // h_el->Write();
-    h_ra->Scale(1 / h_ra->Integral());
-    h_ra->Write();
+    // h_ra->Scale(1 / h_ra->Integral());
+    // h_ra->Write();
+    h_ra2R->Write();
 
     ff_EL->Close();
 
