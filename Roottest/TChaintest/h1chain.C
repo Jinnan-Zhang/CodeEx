@@ -22,7 +22,7 @@
 #include "TPaveStats.h"
 #include "TLine.h"
 #include "TMath.h"
-// #include "h1analysis.h"
+#include "h1analysis.h"
 
 int h1chain()
 {
