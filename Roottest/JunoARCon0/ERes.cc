@@ -27,7 +27,11 @@ double Ran_true[2] = {0, 13};
 int NBinx = 400;
 int NBiny = 400;
 
-int Eres()
+int ERes()
 {
-
+    TChain t_evt("evt");
+    t_evt.Add((char *)HXD1);
+    // t_evt.MakeSelector("EvtSelector");
+    t_evt.Process("EvtSelector.C");
+    return 0;
 }
