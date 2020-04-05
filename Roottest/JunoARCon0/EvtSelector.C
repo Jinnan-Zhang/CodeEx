@@ -27,6 +27,7 @@
 #include <TH2.h>
 #include <TStyle.h>
 #include <iostream>
+using std::cout, std::endl;
 
 void EvtSelector::Begin(TTree * /*tree*/)
 {
@@ -65,7 +66,8 @@ Bool_t EvtSelector::Process(Long64_t entry)
    // The return value is currently not used.
 
    fReader.SetLocalEntry(entry);
-   printf("nPhotons: %d", nPhotons);
+   printf("nPhotons: %d", *nPhotons);
+   // cout << nPhotons << endl;
 
    return kTRUE;
 }
