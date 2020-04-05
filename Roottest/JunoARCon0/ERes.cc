@@ -32,14 +32,14 @@ int ERes()
     TChain t_evt("evt");
     t_evt.Add((char *)HXD1);
     // t_evt.MakeSelector("EvtSelector");
-    // t_evt.Process("EvtSelector.C");
-    int nPhotons = 0;
-    t_evt.SetBranchAddress("nPhotons", &nPhotons);
-    for (int i = 0; i < t_evt.GetEntries(); i++)
-    {
-        t_evt.GetEntry(i);
-        printf("nPhotons: %d\n", nPhotons);
-    }
+    t_evt.Process("EvtSelector.C");
+    // int nPhotons = 0;
+    // t_evt.SetBranchAddress("nPhotons", &nPhotons);
+    // for (int i = 0; i < t_evt.GetEntries(); i++)
+    // {
+    //     t_evt.GetEntry(i);
+    //     printf("nPhotons: %d\n", nPhotons);
+    // }
 
     return 0;
 }
