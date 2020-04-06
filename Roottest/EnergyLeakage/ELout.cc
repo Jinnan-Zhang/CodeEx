@@ -45,10 +45,11 @@ int ELout()
     tE_true.SetBranchStatus("*", 0);
     int nPhotons;
     // float E_dep[2], edepX[2], edepY[2], edepZ[2];
+    float edep;
     tE_vis.SetBranchStatus("nPhotons", 1);
     tE_vis.SetBranchAddress("nPhotons", &nPhotons);
-    // tE_vis.SetBranchStatus("edep", 1);
-    // tE_vis.SetBranchAddress("edep", &E_dep);
+    tE_vis.SetBranchStatus("edep", 1);
+    tE_vis.SetBranchAddress("edep", &edep);
     // tE_vis.SetBranchStatus("edepX", 1);
     // tE_vis.SetBranchAddress("edepX", &edepX);
     // tE_vis.SetBranchStatus("edepY", 1);
@@ -86,6 +87,7 @@ int ELout()
     // h_ra2R->SetYTitle("E_{dep}/E_{true}");
     // h_ra2R->SetXTitle("R (m)");
     double E_ratio(0), R(0);
+    double Photon2edep(0);
     double SE_true(0), SE_dep(0);
     int ELnum(0), Tnum(0);
     for (int i = 0; i < tE_vis.GetEntries(); i++)
@@ -99,8 +101,9 @@ int ELout()
         // R = sqrt(edepX[0] * edepX[0] + edepY[0] * edepY[0] + edepZ[0] * edepZ[0]) / 1000.; //to meter
         // h_ra2R->Fill(R, E_ratio);
         R = sqrt(InitX[0] * InitX[0] + InitY[0] * InitY[0] + InitZ[0] * InitZ[0]) / 1000.;
-        h_ep->Fill(R, nPhotons-2.2*1200);
-        printf("x:%f\ty:%d\n", R, nPhotons);
+        Photon2edep = nPhotons / edep;
+        h_ep->Fill(R, Photon2edep);
+        printf("x:%f\ty:%d\n", R, Photon2edep);
         // h_ra->Fill(E_ratio, 1);
         // printf("which: %0.15f\n", E_ratio);
         // h_vis->Fill(E_true, E_ratio);
