@@ -22,7 +22,7 @@ double n_capture = 2.2; //MeV
 double LightYeild = 1200.;
 using namespace std;
 
-double Ran_x[2] = {0, 5100};
+double Ran_x[2] = {0, 5300};
 double Ran_y[2] = {-1, 1};
 int NBinx = 50;
 int NBiny = 50;
@@ -32,7 +32,7 @@ int ELout()
     TChain tE_vis("evt");
     // TChain tE_vis("prmtrkdep");
     TChain tE_true("geninfo");
-    for (int nn = 10000; nn < 10999; nn++)
+    for (int nn = 10000; nn < 10002; nn++)
     {
         tE_vis.Add(Form("%s%d.root", HXD, nn));
         tE_true.Add(Form("%s%d.root", HXD, nn));
@@ -77,7 +77,7 @@ int ELout()
     double E_true(0), E_vis(0);
     // TH1D *h_true = new TH1D("E_True", "True Eernergy",NBiny, Ran_x[0], Ran_x[1]);
     // TH1D *h_vis = new TH1D("E_vis", "Visible Eernergy", NBinx, Ran_y[0], Ran_y[1]);
-    TH2D *h_ep = new TH2D("EnergyProfile", "Simulation", NBinx, Ran_x[0], Ran_x[1], NBiny, Ran_y[0], Ran_y[1]);
+    TH2F *h_ep = new TH2F("EnergyProfile", "Simulation", NBinx, Ran_x[0], Ran_x[1], NBiny, Ran_y[0], Ran_y[1]);
     h_ep->SetXTitle("R^{3} (m^{3})");
     // h_ep->SetYTitle("nPhotons/MeV");
     h_ep->SetYTitle("cos#theta");
@@ -110,9 +110,12 @@ int ELout()
         R_cubic = pow(EvtPos.Mag2(), 1.5);
         Costheta = EvtPos.CosTheta();
         // h_ep->Fill(R_cubic, Costheta, Photon2edep);
-        // h_ep->Fill(R_cubic, Photon2edep) ;
-        ithBIN = h_ep->Fill(R_cubic, Photon2edep, Photon2edep) - 1;
-        BinArray[ithBIN]++;
+        // h_ep->Fill(R_cubic, Photon2edep);
+        ithBIN = h_ep->Fill(R_cubic, Costheta, Photon2edep);
+        // if (ithBIN > 0 && ithBIN << NBinx * NBiny)
+        if (ithBIN <= 0)
+            printf("x:%f\ty:%f\tz:%f\n", R_cubic, Costheta,Photon2edep);
+        // BinArray[ithBIN] += 1;
 
         //printf("x:%f\ty:%d\n", R_cubic, Photon2edep);
         // h_ra->Fill(E_ratio, 1);
