@@ -50,14 +50,14 @@ public:
    // TTreeReaderArray<Float_t> LocalDirX = {fReader, "LocalDirX"};
    // TTreeReaderArray<Float_t> LocalDirY = {fReader, "LocalDirY"};
    // TTreeReaderArray<Float_t> LocalDirZ = {fReader, "LocalDirZ"};
-   // TTreeReaderArray<Float_t> GlobalPosX = {fReader, "GlobalPosX"};
-   // TTreeReaderArray<Float_t> GlobalPosY = {fReader, "GlobalPosY"};
-   // TTreeReaderArray<Float_t> GlobalPosZ = {fReader, "GlobalPosZ"};
+   TTreeReaderArray<Float_t> GlobalPosX = {fReader, "GlobalPosX"};
+   TTreeReaderArray<Float_t> GlobalPosY = {fReader, "GlobalPosY"};
+   TTreeReaderArray<Float_t> GlobalPosZ = {fReader, "GlobalPosZ"};
    // TTreeReaderArray<Float_t> BoundaryPosX = {fReader, "BoundaryPosX"};
    // TTreeReaderArray<Float_t> BoundaryPosY = {fReader, "BoundaryPosY"};
    // TTreeReaderArray<Float_t> BoundaryPosZ = {fReader, "BoundaryPosZ"};
    TH2F *h2d;
-   
+
 
    EvtSelector(TTree * /*tree*/ = 0)
    {

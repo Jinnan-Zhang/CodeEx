@@ -26,6 +26,11 @@
 #include "EvtSelector.h"
 #include <TH2.h>
 #include <TStyle.h>
+double x_low = 0;
+double x_up = 1;
+int BinNUM = 200;
+double y_low = 1200;
+double y_up = 1600;
 
 void EvtSelector::Begin(TTree * /*tree*/)
 {
@@ -43,6 +48,8 @@ void EvtSelector::SlaveBegin(TTree * /*tree*/)
    // The tree argument is deprecated (on PROOF 0 is passed).
 
    TString option = GetOption();
+   h2d = new TH2F("h2d", "Vertex Profile", BinNUM, x_low, x_up, BinNUM, y_low, y_up);
+   fOutput->Add(h2d);
 }
 
 Bool_t EvtSelector::Process(Long64_t entry)
@@ -64,8 +71,9 @@ Bool_t EvtSelector::Process(Long64_t entry)
    // The return value is currently not used.
 
    fReader.SetLocalEntry(entry);
-   printf("nPhotons: %d\n", *nPhotons);
+   // printf("nPhotons: %d\n", *nPhotons);
    // cout << nPhotons << endl;
+   
 
    return kTRUE;
 }
