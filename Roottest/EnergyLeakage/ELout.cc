@@ -103,7 +103,7 @@ int ELout()
         R = sqrt(InitX[0] * InitX[0] + InitY[0] * InitY[0] + InitZ[0] * InitZ[0]) / 1000.;
         Photon2edep = nPhotons / edep;
         h_ep->Fill(R, Photon2edep);
-        printf("x:%f\ty:%d\n", R, Photon2edep);
+        //printf("x:%f\ty:%d\n", R, Photon2edep);
         // h_ra->Fill(E_ratio, 1);
         // printf("which: %0.15f\n", E_ratio);
         // h_vis->Fill(E_true, E_ratio);
