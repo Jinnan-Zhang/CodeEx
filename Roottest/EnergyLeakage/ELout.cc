@@ -28,8 +28,8 @@ int NBiny = 400;
 
 int ELout()
 {
-    // TChain tE_vis("evt");
-    TChain tE_vis("prmtrkdep");
+    TChain tE_vis("evt");
+    // TChain tE_vis("prmtrkdep");
     TChain tE_true("geninfo");
     for (int nn = 10000; nn < 10001; nn++)
     {
