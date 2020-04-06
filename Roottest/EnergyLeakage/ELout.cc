@@ -8,6 +8,7 @@
 #include <TBranch.h>
 #include <TH1.h>
 #include <TH2.h>
+#include <TVector3.h>
 #include <TMath.h>
 #include <cmath>
 #include <iostream>
@@ -22,16 +23,16 @@ double LightYeild = 1200.;
 using namespace std;
 
 double Ran_x[2] = {0, 5100};
-double Ran_y[2] = {1200, 1600};
+double Ran_y[2] = {-1, 1};
 int NBinx = 400;
-int NBiny = 400;
+int NBiny = 200;
 
 int ELout()
 {
     TChain tE_vis("evt");
     // TChain tE_vis("prmtrkdep");
     TChain tE_true("geninfo");
-    for (int nn = 10000; nn < 10999; nn++)
+    for (int nn = 10000; nn < 10100; nn++)
     {
         tE_vis.Add(Form("%s%d.root", HXD, nn));
         tE_true.Add(Form("%s%d.root", HXD, nn));
@@ -78,7 +79,8 @@ int ELout()
     // TH1D *h_vis = new TH1D("E_vis", "Visible Eernergy", NBinx, Ran_y[0], Ran_y[1]);
     TH2D *h_ep = new TH2D("EnergyProfile", "Simulation", NBinx, Ran_x[0], Ran_x[1], NBiny, Ran_y[0], Ran_y[1]);
     h_ep->SetXTitle("R^{3} (m^{3})");
-    h_ep->SetYTitle("nPhotons/MeV");
+    // h_ep->SetYTitle("nPhotons/MeV");
+    h_ep->SetYTitle("cos$theta");
     // h_ep->SetYTitle("Deposited Energy(MeV)");
     // h_vis->SetXTitle("E (MeV)");
     // TH1D *h_ra = new TH1D("Eratio", "", 400, 0.1, 1.01);
@@ -87,7 +89,7 @@ int ELout()
     // h_ra2R->SetYTitle("E_{dep}/E_{true}");
     // h_ra2R->SetXTitle("");
     double E_ratio(0), R_cubic(0);
-    double Photon2edep(0);
+    double Photon2edep(0), Costheta(0);
     double SE_true(0), SE_dep(0);
     int ELnum(0), Tnum(0);
     for (int i = 0; i < tE_vis.GetEntries(); i++)
@@ -100,9 +102,12 @@ int ELout()
         // E_ratio = E_dep[0] / E_true;
         // R_cubic = sqrt(edepX[0] * edepX[0] + edepY[0] * edepY[0] + edepZ[0] * edepZ[0]) / 1000.; //to meter
         // h_ra2R->Fill(R_cubic, E_ratio);
-        R_cubic = pow((InitX[0] * InitX[0] + InitY[0] * InitY[0] + InitZ[0] * InitZ[0]), 1.5)/1e9;
+        // R_cubic = pow((InitX[0] * InitX[0] + InitY[0] * InitY[0] + InitZ[0] * InitZ[0]), 1.5) / 1e9;
+        TVector3 EvtPos(InitX[0] / 1e3, InitY[0] / 1e3, InitZ[0] / 1e3);
         Photon2edep = nPhotons / edep;
-        h_ep->Fill(R_cubic, Photon2edep);
+        R_cubic = pow(EvtPos.Mag(), 1.5);
+        Costheta = EvtPos.CosTheta();
+        h_ep->Fill(R_cubic, Costheta, Photon2edep);
         //printf("x:%f\ty:%d\n", R_cubic, Photon2edep);
         // h_ra->Fill(E_ratio, 1);
         // printf("which: %0.15f\n", E_ratio);
