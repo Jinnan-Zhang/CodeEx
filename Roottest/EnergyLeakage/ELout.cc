@@ -100,7 +100,7 @@ int ELout()
         // E_ratio = E_dep[0] / E_true;
         // R_cubic = sqrt(edepX[0] * edepX[0] + edepY[0] * edepY[0] + edepZ[0] * edepZ[0]) / 1000.; //to meter
         // h_ra2R->Fill(R_cubic, E_ratio);
-        R_cubic = pow((InitX[0] * InitX[0] + InitY[0] * InitY[0] + InitZ[0] * InitZ[0]) / 1000., 1.5);
+        R_cubic = pow((InitX[0] * InitX[0] + InitY[0] * InitY[0] + InitZ[0] * InitZ[0]), 1.5)/1e9;
         Photon2edep = nPhotons / edep;
         h_ep->Fill(R_cubic, Photon2edep);
         //printf("x:%f\ty:%d\n", R_cubic, Photon2edep);
