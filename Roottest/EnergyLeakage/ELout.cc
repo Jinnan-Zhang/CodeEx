@@ -77,15 +77,15 @@ int ELout()
     // TH1D *h_true = new TH1D("E_True", "True Eernergy",NBiny, Ran_x[0], Ran_x[1]);
     // TH1D *h_vis = new TH1D("E_vis", "Visible Eernergy", NBinx, Ran_y[0], Ran_y[1]);
     TH2D *h_ep = new TH2D("EnergyProfile", "Simulation", NBinx, Ran_x[0], Ran_x[1], NBiny, Ran_y[0], Ran_y[1]);
-    h_ep->SetXTitle("R_cubic (m)");
-    h_ep->SetYTitle("nPhotons");
+    h_ep->SetXTitle("R^{3} (m^{3})");
+    h_ep->SetYTitle("nPhotons/MeV");
     // h_ep->SetYTitle("Deposited Energy(MeV)");
     // h_vis->SetXTitle("E (MeV)");
     // TH1D *h_ra = new TH1D("Eratio", "", 400, 0.1, 1.01);
     // h_ra->SetXTitle("E_{dep}/E_{true}");
     // TH2D *h_ra2R = new TH2D("ratio2R", "", NBinx, 0, 18, NBiny, 0, 1.01);
     // h_ra2R->SetYTitle("E_{dep}/E_{true}");
-    // h_ra2R->SetXTitle("R^{3} (m^{3})");
+    // h_ra2R->SetXTitle("");
     double E_ratio(0), R_cubic(0);
     double Photon2edep(0);
     double SE_true(0), SE_dep(0);
