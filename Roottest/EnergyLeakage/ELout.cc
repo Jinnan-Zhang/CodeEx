@@ -105,7 +105,7 @@ int ELout()
         // R_cubic = pow((InitX[0] * InitX[0] + InitY[0] * InitY[0] + InitZ[0] * InitZ[0]), 1.5) / 1e9;
         TVector3 EvtPos(InitX[0] / 1e3, InitY[0] / 1e3, InitZ[0] / 1e3);
         Photon2edep = nPhotons / edep;
-        R_cubic = pow(EvtPos.Mag(), 1.5);
+        R_cubic = pow(EvtPos.Mag2(), 1.5);
         Costheta = EvtPos.CosTheta();
         h_ep->Fill(R_cubic, Costheta, Photon2edep);
         //printf("x:%f\ty:%d\n", R_cubic, Photon2edep);
