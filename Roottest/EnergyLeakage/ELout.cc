@@ -100,6 +100,7 @@ int ELout()
         // h_ra2R->Fill(R, E_ratio);
         R = sqrt(InitX[0] * InitX[0] + InitY[0] * InitY[0] + InitZ[0] * InitZ[0]) / 1000.;
         h_ep->Fill(R, nPhotons);
+        printf("x:%f\ty:%d\n", R, nPhotons);
         // h_ra->Fill(E_ratio, 1);
         // printf("which: %0.15f\n", E_ratio);
         // h_vis->Fill(E_true, E_ratio);
