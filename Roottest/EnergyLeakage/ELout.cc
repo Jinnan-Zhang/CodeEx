@@ -31,7 +31,7 @@ int ELout()
     TChain tE_vis("evt");
     // TChain tE_vis("prmtrkdep");
     TChain tE_true("geninfo");
-    for (int nn = 10000; nn < 10999; nn++)
+    for (int nn = 10000; nn < 10002; nn++)
     {
         tE_vis.Add(Form("%s%d.root", HXD, nn));
         tE_true.Add(Form("%s%d.root", HXD, nn));
@@ -63,14 +63,14 @@ int ELout()
     // tE_true.SetBranchStatus("InitPX", 1);
     tE_true.SetBranchStatus("InitX", 1);
     tE_true.SetBranchStatus("InitY", 1);
-    tE_true.SetBranchStatus("InitX", 1);
+    tE_true.SetBranchStatus("InitZ", 1);
     // tE_true.SetBranchAddress("InitPDGID", &PDGid);
     // tE_true.SetBranchAddress("InitPX", &Px);
     // tE_true.SetBranchAddress("InitPZ", &Py);
     // tE_true.SetBranchAddress("InitPY", &Pz);
     tE_true.SetBranchAddress("InitX", &InitX);
-    tE_true.SetBranchAddress("InitZ", &InitY);
-    tE_true.SetBranchAddress("InitY", &InitZ);
+    tE_true.SetBranchAddress("InitY", &InitY);
+    tE_true.SetBranchAddress("InitZ", &InitZ);
 
     double E_true(0), E_vis(0);
     // TH1D *h_true = new TH1D("E_True", "True Eernergy",NBiny, Ran_x[0], Ran_x[1]);
