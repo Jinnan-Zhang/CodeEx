@@ -21,7 +21,7 @@ double n_capture = 2.2; //MeV
 double LightYeild = 1200.;
 using namespace std;
 
-double Ran_x[2] = {0, 17};
+double Ran_x[2] = {0, 5100};
 double Ran_y[2] = {1200, 1600};
 int NBinx = 400;
 int NBiny = 400;
@@ -77,7 +77,7 @@ int ELout()
     // TH1D *h_true = new TH1D("E_True", "True Eernergy",NBiny, Ran_x[0], Ran_x[1]);
     // TH1D *h_vis = new TH1D("E_vis", "Visible Eernergy", NBinx, Ran_y[0], Ran_y[1]);
     TH2D *h_ep = new TH2D("EnergyProfile", "Simulation", NBinx, Ran_x[0], Ran_x[1], NBiny, Ran_y[0], Ran_y[1]);
-    h_ep->SetXTitle("R (m)");
+    h_ep->SetXTitle("R_cubic (m)");
     h_ep->SetYTitle("nPhotons");
     // h_ep->SetYTitle("Deposited Energy(MeV)");
     // h_vis->SetXTitle("E (MeV)");
@@ -85,8 +85,8 @@ int ELout()
     // h_ra->SetXTitle("E_{dep}/E_{true}");
     // TH2D *h_ra2R = new TH2D("ratio2R", "", NBinx, 0, 18, NBiny, 0, 1.01);
     // h_ra2R->SetYTitle("E_{dep}/E_{true}");
-    // h_ra2R->SetXTitle("R (m)");
-    double E_ratio(0), R(0);
+    // h_ra2R->SetXTitle("R^{3} (m^{3})");
+    double E_ratio(0), R_cubic(0);
     double Photon2edep(0);
     double SE_true(0), SE_dep(0);
     int ELnum(0), Tnum(0);
@@ -98,12 +98,12 @@ int ELout()
         // if ( E_dep < E_true)
         // {
         // E_ratio = E_dep[0] / E_true;
-        // R = sqrt(edepX[0] * edepX[0] + edepY[0] * edepY[0] + edepZ[0] * edepZ[0]) / 1000.; //to meter
-        // h_ra2R->Fill(R, E_ratio);
-        R = sqrt(InitX[0] * InitX[0] + InitY[0] * InitY[0] + InitZ[0] * InitZ[0]) / 1000.;
+        // R_cubic = sqrt(edepX[0] * edepX[0] + edepY[0] * edepY[0] + edepZ[0] * edepZ[0]) / 1000.; //to meter
+        // h_ra2R->Fill(R_cubic, E_ratio);
+        R_cubic = pow((InitX[0] * InitX[0] + InitY[0] * InitY[0] + InitZ[0] * InitZ[0]) / 1000., 1.5);
         Photon2edep = nPhotons / edep;
-        h_ep->Fill(R, Photon2edep);
-        //printf("x:%f\ty:%d\n", R, Photon2edep);
+        h_ep->Fill(R_cubic, Photon2edep);
+        //printf("x:%f\ty:%d\n", R_cubic, Photon2edep);
         // h_ra->Fill(E_ratio, 1);
         // printf("which: %0.15f\n", E_ratio);
         // h_vis->Fill(E_true, E_ratio);
