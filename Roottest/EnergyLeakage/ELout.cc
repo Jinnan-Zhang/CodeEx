@@ -24,8 +24,8 @@ using namespace std;
 
 double Ran_x[2] = {0, 5100};
 double Ran_y[2] = {-1, 1};
-int NBinx = 400;
-int NBiny = 200;
+int NBinx = 50;
+int NBiny = 50;
 
 int ELout()
 {
@@ -92,6 +92,8 @@ int ELout()
     double Photon2edep(0), Costheta(0);
     double SE_true(0), SE_dep(0);
     int ELnum(0), Tnum(0);
+    int BinArray[NBinx * NBiny];
+    int ithBIN(0);
     for (int i = 0; i < tE_vis.GetEntries(); i++)
     {
         tE_vis.GetEntry(i);
@@ -104,11 +106,14 @@ int ELout()
         // h_ra2R->Fill(R_cubic, E_ratio);
         // R_cubic = pow((InitX[0] * InitX[0] + InitY[0] * InitY[0] + InitZ[0] * InitZ[0]), 1.5) / 1e9;
         TVector3 EvtPos(InitX[0] / 1e3, InitY[0] / 1e3, InitZ[0] / 1e3);
-        Photon2edep = nPhotons / edep / LightYeild;
+        Photon2edep = nPhotons / edep;
         R_cubic = pow(EvtPos.Mag2(), 1.5);
         Costheta = EvtPos.CosTheta();
-        h_ep->Fill(R_cubic, Costheta, Photon2edep);
-        // h_ep->Fill(R_cubic, Photon2edep);
+        // h_ep->Fill(R_cubic, Costheta, Photon2edep);
+        // h_ep->Fill(R_cubic, Photon2edep) ;
+        ithBIN = h_ep->Fill(R_cubic, Photon2edep, Photon2edep) - 1;
+        BinArray[ithBIN]++;
+
         //printf("x:%f\ty:%d\n", R_cubic, Photon2edep);
         // h_ra->Fill(E_ratio, 1);
         // printf("which: %0.15f\n", E_ratio);
@@ -127,6 +132,12 @@ int ELout()
         // SE_true += E_true;
         // SE_dep += E_dep[0];
         // Tnum++;
+    }
+    for (int i = 0; i < NBiny * NBinx; i++)
+    {
+        SE_dep = h_ep->GetBinContent(i + 1);
+        SE_dep /= BinArray[i]; //average of ith bin
+        h_ep->SetBinContent(i + 1, SE_dep);
     }
     // printf("Total leakage: %f\n", 1. - SE_dep / SE_true);
     // printf("total Leakage NUM:%f\n", (float)ELnum / Tnum);
