@@ -23,7 +23,7 @@ double LightYeild = 1200.;
 using namespace std;
 
 double Ran_x[2] = {0, 5100};
-double Ran_y[2] = {-1, 1};
+double Ran_y[2] = {1200, 1600};
 int NBinx = 400;
 int NBiny = 200;
 
@@ -107,7 +107,8 @@ int ELout()
         Photon2edep = nPhotons / edep;
         R_cubic = pow(EvtPos.Mag2(), 1.5);
         Costheta = EvtPos.CosTheta();
-        h_ep->Fill(R_cubic, Costheta, Photon2edep);
+        // h_ep->Fill(R_cubic, Costheta, Photon2edep);
+        h_ep->Fill(R_cubic, Photon2edep);
         //printf("x:%f\ty:%d\n", R_cubic, Photon2edep);
         // h_ra->Fill(E_ratio, 1);
         // printf("which: %0.15f\n", E_ratio);
