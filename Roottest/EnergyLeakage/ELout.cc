@@ -32,7 +32,7 @@ int ELout()
     TChain tE_vis("evt");
     // TChain tE_vis("prmtrkdep");
     TChain tE_true("geninfo");
-    for (int nn = 10000; nn < 10100; nn++)
+    for (int nn = 10000; nn < 10999; nn++)
     {
         tE_vis.Add(Form("%s%d.root", HXD, nn));
         tE_true.Add(Form("%s%d.root", HXD, nn));
@@ -80,7 +80,7 @@ int ELout()
     TH2D *h_ep = new TH2D("EnergyProfile", "Simulation", NBinx, Ran_x[0], Ran_x[1], NBiny, Ran_y[0], Ran_y[1]);
     h_ep->SetXTitle("R^{3} (m^{3})");
     // h_ep->SetYTitle("nPhotons/MeV");
-    h_ep->SetYTitle("cos$theta");
+    h_ep->SetYTitle("cos#theta");
     // h_ep->SetYTitle("Deposited Energy(MeV)");
     // h_vis->SetXTitle("E (MeV)");
     // TH1D *h_ra = new TH1D("Eratio", "", 400, 0.1, 1.01);
