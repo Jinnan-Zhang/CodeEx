@@ -78,19 +78,19 @@ int ELout()
     // TH1D *h_true = new TH1D("E_True", "True Eernergy",NBiny, Ran_x[0], Ran_x[1]);
 
     //light yield curve
-    TH1D *h_LY = new TH1D("E_vis", "Visible Eernergy", NBinx, Ran_x[0], Ran_x[1]);
+    // TH1D *h_LY = new TH1D("E_vis", "Visible Eernergy", NBinx, Ran_x[0], Ran_x[1]);
     //nPhotons curve
-    TH1D *h_nPho = new TH1D("Eratio", "", NBinx, Ran_x[0], Ran_x[1]);
+    // TH1D *h_nPho = new TH1D("Eratio", "", NBinx, Ran_x[0], Ran_x[1]);
 
     // TH2F *h_ep = new TH2F("EnergyProfile", "Simulation", NBinx, Ran_x[0], Ran_x[1], NBiny, Ran_y[0], Ran_y[1]);
     // h_ep->SetXTitle("R^{3} (m^{3})");
     // h_ep->SetYTitle("nPhotons/MeV");
     // h_ep->SetYTitle("cos#theta");
     // h_ep->SetYTitle("Deposited Energy(MeV)");
-    h_LY->SetXTitle("R^{3} (m^{3})");
-    h_LY->SetYTitle("nPhotons/MeV");
+    // h_LY->SetXTitle("R^{3} (m^{3})");
+    // h_LY->SetYTitle("nPhotons/MeV");
     // h_nPho->SetXTitle("E_{dep}/E_{true}");
-    TH2D *h_xy = new TH2D("ratio2R", "", NBinx, -18, 18, NBinx, -18, 18);
+    TH2D *h_xy = new TH2D("EnergyProfile", "", NBinx, -18, 18, NBinx, -18, 18);
     h_xy->SetXTitle("x (m)");
     h_xy->SetYTitle("y (m)");
     double E_ratio(0), R_cubic(0);
@@ -119,7 +119,7 @@ int ELout()
         // R_cubic = pow((InitX[0] * InitX[0] + InitY[0] * InitY[0] + InitZ[0] * InitZ[0]), 1.5) / 1e9;
         // TVector3 EvtPos(InitX[0] / 1e3, InitY[0] / 1e3, InitZ[0] / 1e3);
         Photon2edep = nPhotons / edep;
-        ithBIN = h_xy->Fill(InitX[0], InitY[0], Photon2edep);
+        ithBIN = h_xy->Fill(InitX[0]/1e3, InitY[0]/1e3, Photon2edep);
         // R_cubic = pow(EvtPos.Mag2(), 1.5);
         // Costheta = EvtPos.CosTheta();
         // h_ep->Fill(R_cubic, Costheta, Photon2edep);
