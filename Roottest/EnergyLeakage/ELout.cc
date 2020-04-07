@@ -92,7 +92,7 @@ int ELout()
     // h_nPho->SetXTitle("E_{dep}/E_{true}");
     TH2D *h_xy = new TH2D("EnergyProfile", "", NBinx, -18, 18, NBinx, -18, 18);
     h_xy->SetXTitle("x (m)");
-    h_xy->SetYTitle("y (m)");
+    h_xy->SetYTitle("z (m)");
     double E_ratio(0), R_cubic(0);
     double Photon2edep(0), Costheta(0);
     double SE_true(0), SE_dep(0);
@@ -119,7 +119,7 @@ int ELout()
         // R_cubic = pow((InitX[0] * InitX[0] + InitY[0] * InitY[0] + InitZ[0] * InitZ[0]), 1.5) / 1e9;
         // TVector3 EvtPos(InitX[0] / 1e3, InitY[0] / 1e3, InitZ[0] / 1e3);
         Photon2edep = nPhotons / edep;
-        ithBIN = h_xy->Fill(InitX[0]/1e3, InitY[0]/1e3, Photon2edep);
+        ithBIN = h_xy->Fill(InitX[0]/1e3, InitZ[0]/1e3, Photon2edep);
         // R_cubic = pow(EvtPos.Mag2(), 1.5);
         // Costheta = EvtPos.CosTheta();
         // h_ep->Fill(R_cubic, Costheta, Photon2edep);
