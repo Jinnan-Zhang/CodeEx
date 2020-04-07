@@ -25,14 +25,14 @@ using namespace std;
 double Ran_x[2] = {0, 5300};
 double Ran_y[2] = {-1, 1};
 int NBinx = 50;
-int NBiny = 50;
+int NBiny = 20;
 
 int ELout()
 {
     TChain tE_vis("evt");
     // TChain tE_vis("prmtrkdep");
     TChain tE_true("geninfo");
-    for (int nn = 10000; nn < 10200; nn++)
+    for (int nn = 10000; nn < 10999; nn++)
     {
         tE_vis.Add(Form("%s%d.root", HXD, nn));
         tE_true.Add(Form("%s%d.root", HXD, nn));
@@ -118,7 +118,7 @@ int ELout()
         // printf("x:%f\ty:%f\tz:%f\n", R_cubic, Costheta, Photon2edep);
         if (ithBIN > 0 && ithBIN <= NBinx * NBiny)
         {
-            BinArray[ithBIN] += 1;
+            BinArray[ithBIN-1] += 1;
             // printf("i:%d\n", BinArray[ithBIN]);
         }
 
@@ -144,9 +144,14 @@ int ELout()
     for (int i = 0; i < NBiny * NBinx; i++)
     {
         SE_dep = h_ep->GetBinContent(i + 1);
-        if (BinArray[i] > 0)
+        // printf("i:%d\tnum:%f\n", i, SE_dep);
+
+        if (BinArray[i] > 1)
+        {
+            // printf("i:%d\tnum:%d\tthese:%f\n", i, BinArray[i], SE_dep);
             SE_dep /= BinArray[i]; //average of ith bin
-        h_ep->SetBinContent(i + 1, SE_dep);
+            h_ep->SetBinContent(i + 1, SE_dep);
+        }
     }
     // printf("Total leakage: %f\n", 1. - SE_dep / SE_true);
     // printf("total Leakage NUM:%f\n", (float)ELnum / Tnum);
