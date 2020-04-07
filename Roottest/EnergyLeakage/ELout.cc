@@ -90,9 +90,9 @@ int ELout()
     h_LY->SetXTitle("R^{3} (m^{3})");
     h_LY->SetYTitle("nPhotons/MeV");
     // h_nPho->SetXTitle("E_{dep}/E_{true}");
-    // TH2D *h_nPho2R = new TH2D("ratio2R", "", NBinx, 0, 18, NBiny, 0, 1.01);
-    // h_nPho2R->SetYTitle("E_{dep}/E_{true}");
-    // h_nPho2R->SetXTitle("");
+    TH2D *h_xy = new TH2D("ratio2R", "", NBinx, -18, 18, NBinx,-18 , 18);
+    h_xy->SetXTitle("x (m)");
+    h_xy->SetYTitle("y (m)");
     double E_ratio(0), R_cubic(0);
     double Photon2edep(0), Costheta(0);
     double SE_true(0), SE_dep(0);
@@ -115,12 +115,13 @@ int ELout()
         // {
         // E_ratio = E_dep[0] / E_true;
         // R_cubic = sqrt(edepX[0] * edepX[0] + edepY[0] * edepY[0] + edepZ[0] * edepZ[0]) / 1000.; //to meter
-        // h_nPho2R->Fill(R_cubic, E_ratio);
+        // h_xy->Fill(R_cubic, E_ratio);
         // R_cubic = pow((InitX[0] * InitX[0] + InitY[0] * InitY[0] + InitZ[0] * InitZ[0]), 1.5) / 1e9;
         TVector3 EvtPos(InitX[0] / 1e3, InitY[0] / 1e3, InitZ[0] / 1e3);
         Photon2edep = nPhotons / edep;
-        R_cubic = pow(EvtPos.Mag2(), 1.5);
-        Costheta = EvtPos.CosTheta();
+        h_xy->Fill(InitX[0],InitY[0],Photon2edep);
+        // R_cubic = pow(EvtPos.Mag2(), 1.5);
+        // Costheta = EvtPos.CosTheta();
         // h_ep->Fill(R_cubic, Costheta, Photon2edep);
         // h_ep->Fill(R_cubic, Costheta);
         // ithBIN = h_ep->Fill(R_cubic, Costheta, Photon2edep);
@@ -172,7 +173,7 @@ int ELout()
     // h_ep->Write();
     // h_nPho->Scale(1 / h_nPho->Integral());
     // h_nPho->Write();
-    // h_nPho2R->Write();
+    // h_xy->Write();
 
     ff_EL->Close();
 
