@@ -112,15 +112,15 @@ int ELout()
         R_cubic = pow(EvtPos.Mag2(), 1.5);
         Costheta = EvtPos.CosTheta();
         // h_ep->Fill(R_cubic, Costheta, Photon2edep);
-        // h_ep->Fill(R_cubic, Photon2edep);
-        ithBIN = h_ep->Fill(R_cubic, Costheta, Photon2edep);
+        h_ep->Fill(R_cubic, Costheta);
+        // ithBIN = h_ep->Fill(R_cubic, Costheta, Photon2edep);
         // if (Photon2edep > 1500)
         // printf("x:%f\ty:%f\tz:%f\n", R_cubic, Costheta, Photon2edep);
-        if (ithBIN > 0 && ithBIN <= NBinx * NBiny)
-        {
-            BinArray[ithBIN-1] += 1;
-            // printf("i:%d\n", BinArray[ithBIN]);
-        }
+        // if (ithBIN > 0 && ithBIN <= NBinx * NBiny)
+        // {
+        //     BinArray[ithBIN-1] += 1;
+        //     // printf("i:%d\n", BinArray[ithBIN]);
+        // }
 
         //printf("x:%f\ty:%d\n", R_cubic, Photon2edep);
         // h_ra->Fill(E_ratio, 1);
@@ -141,18 +141,18 @@ int ELout()
         // SE_dep += E_dep[0];
         // Tnum++;
     }
-    for (int i = 0; i < NBiny * NBinx; i++)
-    {
-        SE_dep = h_ep->GetBinContent(i + 1);
-        // printf("i:%d\tnum:%f\n", i, SE_dep);
+    // for (int i = 0; i < NBiny * NBinx; i++)
+    // {
+    //     SE_dep = h_ep->GetBinContent(i + 1);
+    //     // printf("i:%d\tnum:%f\n", i, SE_dep);
 
-        if (BinArray[i] > 1)
-        {
-            // printf("i:%d\tnum:%d\tthese:%f\n", i, BinArray[i], SE_dep);
-            SE_dep /= BinArray[i]; //average of ith bin
-            h_ep->SetBinContent(i + 1, SE_dep);
-        }
-    }
+    //     if (BinArray[i] > 1)
+    //     {
+    //         // printf("i:%d\tnum:%d\tthese:%f\n", i, BinArray[i], SE_dep);
+    //         SE_dep /= BinArray[i]; //average of ith bin
+    //         h_ep->SetBinContent(i + 1, SE_dep);
+    //     }
+    // }
     // printf("Total leakage: %f\n", 1. - SE_dep / SE_true);
     // printf("total Leakage NUM:%f\n", (float)ELnum / Tnum);
     TFile *ff_EL = TFile::Open("JUNOEnergyLeakage.root", "RECREATE");
