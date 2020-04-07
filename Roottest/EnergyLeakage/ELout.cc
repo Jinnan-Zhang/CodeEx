@@ -144,7 +144,8 @@ int ELout()
     for (int i = 0; i < NBiny * NBinx; i++)
     {
         SE_dep = h_ep->GetBinContent(i + 1);
-        SE_dep /= BinArray[i]; //average of ith bin
+        if (BinArray[i] > 0)
+            SE_dep /= BinArray[i]; //average of ith bin
         h_ep->SetBinContent(i + 1, SE_dep);
     }
     // printf("Total leakage: %f\n", 1. - SE_dep / SE_true);
