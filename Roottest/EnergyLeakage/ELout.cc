@@ -32,7 +32,7 @@ int ELout()
     TChain tE_vis("evt");
     // TChain tE_vis("prmtrkdep");
     TChain tE_true("geninfo");
-    for (int nn = 10000; nn < 10002; nn++)
+    for (int nn = 10000; nn < 10200; nn++)
     {
         tE_vis.Add(Form("%s%d.root", HXD, nn));
         tE_true.Add(Form("%s%d.root", HXD, nn));
@@ -93,6 +93,8 @@ int ELout()
     double SE_true(0), SE_dep(0);
     int ELnum(0), Tnum(0);
     int BinArray[NBinx * NBiny];
+    for (int i = 0; i < NBinx * NBiny; i++)
+        BinArray[i] = 0;
     int ithBIN(0);
     for (int i = 0; i < tE_vis.GetEntries(); i++)
     {
@@ -112,10 +114,13 @@ int ELout()
         // h_ep->Fill(R_cubic, Costheta, Photon2edep);
         // h_ep->Fill(R_cubic, Photon2edep);
         ithBIN = h_ep->Fill(R_cubic, Costheta, Photon2edep);
-        // if (ithBIN > 0 && ithBIN << NBinx * NBiny)
-        if (ithBIN <= 0)
-            printf("x:%f\ty:%f\tz:%f\n", R_cubic, Costheta,Photon2edep);
-        // BinArray[ithBIN] += 1;
+        // if (Photon2edep > 1500)
+        // printf("x:%f\ty:%f\tz:%f\n", R_cubic, Costheta, Photon2edep);
+        if (ithBIN > 0 && ithBIN <= NBinx * NBiny)
+        {
+            BinArray[ithBIN] += 1;
+            // printf("i:%d\n", BinArray[ithBIN]);
+        }
 
         //printf("x:%f\ty:%d\n", R_cubic, Photon2edep);
         // h_ra->Fill(E_ratio, 1);
