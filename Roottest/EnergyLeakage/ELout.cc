@@ -90,22 +90,22 @@ int ELout()
     h_LY->SetXTitle("R^{3} (m^{3})");
     h_LY->SetYTitle("nPhotons/MeV");
     // h_nPho->SetXTitle("E_{dep}/E_{true}");
-    TH2D *h_xy = new TH2D("ratio2R", "", NBinx, -18, 18, NBinx,-18 , 18);
+    TH2D *h_xy = new TH2D("ratio2R", "", NBinx, -18, 18, NBinx, -18, 18);
     h_xy->SetXTitle("x (m)");
     h_xy->SetYTitle("y (m)");
     double E_ratio(0), R_cubic(0);
     double Photon2edep(0), Costheta(0);
     double SE_true(0), SE_dep(0);
     // int ELnum(0), Tnum(0);
-    // int TotalBIN = h_ep->GetSize();
-    // int BinArray[TotalBIN];
-    // float BinValue[TotalBIN];
-    // for (int i = 0; i < TotalBIN; i++)
-    // {
-    //     BinArray[i] = 0;
-    //     BinValue[i] = 0;
-    // }
-    // int ithBIN(0);
+    int TotalBIN = h_xy->GetSize();
+    int BinArray[TotalBIN];
+    float BinValue[TotalBIN];
+    for (int i = 0; i < TotalBIN; i++)
+    {
+        BinArray[i] = 0;
+        BinValue[i] = 0;
+    }
+    int ithBIN(0);
     for (int i = 0; i < tE_vis.GetEntries(); i++)
     {
         tE_vis.GetEntry(i);
@@ -117,9 +117,9 @@ int ELout()
         // R_cubic = sqrt(edepX[0] * edepX[0] + edepY[0] * edepY[0] + edepZ[0] * edepZ[0]) / 1000.; //to meter
         // h_xy->Fill(R_cubic, E_ratio);
         // R_cubic = pow((InitX[0] * InitX[0] + InitY[0] * InitY[0] + InitZ[0] * InitZ[0]), 1.5) / 1e9;
-        TVector3 EvtPos(InitX[0] / 1e3, InitY[0] / 1e3, InitZ[0] / 1e3);
+        // TVector3 EvtPos(InitX[0] / 1e3, InitY[0] / 1e3, InitZ[0] / 1e3);
         Photon2edep = nPhotons / edep;
-        h_xy->Fill(InitX[0],InitY[0],Photon2edep);
+        ithBIN = h_xy->Fill(InitX[0], InitY[0], Photon2edep);
         // R_cubic = pow(EvtPos.Mag2(), 1.5);
         // Costheta = EvtPos.CosTheta();
         // h_ep->Fill(R_cubic, Costheta, Photon2edep);
@@ -128,11 +128,11 @@ int ELout()
         // ithBIN = h_ep->FindBin(R_cubic, Costheta);
         // if (ithBIN > 1000)
         // printf("x:%f\ty:%f\tz:%f\tIthBIN:%d\n", R_cubic, Costheta, Photon2edep, ithBIN);
-        // if (ithBIN > 0 && ithBIN <= TotalBIN)
-        // {
-        //     BinArray[ithBIN - 1] += 1;
-        //     // printf("i:%d\tnum:%d\n", ithBIN, BinArray[ithBIN]);
-        // }
+        if (ithBIN > 0 && ithBIN <= TotalBIN)
+        {
+            BinArray[ithBIN - 1] += 1;
+            // printf("i:%d\tnum:%d\n", ithBIN, BinArray[ithBIN]);
+        }
 
         // h_nPho->Fill(E_ratio, 1);
         // printf("which: %0.15f\n", E_ratio);
@@ -152,18 +152,18 @@ int ELout()
         // SE_dep += E_dep[0];
         // Tnum++;
     }
-    // for (int i = 0; i < TotalBIN; i++)
-    // {
-    //     SE_dep = h_ep->GetBinContent(i + 1);
-    //     // printf("i:%d\tnum:%f\n", i, h_ep->GetBinContent(956));
+    for (int i = 0; i < TotalBIN; i++)
+    {
+        SE_dep = h_xy->GetBinContent(i + 1);
+        // printf("i:%d\tnum:%f\n", i, h_ep->GetBinContent(956));
 
-    //     if (BinArray[i] > 1)
-    //     {
-    //         SE_dep /= BinArray[i]; //average of ith bin
-    //         h_ep->SetBinContent(i + 1, SE_dep);
-    //         // printf("i:%d\tnum:%d\tthese:%f\n", i, BinArray[i], SE_dep);
-    //     }
-    // }
+        if (BinArray[i] > 1)
+        {
+            SE_dep /= BinArray[i]; //average of ith bin
+            h_xy->SetBinContent(i + 1, SE_dep);
+            // printf("i:%d\tnum:%d\tthese:%f\n", i, BinArray[i], SE_dep);
+        }
+    }
     // printf("Total leakage: %f\n", 1. - SE_dep / SE_true);
     // printf("total Leakage NUM:%f\n", (float)ELnum / Tnum);
     TFile *ff_EL = TFile::Open("JUNOEnergyLeakage.root", "RECREATE");
@@ -173,7 +173,7 @@ int ELout()
     // h_ep->Write();
     // h_nPho->Scale(1 / h_nPho->Integral());
     // h_nPho->Write();
-    // h_xy->Write();
+    h_xy->Write();
 
     ff_EL->Close();
 
