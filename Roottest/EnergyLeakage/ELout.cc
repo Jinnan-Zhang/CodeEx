@@ -32,7 +32,7 @@ int ELout()
     TChain tE_vis("evt");
     // TChain tE_vis("prmtrkdep");
     TChain tE_true("geninfo");
-    for (int nn = 10000; nn < 10999; nn++)
+    for (int nn = 10000; nn < 10001; nn++)
     {
         tE_vis.Add(Form("%s%d.root", HXD, nn));
         tE_true.Add(Form("%s%d.root", HXD, nn));
@@ -62,16 +62,16 @@ int ELout()
     float InitPX[2], InitPY[2], InitPZ[2];
     float InitX[2], InitY[2], InitZ[2];
     // tE_true.SetBranchStatus("InitPDGID", 1);
-    tE_true.SetBranchStatus("InitPX", 1);
-    tE_true.SetBranchStatus("InitPY", 1);
-    tE_true.SetBranchStatus("InitPZ", 1);
+    // tE_true.SetBranchStatus("InitPX", 1);
+    // tE_true.SetBranchStatus("InitPY", 1);
+    // tE_true.SetBranchStatus("InitPZ", 1);
     tE_true.SetBranchStatus("InitX", 1);
     tE_true.SetBranchStatus("InitY", 1);
     tE_true.SetBranchStatus("InitZ", 1);
     // tE_true.SetBranchAddress("InitPDGID", &PDGid);
-    tE_true.SetBranchAddress("InitPX", &InitPX);
-    tE_true.SetBranchAddress("InitPZ", &InitPY);
-    tE_true.SetBranchAddress("InitPY", &InitPZ);
+    // tE_true.SetBranchAddress("InitPX", &InitPX);
+    // tE_true.SetBranchAddress("InitPZ", &InitPY);
+    // tE_true.SetBranchAddress("InitPY", &InitPZ);
     tE_true.SetBranchAddress("InitX", &InitX);
     tE_true.SetBranchAddress("InitY", &InitY);
     tE_true.SetBranchAddress("InitZ", &InitZ);
@@ -164,7 +164,7 @@ int ELout()
         {
             SE_dep /= BinArray[i]; //average of ith bin
             h_LY->SetBinContent(i + 1, SE_dep);
-            // printf("i:%d\tnum:%d\tthese:%f\n", i, BinArray[i], SE_dep);
+            printf("i:%d\tnum:%d\tthese:%f\n", i, BinArray[i], SE_dep);
         }
     }
     // printf("Total leakage: %f\n", 1. - SE_dep / SE_true);
