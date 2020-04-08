@@ -59,17 +59,19 @@ int ELout()
     // tE_vis.SetBranchAddress("edepZ", &edepZ);
 
     // int PDGid[2];
-    // float Px[2], Py[2], Pz[2];
+    float InitPX[2], InitPY[2], InitPZ[2];
     float InitX[2], InitY[2], InitZ[2];
     // tE_true.SetBranchStatus("InitPDGID", 1);
     // tE_true.SetBranchStatus("InitPX", 1);
+    // tE_true.SetBranchStatus("InitPY", 1);
+    // tE_true.SetBranchStatus("InitPZ", 1);
     tE_true.SetBranchStatus("InitX", 1);
     tE_true.SetBranchStatus("InitY", 1);
     tE_true.SetBranchStatus("InitZ", 1);
     // tE_true.SetBranchAddress("InitPDGID", &PDGid);
-    // tE_true.SetBranchAddress("InitPX", &Px);
-    // tE_true.SetBranchAddress("InitPZ", &Py);
-    // tE_true.SetBranchAddress("InitPY", &Pz);
+    // tE_true.SetBranchAddress("InitPX", &InitPX);
+    // tE_true.SetBranchAddress("InitPZ", &InitPY);
+    // tE_true.SetBranchAddress("InitPY", &InitPZ);
     tE_true.SetBranchAddress("InitX", &InitX);
     tE_true.SetBranchAddress("InitY", &InitY);
     tE_true.SetBranchAddress("InitZ", &InitZ);
@@ -79,7 +81,9 @@ int ELout()
 
     //light yield curve
     // TH1D *h_LY = new TH1D("E_vis", "Visible Eernergy", NBinx, Ran_x[0], Ran_x[1]);
-    //nPhotons curve
+    // h_LY->SetXTitle("R^{3} (m^{3})");
+    // h_LY->SetYTitle("nPhotons/MeV");
+    // //nPhotons curve
     // TH1D *h_nPho = new TH1D("Eratio", "", NBinx, Ran_x[0], Ran_x[1]);
 
     // TH2F *h_ep = new TH2F("EnergyProfile", "Simulation", NBinx, Ran_x[0], Ran_x[1], NBiny, Ran_y[0], Ran_y[1]);
@@ -87,8 +91,7 @@ int ELout()
     // h_ep->SetYTitle("nPhotons/MeV");
     // h_ep->SetYTitle("cos#theta");
     // h_ep->SetYTitle("Deposited Energy(MeV)");
-    // h_LY->SetXTitle("R^{3} (m^{3})");
-    // h_LY->SetYTitle("nPhotons/MeV");
+
     // h_nPho->SetXTitle("E_{dep}/E_{true}");
     TH2D *h_xy = new TH2D("EnergyProfile", "", NBinx, -18, 18, NBinx, -18, 18);
     h_xy->SetXTitle("x (m)");
@@ -110,7 +113,7 @@ int ELout()
     {
         tE_vis.GetEntry(i);
         tE_true.GetEntry(i);
-        // E_true = TMath::Sqrt(Px[0] * Px[0] + Py[0] * Py[0] + Pz[0] * Pz[0] + M_electron_sq) + M_e;
+        E_true = TMath::Sqrt(InitPX[0] * InitPX[0] + InitPY[0] * InitPY[0] + InitPZ[0] * InitPZ[0] + M_electron_sq) + M_e;
         // if ( E_dep < E_true)
         // {
         // E_ratio = E_dep[0] / E_true;
