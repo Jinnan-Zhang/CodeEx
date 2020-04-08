@@ -113,7 +113,7 @@ int ELout()
     {
         tE_vis.GetEntry(i);
         tE_true.GetEntry(i);
-        E_true = TMath::Sqrt(InitPX[0] * InitPX[0] + InitPY[0] * InitPY[0] + InitPZ[0] * InitPZ[0] + M_electron_sq) + M_e;
+        // E_true = TMath::Sqrt(InitPX[0] * InitPX[0] + InitPY[0] * InitPY[0] + InitPZ[0] * InitPZ[0] + M_electron_sq) + M_e;
         // if ( E_dep < E_true)
         // {
         // E_ratio = E_dep[0] / E_true;
