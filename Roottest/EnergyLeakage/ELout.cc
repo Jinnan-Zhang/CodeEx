@@ -29,6 +29,7 @@ int NBiny = 50;
 
 int ELout()
 {
+    TH1::AddDirectory(false);
     TChain tE_vis("evt");
     // TChain tE_vis("prmtrkdep");
     TChain tE_true("geninfo");
@@ -80,9 +81,11 @@ int ELout()
     // TH1D *h_true = new TH1D("E_True", "True Eernergy",NBiny, Ran_x[0], Ran_x[1]);
 
     //light yield curve
-    TH1D *h_LY = new TH1D("h_LY", "Light Yield Curve", NBinx, Ran_x[0], Ran_x[1]);
-    h_LY->SetXTitle("R^{3} (m^{3})");
-    h_LY->SetYTitle("nPhotons/MeV");
+    // TH1D *h_LY = new TH1D("h_LY", "Light Yield Curve", NBinx, Ran_x[0], Ran_x[1]);
+    TFile *ff_LY = TFile::Open("LYCurve.root", "READ");
+    TH1 *h_LY = (TH1D *)ff_LY->Get("h_LY");
+    // h_LY->SetXTitle("R^{3} (m^{3})");
+    // h_LY->SetYTitle("nPhotons/MeV");
     //nPhotons curve
     // TH1D *h_nPho = new TH1D("Eratio", "", NBinx, Ran_x[0], Ran_x[1]);
 
@@ -126,7 +129,7 @@ int ELout()
         R_cubic = pow(EvtPos.Mag2(), 1.5);
         // Costheta = EvtPos.CosTheta();
         // h_ep->Fill(R_cubic, Costheta, Photon2edep);
-        ithBIN = h_LY->Fill(R_cubic, Photon2edep);
+        // ithBIN = h_LY->Fill(R_cubic, Photon2edep);
         // ithBIN = h_ep->Fill(R_cubic, Costheta, Photon2edep);
         // ithBIN = h_ep->FindBin(R_cubic, Costheta);
         // if (ithBIN > 1000)
@@ -172,7 +175,7 @@ int ELout()
     TFile *ff_EL = TFile::Open("JUNOEnergyLeakage.root", "RECREATE");
     ff_EL->cd();
     // h_true->Write();
-    h_LY->Write();
+    // h_LY->Write();
     // h_ep->Write();
     // h_nPho->Scale(1 / h_nPho->Integral());
     // h_nPho->Write();
