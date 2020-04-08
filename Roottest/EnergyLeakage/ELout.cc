@@ -24,7 +24,7 @@ using namespace std;
 
 double Ran_x[2] = {0, 5300};
 double Ran_y[2] = {-1, 1};
-int NBinx = 100;
+int NBinx = 200;
 int NBiny = 50;
 
 int ELout()
