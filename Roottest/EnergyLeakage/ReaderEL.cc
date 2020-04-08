@@ -28,8 +28,9 @@ int NBiny = 400;
 
 int ReaderEL()
 {
-    TChain TestEL("evt");
-    TestEL.Add((char *)HXD1);
+    TH1::AddDirectory(false);
+    TFile *ff_LY = TFile::Open("nPhoton_R3.root", "READ");
+    TH2 *h_LY=(TH2D*)ff_LY->Get("EnergyProfile");
     
 
     return 0;
