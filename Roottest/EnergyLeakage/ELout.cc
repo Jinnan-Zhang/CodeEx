@@ -32,7 +32,7 @@ int ELout()
     TChain tE_vis("evt");
     // TChain tE_vis("prmtrkdep");
     TChain tE_true("geninfo");
-    for (int nn = 10000; nn < 10001; nn++)
+    for (int nn = 10000; nn < 10021; nn++)
     {
         tE_vis.Add(Form("%s%d.root", HXD, nn));
         tE_true.Add(Form("%s%d.root", HXD, nn));
@@ -164,7 +164,7 @@ int ELout()
         {
             SE_dep /= BinArray[i]; //average of ith bin
             h_LY->SetBinContent(i + 1, SE_dep);
-            printf("i:%d\tnum:%d\tthese:%f\n", i, BinArray[i], SE_dep);
+            // printf("i:%d\tnum:%d\tthese:%f\n", i, BinArray[i], SE_dep);
         }
     }
     // printf("Total leakage: %f\n", 1. - SE_dep / SE_true);
