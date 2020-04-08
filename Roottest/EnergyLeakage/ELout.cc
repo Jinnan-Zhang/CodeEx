@@ -84,7 +84,7 @@ int ELout()
     // TH1D *h_LY = new TH1D("h_LY", "Light Yield Curve", NBinx, Ran_x[0], Ran_x[1]);
     TFile *ff_LY = TFile::Open("R3CosThetaNphotons.root", "READ");
     //light yield profile
-    TH2 *h_LY = (TH2D *)ff_LY->Get("EnergyProfile");
+    TH2D *h_LY = (TH2D *)ff_LY->Get("EnergyProfile");
     // h_LY->SetXTitle("R^{3} (m^{3})");
     // h_LY->SetYTitle("nPhotons/MeV");
     //nPhotons curve
