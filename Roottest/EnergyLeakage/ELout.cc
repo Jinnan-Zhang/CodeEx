@@ -45,11 +45,11 @@ int ELout()
 
     tE_vis.SetBranchStatus("*", 0);
     tE_true.SetBranchStatus("*", 0);
-    int nPhotons;
+    int totalPE;
     // float E_dep[2], edepX[2], edepY[2], edepZ[2];
     float edep;
-    tE_vis.SetBranchStatus("nPhotons", 1);
-    tE_vis.SetBranchAddress("nPhotons", &nPhotons);
+    tE_vis.SetBranchStatus("totalPE", 1);
+    tE_vis.SetBranchAddress("totalPE", &totalPE);
     tE_vis.SetBranchStatus("edep", 1);
     tE_vis.SetBranchAddress("edep", &edep);
     // tE_vis.SetBranchStatus("edepX", 1);
@@ -86,13 +86,13 @@ int ELout()
     //light yield profile
     TH2D *h_LY = (TH2D *)ff_LY->Get("EnergyProfile");
     // h_LY->SetXTitle("R^{3} (m^{3})");
-    // h_LY->SetYTitle("nPhotons/MeV");
-    //nPhotons curve
+    // h_LY->SetYTitle("totalPE/MeV");
+    //totalPE curve
     // TH1D *h_nPho = new TH1D("Eratio", "", NBinx, Ran_x[0], Ran_x[1]);
 
     // TH2F *h_ep = new TH2F("EnergyProfile", "Simulation", NBinx, Ran_x[0], Ran_x[1], NBiny, Ran_y[0], Ran_y[1]);
     // h_ep->SetXTitle("R^{3} (m^{3})");
-    // h_ep->SetYTitle("nPhotons/MeV");
+    // h_ep->SetYTitle("totalPE/MeV");
     // h_ep->SetYTitle("cos#theta");
     // h_ep->SetYTitle("Deposited Energy(MeV)");
 
@@ -125,7 +125,7 @@ int ELout()
         // h_xy->Fill(R_cubic, E_ratio);
         // R_cubic = pow((InitX[0] * InitX[0] + InitY[0] * InitY[0] + InitZ[0] * InitZ[0]), 1.5) / 1e9;
         TVector3 EvtPos(InitX[0] / 1e3, InitY[0] / 1e3, InitZ[0] / 1e3);
-        Photon2edep = nPhotons / edep;
+        Photon2edep = totalPE / edep;
         // ithBIN = h_xy->Fill(InitX[0]/1e3, InitZ[0]/1e3, Photon2edep);
         R_cubic = pow(EvtPos.Mag2(), 1.5);
         // Costheta = EvtPos.CosTheta();
@@ -147,7 +147,7 @@ int ELout()
         // }
         // h_true->Fill(E_true);
 
-        // E_vis = nPhotons / LightYeild - n_capture;
+        // E_vis = totalPE / LightYeild - n_capture;
         // h_ep->Fill(E_true, E_vis);
         // h_ep->Fill(E_true, E_dep);
 
