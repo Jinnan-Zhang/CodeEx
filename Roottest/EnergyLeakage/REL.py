@@ -1,3 +1,4 @@
+import sys
 import ROOT
 
 try:
@@ -11,9 +12,12 @@ evt=ROOT.TChain("evt")
 evt.Add(HXD1)
 evt.SetBranchStatus("*", 0)
 evt.SetBranchStatus("hitTime", 1)
-evt.GetEntry(1)
+evt.GetEntry(int(sys.argv[1]))
 hitTime=np.asarray(evt.hitTime)
-h_hit=ROOT.TH1D("hitTime","",200,0,800)
+print np.sum(hitTime<1200),hitTime.size
+x_min=float(sys.argv[2])
+x_max=float(sys.argv[3])
+h_hit=ROOT.TH1D("hitTime","",200,x_min,x_max)
 for i in hitTime:
     h_hit.Fill(i)
 c = ROOT.TCanvas("myCanvasName","The Canvas Title",800,600)
