@@ -12,14 +12,20 @@ evt=ROOT.TChain("evt")
 evt.Add(HXD1)
 evt.SetBranchStatus("*", 0)
 evt.SetBranchStatus("hitTime", 1)
+evt.SetBranchStatus("totalPE", 1)
 evt.GetEntry(int(sys.argv[1]))
 hitTime=np.asarray(evt.hitTime)
-print np.sum(hitTime<1200),hitTime.size
-x_min=float(sys.argv[2])
-x_max=float(sys.argv[3])
-h_hit=ROOT.TH1D("hitTime","",200,x_min,x_max)
-for i in hitTime:
-    h_hit.Fill(i)
-c = ROOT.TCanvas("myCanvasName","The Canvas Title",800,600)
-h_hit.Draw()
-c.SaveAs("hitTime.png")
+# print float(np.sum(hitTime<1200))/hitTime.size
+
+x_min=0
+# float(sys.argv[2])
+x_max=np.max(hitTime)
+# float(sys.argv[3])
+h_hit=ROOT.TH1D("myhist","",200,x_min,x_max)
+print h_hit.GetEntries(),evt.totalPE
+evt.Draw("totalPE>>+myhist","hitTime>1200")
+# for i in hitTime:
+#     h_hit.Fill(i)
+# c = ROOT.TCanvas("myCanvasName","The Canvas Title",800,600)
+# h_hit.Draw()
+# c.SaveAs("hitTime.png")
