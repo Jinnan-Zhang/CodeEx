@@ -1,4 +1,5 @@
 #include <TChain.h>
+#include <TTree.h>
 #include <TFile.h>
 #include <TSelector.h>
 #include <TTreeReader.h>
@@ -29,9 +30,40 @@ int NBiny = 400;
 int ReaderEL()
 {
     TH1::AddDirectory(false);
-    TFile *ff_LY = TFile::Open("nPhoton_R3.root", "READ");
-    TH2 *h_LY=(TH2D*)ff_LY->Get("EnergyProfile");
-    
+    // TFile *ff_LY = TFile::Open((char *)HXD1, "READ");
+    // TH2 *h_LY=(TH2D*)ff_LY->Get("EnergyProfile");
+    TChain *evt = new TChain("evt");
+    // (TTree *)ff_LY->Get("evt");
+    for (int nn = 10000; nn < 10001; nn++)
+    {
+        evt->Add(Form("%s%d.root", HXD, nn));
+    }
+    evt->SetBranchStatus("*", 0);
+    int totalPE(0);
+    int nPhotons(0);
+    evt->SetBranchStatus("totalPE", 1);
+    evt->SetBranchAddress("totalPE", &totalPE);
+    // evt->SetBranchStatus("nPhotons", 1);
+    // evt->SetBranchAddress("nPhotons", &nPhotons);
+    // evt->SetBranchAddress("nPhotons", &nPhotons);
+    evt->SetBranchStatus("hitTime", 1);
+
+    // for (int i = 0; i < 1; i++)
+    // {
+    int i = 19;
+    double *hitTime;
+    evt->SetBranchAddress("hitTime", hitTime);
+    evt->GetEntry(i);
+    for (int j = 0; j < totalPE; j++)
+    {
+        if (hitTime[j] > 40000)
+            printf("totalPE:%d\t hitTime:%f\n", totalPE, hitTime[j]);
+    }
+    // if (nPhotons != totalPE)
+    // {
+    //     printf("totalPE:%d\tnPhotons:%d\n", totalPE, nPhotons);
+    // }
+    // }
 
     return 0;
 }

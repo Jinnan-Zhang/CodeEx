@@ -63,16 +63,16 @@ int ELout()
     float InitPX[2], InitPY[2], InitPZ[2];
     float InitX[2], InitY[2], InitZ[2];
     // tE_true.SetBranchStatus("InitPDGID", 1);
-    // tE_true.SetBranchStatus("InitPX", 1);
-    // tE_true.SetBranchStatus("InitPY", 1);
-    // tE_true.SetBranchStatus("InitPZ", 1);
+    tE_true.SetBranchStatus("InitPX", 1);
+    tE_true.SetBranchStatus("InitPY", 1);
+    tE_true.SetBranchStatus("InitPZ", 1);
     tE_true.SetBranchStatus("InitX", 1);
     tE_true.SetBranchStatus("InitY", 1);
     tE_true.SetBranchStatus("InitZ", 1);
     // tE_true.SetBranchAddress("InitPDGID", &PDGid);
-    // tE_true.SetBranchAddress("InitPX", &InitPX);
-    // tE_true.SetBranchAddress("InitPZ", &InitPY);
-    // tE_true.SetBranchAddress("InitPY", &InitPZ);
+    tE_true.SetBranchAddress("InitPX", &InitPX);
+    tE_true.SetBranchAddress("InitPZ", &InitPY);
+    tE_true.SetBranchAddress("InitPY", &InitPZ);
     tE_true.SetBranchAddress("InitX", &InitX);
     tE_true.SetBranchAddress("InitY", &InitY);
     tE_true.SetBranchAddress("InitZ", &InitZ);
@@ -80,10 +80,10 @@ int ELout()
     double E_true(0), E_vis(0);
     // TH1D *h_true = new TH1D("E_True", "True Eernergy",NBiny, Ran_x[0], Ran_x[1]);
 
-    //light yield curve
+    // light yield curve
     // TH1D *h_LY = new TH1D("h_LY", "Light Yield Curve", NBinx, Ran_x[0], Ran_x[1]);
     // TFile *ff_LY = TFile::Open("R3CosThetaNphotons.root", "READ");
-    // //light yield profile
+    //light yield profile
     // TH2D *h_LY = (TH2D *)ff_LY->Get("EnergyProfile");
     // h_LY->SetXTitle("R^{3} (m^{3})");
     // h_LY->SetYTitle("totalPE/MeV");
@@ -93,8 +93,8 @@ int ELout()
     TH2F *h_ep = new TH2F("EnergyProfile", "Simulation", NBinx, Ran_x[0], Ran_x[1], NBiny, Ran_y[0], Ran_y[1]);
     h_ep->SetXTitle("R^{3} (m^{3})");
     // h_ep->SetYTitle("totalPE/MeV");
-    h_ep->SetYTitle("cos#theta");
-    // h_ep->SetYTitle("Deposited Energy(MeV)");
+    // h_ep->SetYTitle("cos#theta");
+    h_ep->SetYTitle("True Energy(MeV)");
 
     // h_nPho->SetXTitle("E_{dep}/E_{true}");
     // TH2D *h_xy = new TH2D("EnergyProfile", "", NBinx, -18, 18, NBinx, -18, 18);
@@ -129,7 +129,7 @@ int ELout()
         // ithBIN = h_xy->Fill(InitX[0]/1e3, InitZ[0]/1e3, Photon2edep);
         R_cubic = pow(EvtPos.Mag2(), 1.5);
         Costheta = EvtPos.CosTheta();
-        ithBIN=h_ep->Fill(R_cubic, Costheta, Photon2edep);
+        // ithBIN=h_ep->Fill(R_cubic, Costheta, Photon2edep);
         // ithBIN = h_LY->Fill(R_cubic, Photon2edep);
         // ithBIN = h_ep->Fill(R_cubic, Costheta, Photon2edep);
         // ithBIN = h_ep->FindBin(R_cubic, Costheta);
@@ -177,7 +177,7 @@ int ELout()
     ff_EL->cd();
     // h_true->Write();
     // h_LY->Write();
-    h_ep->Write();
+    // h_ep->Write();
     // h_nPho->Scale(1 / h_nPho->Integral());
     // h_nPho->Write();
     // h_xy->Write();
