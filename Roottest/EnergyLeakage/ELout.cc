@@ -82,18 +82,18 @@ int ELout()
 
     //light yield curve
     // TH1D *h_LY = new TH1D("h_LY", "Light Yield Curve", NBinx, Ran_x[0], Ran_x[1]);
-    TFile *ff_LY = TFile::Open("R3CosThetaNphotons.root", "READ");
-    //light yield profile
-    TH2D *h_LY = (TH2D *)ff_LY->Get("EnergyProfile");
+    // TFile *ff_LY = TFile::Open("R3CosThetaNphotons.root", "READ");
+    // //light yield profile
+    // TH2D *h_LY = (TH2D *)ff_LY->Get("EnergyProfile");
     // h_LY->SetXTitle("R^{3} (m^{3})");
     // h_LY->SetYTitle("totalPE/MeV");
     //totalPE curve
     // TH1D *h_nPho = new TH1D("Eratio", "", NBinx, Ran_x[0], Ran_x[1]);
 
-    // TH2F *h_ep = new TH2F("EnergyProfile", "Simulation", NBinx, Ran_x[0], Ran_x[1], NBiny, Ran_y[0], Ran_y[1]);
-    // h_ep->SetXTitle("R^{3} (m^{3})");
+    TH2F *h_ep = new TH2F("EnergyProfile", "Simulation", NBinx, Ran_x[0], Ran_x[1], NBiny, Ran_y[0], Ran_y[1]);
+    h_ep->SetXTitle("R^{3} (m^{3})");
     // h_ep->SetYTitle("totalPE/MeV");
-    // h_ep->SetYTitle("cos#theta");
+    h_ep->SetYTitle("cos#theta");
     // h_ep->SetYTitle("Deposited Energy(MeV)");
 
     // h_nPho->SetXTitle("E_{dep}/E_{true}");
@@ -104,7 +104,7 @@ int ELout()
     double Photon2edep(0), Costheta(0);
     double SE_true(0), SE_dep(0);
     // int ELnum(0), Tnum(0);
-    int TotalBIN = h_LY->GetSize();
+    int TotalBIN = h_ep->GetSize();
     int BinArray[TotalBIN];
     float BinValue[TotalBIN];
     for (int i = 0; i < TotalBIN; i++)
@@ -128,8 +128,8 @@ int ELout()
         Photon2edep = totalPE / edep;
         // ithBIN = h_xy->Fill(InitX[0]/1e3, InitZ[0]/1e3, Photon2edep);
         R_cubic = pow(EvtPos.Mag2(), 1.5);
-        // Costheta = EvtPos.CosTheta();
-        // h_ep->Fill(R_cubic, Costheta, Photon2edep);
+        Costheta = EvtPos.CosTheta();
+        h_ep->Fill(R_cubic, Costheta, Photon2edep);
         // ithBIN = h_LY->Fill(R_cubic, Photon2edep);
         // ithBIN = h_ep->Fill(R_cubic, Costheta, Photon2edep);
         // ithBIN = h_ep->FindBin(R_cubic, Costheta);
@@ -161,13 +161,13 @@ int ELout()
     }
     for (int i = 0; i < TotalBIN; i++)
     {
-        SE_dep = h_LY->GetBinContent(i + 1);
+        SE_dep = h_ep->GetBinContent(i + 1);
         // printf("i:%d\tnum:%f\n", i, h_ep->GetBinContent(956));
 
         if (BinArray[i] > 1)
         {
             SE_dep /= BinArray[i]; //average of ith bin
-            h_LY->SetBinContent(i + 1, SE_dep);
+            h_ep->SetBinContent(i + 1, SE_dep);
             // printf("i:%d\tnum:%d\tthese:%f\n", i, BinArray[i], SE_dep);
         }
     }
@@ -177,7 +177,7 @@ int ELout()
     ff_EL->cd();
     // h_true->Write();
     // h_LY->Write();
-    // h_ep->Write();
+    h_ep->Write();
     // h_nPho->Scale(1 / h_nPho->Integral());
     // h_nPho->Write();
     // h_xy->Write();
