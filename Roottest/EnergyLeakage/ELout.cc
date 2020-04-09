@@ -25,7 +25,7 @@ using namespace std;
 double Ran_x[2] = {0, 5300};
 double Ran_y[2] = {-1, 1};
 int NBinx = 100;
-int NBiny = 100;
+int NBiny = 50;
 
 int ELout()
 {
@@ -33,7 +33,7 @@ int ELout()
     TChain tE_vis("evt");
     // TChain tE_vis("prmtrkdep");
     TChain tE_true("geninfo");
-    for (int nn = 10000; nn < 10999; nn++)
+    for (int nn = 10000; nn < 10010; nn++)
     {
         tE_vis.Add(Form("%s%d.root", HXD, nn));
         tE_true.Add(Form("%s%d.root", HXD, nn));
@@ -48,13 +48,12 @@ int ELout()
     int totalPE;
     // float E_dep[2], edepX[2], edepY[2], edepZ[2];
     float edep;
-    double *hitTime;
     tE_vis.SetBranchStatus("totalPE", 1);
     tE_vis.SetBranchAddress("totalPE", &totalPE);
     tE_vis.SetBranchStatus("edep", 1);
     tE_vis.SetBranchAddress("edep", &edep);
     tE_vis.SetBranchStatus("hitTime", 1);
-    tE_vis.SetBranchAddress("hitTime", hitTime);
+
     // tE_vis.SetBranchStatus("edepX", 1);
     // tE_vis.SetBranchAddress("edepX", &edepX);
     // tE_vis.SetBranchStatus("edepY", 1);
@@ -116,8 +115,12 @@ int ELout()
         BinValue[i] = 0;
     }
     int ithBIN(0);
+    int PromptCount(0);
     for (int i = 0; i < tE_vis.GetEntries(); i++)
     {
+        double *hitTime;
+        tE_vis.SetBranchAddress("hitTime", hitTime);
+
         tE_vis.GetEntry(i);
         tE_true.GetEntry(i);
         // E_true = TMath::Sqrt(InitPX[0] * InitPX[0] + InitPY[0] * InitPY[0] + InitPZ[0] * InitPZ[0] + M_electron_sq) + M_e;
@@ -128,17 +131,19 @@ int ELout()
         // h_xy->Fill(R_cubic, E_ratio);
         // R_cubic = pow((InitX[0] * InitX[0] + InitY[0] * InitY[0] + InitZ[0] * InitZ[0]), 1.5) / 1e9;
         TVector3 EvtPos(InitX[0] / 1e3, InitY[0] / 1e3, InitZ[0] / 1e3);
-        for(int j=0;j<totalPE;j++)
+        PromptCount = 0;
+        for (int j = 0; j < totalPE; j++)
         {
-            if(hitTime[j]>1200){
-                totalPE--;
+            if (hitTime[j] > 1200)
+            {
+                PromptCount++;
             }
         }
-        Photon2edep = totalPE / edep;
+        Photon2edep = (totalPE - PromptCount) / edep;
         // ithBIN = h_xy->Fill(InitX[0]/1e3, InitZ[0]/1e3, Photon2edep);
         R_cubic = pow(EvtPos.Mag2(), 1.5);
         Costheta = EvtPos.CosTheta();
-        ithBIN=h_ep->Fill(R_cubic, Costheta, Photon2edep);
+        ithBIN = h_ep->Fill(R_cubic, Costheta, Photon2edep);
         // ithBIN = h_LY->Fill(R_cubic, Photon2edep);
         // ithBIN = h_ep->Fill(R_cubic, Costheta, Photon2edep);
         // ithBIN = h_ep->FindBin(R_cubic, Costheta);
@@ -186,7 +191,7 @@ int ELout()
     ff_EL->cd();
     // h_true->Write();
     // h_LY->Write();
-    // h_ep->Write();
+    h_ep->Write();
     // h_nPho->Scale(1 / h_nPho->Integral());
     // h_nPho->Write();
     // h_xy->Write();
