@@ -50,7 +50,7 @@ int ReaderEL()
 
     // for (int i = 0; i < 1; i++)
     // {
-    int i = 19;
+    int i = 1;
     double *hitTime;
     evt->SetBranchAddress("hitTime", hitTime);
     evt->GetEntry(i);

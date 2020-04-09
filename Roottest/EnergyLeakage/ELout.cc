@@ -33,7 +33,7 @@ int ELout()
     TChain tE_vis("evt");
     // TChain tE_vis("prmtrkdep");
     TChain tE_true("geninfo");
-    for (int nn = 10000; nn < 10999; nn++)
+    for (int nn = 10000; nn < 10001; nn++)
     {
         if (nn != 10216)
         {
@@ -125,7 +125,8 @@ int ELout()
         tE_vis.SetBranchAddress("hitTime", hitTime);
 
         tE_vis.GetEntry(i);
-        tE_true.GetEntry(i);
+        // tE_true.GetEntry(i);
+
         // E_true = TMath::Sqrt(InitPX[0] * InitPX[0] + InitPY[0] * InitPY[0] + InitPZ[0] * InitPZ[0] + M_electron_sq) + M_e;
         // if ( E_dep < E_true)
         // {
@@ -140,9 +141,10 @@ int ELout()
             if (hitTime[j] > 1200)
             {
                 PromptCount++;
+                printf("which: %f\n", hitTime[j]);
             }
         }
-        Photon2edep = (totalPE - PromptCount) / edep;
+        Photon2edep = PromptCount / edep;
         // ithBIN = h_xy->Fill(InitX[0]/1e3, InitZ[0]/1e3, Photon2edep);
         R_cubic = pow(EvtPos.Mag2(), 1.5);
         Costheta = EvtPos.CosTheta();
@@ -159,7 +161,6 @@ int ELout()
         }
 
         // h_nPho->Fill(E_ratio, 1);
-        // printf("which: %0.15f\n", E_ratio);
         // h_LY->Fill(E_true, E_ratio);
         // }
         // h_true->Fill(E_true);
