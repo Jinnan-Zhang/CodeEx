@@ -33,10 +33,13 @@ int ELout()
     TChain tE_vis("evt");
     // TChain tE_vis("prmtrkdep");
     TChain tE_true("geninfo");
-    for (int nn = 10000; nn < 10010; nn++)
+    for (int nn = 10000; nn < 10999; nn++)
     {
-        tE_vis.Add(Form("%s%d.root", HXD, nn));
-        tE_true.Add(Form("%s%d.root", HXD, nn));
+        if (nn != 10216)
+        {
+            tE_vis.Add(Form("%s%d.root", HXD, nn));
+            tE_true.Add(Form("%s%d.root", HXD, nn));
+        }
     }
     // tE_vis.Add(HXD2);
     // tE_true.Add(HXD1);
@@ -95,8 +98,8 @@ int ELout()
     TH2F *h_ep = new TH2F("EnergyProfile", "Simulation", NBinx, Ran_x[0], Ran_x[1], NBiny, Ran_y[0], Ran_y[1]);
     h_ep->SetXTitle("R^{3} (m^{3})");
     // h_ep->SetYTitle("totalPE/MeV");
-    // h_ep->SetYTitle("cos#theta");
-    h_ep->SetYTitle("True Energy(MeV)");
+    h_ep->SetYTitle("cos#theta");
+    // h_ep->SetYTitle("True Energy(MeV)");
 
     // h_nPho->SetXTitle("E_{dep}/E_{true}");
     // TH2D *h_xy = new TH2D("EnergyProfile", "", NBinx, -18, 18, NBinx, -18, 18);
