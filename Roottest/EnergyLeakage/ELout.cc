@@ -48,10 +48,13 @@ int ELout()
     int totalPE;
     // float E_dep[2], edepX[2], edepY[2], edepZ[2];
     float edep;
+    double *hitTime;
     tE_vis.SetBranchStatus("totalPE", 1);
     tE_vis.SetBranchAddress("totalPE", &totalPE);
     tE_vis.SetBranchStatus("edep", 1);
     tE_vis.SetBranchAddress("edep", &edep);
+    tE_vis.SetBranchStatus("hitTime", 1);
+    tE_vis.SetBranchAddress("hitTime", hitTime);
     // tE_vis.SetBranchStatus("edepX", 1);
     // tE_vis.SetBranchAddress("edepX", &edepX);
     // tE_vis.SetBranchStatus("edepY", 1);
@@ -63,16 +66,16 @@ int ELout()
     float InitPX[2], InitPY[2], InitPZ[2];
     float InitX[2], InitY[2], InitZ[2];
     // tE_true.SetBranchStatus("InitPDGID", 1);
-    tE_true.SetBranchStatus("InitPX", 1);
-    tE_true.SetBranchStatus("InitPY", 1);
-    tE_true.SetBranchStatus("InitPZ", 1);
+    // tE_true.SetBranchStatus("InitPX", 1);
+    // tE_true.SetBranchStatus("InitPY", 1);
+    // tE_true.SetBranchStatus("InitPZ", 1);
     tE_true.SetBranchStatus("InitX", 1);
     tE_true.SetBranchStatus("InitY", 1);
     tE_true.SetBranchStatus("InitZ", 1);
     // tE_true.SetBranchAddress("InitPDGID", &PDGid);
-    tE_true.SetBranchAddress("InitPX", &InitPX);
-    tE_true.SetBranchAddress("InitPZ", &InitPY);
-    tE_true.SetBranchAddress("InitPY", &InitPZ);
+    // tE_true.SetBranchAddress("InitPX", &InitPX);
+    // tE_true.SetBranchAddress("InitPZ", &InitPY);
+    // tE_true.SetBranchAddress("InitPY", &InitPZ);
     tE_true.SetBranchAddress("InitX", &InitX);
     tE_true.SetBranchAddress("InitY", &InitY);
     tE_true.SetBranchAddress("InitZ", &InitZ);
@@ -125,11 +128,17 @@ int ELout()
         // h_xy->Fill(R_cubic, E_ratio);
         // R_cubic = pow((InitX[0] * InitX[0] + InitY[0] * InitY[0] + InitZ[0] * InitZ[0]), 1.5) / 1e9;
         TVector3 EvtPos(InitX[0] / 1e3, InitY[0] / 1e3, InitZ[0] / 1e3);
+        for(int j=0;j<totalPE;j++)
+        {
+            if(hitTime[j]>1200){
+                totalPE--;
+            }
+        }
         Photon2edep = totalPE / edep;
         // ithBIN = h_xy->Fill(InitX[0]/1e3, InitZ[0]/1e3, Photon2edep);
         R_cubic = pow(EvtPos.Mag2(), 1.5);
         Costheta = EvtPos.CosTheta();
-        // ithBIN=h_ep->Fill(R_cubic, Costheta, Photon2edep);
+        ithBIN=h_ep->Fill(R_cubic, Costheta, Photon2edep);
         // ithBIN = h_LY->Fill(R_cubic, Photon2edep);
         // ithBIN = h_ep->Fill(R_cubic, Costheta, Photon2edep);
         // ithBIN = h_ep->FindBin(R_cubic, Costheta);
