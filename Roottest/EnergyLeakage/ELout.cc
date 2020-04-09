@@ -25,7 +25,7 @@ using namespace std;
 double Ran_x[2] = {0, 5300};
 double Ran_y[2] = {-1, 1};
 int NBinx = 100;
-int NBiny = 50;
+int NBiny = 100;
 
 int ELout()
 {
@@ -129,7 +129,7 @@ int ELout()
         // ithBIN = h_xy->Fill(InitX[0]/1e3, InitZ[0]/1e3, Photon2edep);
         R_cubic = pow(EvtPos.Mag2(), 1.5);
         Costheta = EvtPos.CosTheta();
-        h_ep->Fill(R_cubic, Costheta, Photon2edep);
+        ithBIN=h_ep->Fill(R_cubic, Costheta, Photon2edep);
         // ithBIN = h_LY->Fill(R_cubic, Photon2edep);
         // ithBIN = h_ep->Fill(R_cubic, Costheta, Photon2edep);
         // ithBIN = h_ep->FindBin(R_cubic, Costheta);
