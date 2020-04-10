@@ -18,7 +18,7 @@ NBinx = 100
 NBiny = 50
 
 if __name__ == "__main__":
-    ROOT.ROOT.EnableImplicitMT()
+    ROOT.EnableImplicitMT()
     evt = ROOT.TChain("evt")
     geninfo = ROOT.TChain("geninfo")
     prmtrkdep = ROOT.TChain("prmtrkdep")
@@ -42,6 +42,8 @@ if __name__ == "__main__":
     # hitTime=np.asarray(evt.hitTime)
     # print(np.asarray(prmtrkdep.edep))
     h_ep = ROOT.TH2F("EnergyProfile", "Simulation", NBinx, Ran_x[0], Ran_x[1],NBiny, Ran_y[0], Ran_y[1])
+    h_ep.SetXTitle("R^{3} (m^{3})")
+    h_ep.SetYTitle("cos#theta")
     # entries in each bin
     BinValue = np.zeros(h_ep.GetSize())
     for i in range(0, evt.GetEntries()):
