@@ -16,13 +16,16 @@ Ran_x = [0, 5300]
 Ran_y = [-1, 1]
 NBinx = 100
 NBiny = 50
-
-if __name__ == "__main__":
-    ROOT.EnableImplicitMT()
+def AddFile2TChain(tree,NFiles=1):
+    for nn in range(10000, 10000+NFiles):
+        if nn != 10216:
+            tree.Add(HXD + str(nn) + ".root")
+def DoDataAnalysis(NFiles,SaveName="hitTime.png"):
+    # ROOT.EnableImplicitMT()
     evt = ROOT.TChain("evt")
     geninfo = ROOT.TChain("geninfo")
     prmtrkdep = ROOT.TChain("prmtrkdep")
-    for nn in range(10000, 10999):
+    for nn in range(10000, 10000+NFiles):
         if nn != 10216:
             evt.Add(HXD + str(nn) + ".root")
             geninfo.Add(HXD + str(nn) + ".root")
@@ -66,8 +69,6 @@ if __name__ == "__main__":
             Contenti /= BinValue[i]
             h_ep.SetBinContent(i + 1, Contenti)
             # print("num:",BinValue[i],Contenti)
-
-    
     c = ROOT.TCanvas("myCanvasName", "The Canvas Title", 800, 600)
     h_ep.Draw("colz")
     c.SaveAs("JUNOEnergyProfile.png")
@@ -87,4 +88,7 @@ if __name__ == "__main__":
     #     h_hit.Fill(i)
     # c = ROOT.TCanvas("myCanvasName","The Canvas Title",800,600)
     # h_hit.Draw()
-    # c.SaveAs("hitTime.png")
+    c.SaveAs(SaveName)
+
+if __name__ == "__main__":
+    DoDataAnalysis(NFiles=int(sys.argv[1]))
