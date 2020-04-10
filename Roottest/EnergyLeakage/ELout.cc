@@ -111,11 +111,11 @@ int ELout()
     // int ELnum(0), Tnum(0);
     int TotalBIN = h_ep->GetSize();
     int BinArray[TotalBIN];
-    float BinValue[TotalBIN];
+    // float BinValue[TotalBIN];
     for (int i = 0; i < TotalBIN; i++)
     {
         BinArray[i] = 0;
-        BinValue[i] = 0;
+        // BinValue[i] = 0;
     }
     int ithBIN(0);
     int PromptCount(0);
@@ -125,8 +125,8 @@ int ELout()
         tE_vis.SetBranchAddress("hitTime", hitTime);
 
         tE_vis.GetEntry(i);
-        // tE_true.GetEntry(i);
-
+        tE_true.GetEntry(i);
+        printf("yes\n");//can't reach here
         // E_true = TMath::Sqrt(InitPX[0] * InitPX[0] + InitPY[0] * InitPY[0] + InitPZ[0] * InitPZ[0] + M_electron_sq) + M_e;
         // if ( E_dep < E_true)
         // {

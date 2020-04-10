@@ -1,3 +1,5 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
 import sys
 import ROOT
 
@@ -7,28 +9,71 @@ except:
     print("Failed to import numpy.")
     exit()
 #data path
-HXD1 ="/junofs/users/huangx/production/J19v1r0-Pre3bk/IBD/uniform/IBD/detsim/user-detsim-10939.root"
-HXD= "/junofs/users/huangx/production/J19v1r0-Pre3bk/IBD/uniform/IBD/detsim/user-detsim-"
-if __name__ == "__main__":    
+HXD1 = "/junofs/users/huangx/production/J19v1r0-Pre3bk/IBD/uniform/IBD/detsim/user-detsim-10939.root"
+HXD = "/junofs/users/huangx/production/J19v1r0-Pre3bk/IBD/uniform/IBD/detsim/user-detsim-"
+#range and bin number
+Ran_x = [0, 5300]
+Ran_y = [-1, 1]
+NBinx = 100
+NBiny = 50
+
+if __name__ == "__main__":
     ROOT.ROOT.EnableImplicitMT()
-    evt=ROOT.TChain("evt")
-    geninfo=ROOT.TChain("geninfo")
-    for nn in range(10000,10001):
-        if nn!=10216:
-            evt.Add(HXD+str(nn)+".root")
-            geninfo.Add(HXD+str(nn)+".root")
+    evt = ROOT.TChain("evt")
+    geninfo = ROOT.TChain("geninfo")
+    prmtrkdep = ROOT.TChain("prmtrkdep")
+    for nn in range(10000, 10001):
+        if nn != 10216:
+            evt.Add(HXD + str(nn) + ".root")
+            geninfo.Add(HXD + str(nn) + ".root")
+            prmtrkdep.Add(HXD + str(nn) + ".root")
 
     evt.SetBranchStatus("*", 0)
+    geninfo.SetBranchStatus("*", 0)
+    prmtrkdep.SetBranchStatus("*", 0)
     evt.SetBranchStatus("hitTime", 1)
+    # evt.SetBranchStatus("edep", 1)
+    prmtrkdep.SetBranchStatus("edep", 1)
     evt.SetBranchStatus("totalPE", 1)
+    geninfo.SetBranchStatus("InitX", 1)
+    geninfo.SetBranchStatus("InitY", 1)
+    geninfo.SetBranchStatus("InitZ", 1)
     # evt.GetEntry(int(sys.argv[1]))
-    for i in range(1,evt.GetEntries()):
+    # hitTime=np.asarray(evt.hitTime)
+    # print(np.sum(np.asarray(evt.hitTime)<1200),np.asarray(evt.hitTime).size)
+    h_ep = ROOT.TH2F("EnergyProfile", "Simulation", NBinx, Ran_x[0], Ran_x[1],
+                     NBiny, Ran_y[0], Ran_y[1])
+    # entries in each bin
+    BinValue = np.zeros(h_ep.GetSize())
+    for i in range(0, evt.GetEntries()):
         evt.GetEntry(i)
-        hitTime=np.asarray(evt.hitTime)
-        print(hitTime.size)
-    # print float(np.sum(hitTime<1200))/hitTime.size
-
-    x_min=0
+        geninfo.GetEntry(i)
+        prmtrkdep.GetEntry(i)
+        PromptCount = np.sum(np.asarray(evt.hitTime) < 1200)
+        print(PromptCount, evt.edep[0])
+        EvtPos = ROOT.TVector3(geninfo.InitX[0] / 1e3, geninfo.InitY[0] / 1e3,
+                               geninfo.InitZ[0] / 1e3)
+        R_cubic = EvtPos.Mag2()**1.5
+        Costheta = EvtPos.CosTheta()
+        Photon2edep = float(PromptCount) / evt.edep[0]
+        ithBIN = h_ep.Fill(R_cubic, Costheta, Photon2edep)
+        if (ithBIN > 0):
+            BinValue[ithBIN - 1] += 1
+        # print(hitTime.size)
+    for i in range(0, BinValue.size):
+        Contenti = h_ep.GetBinContent(i + 1)
+        if BinValue[i] > 1:
+            Contenti /= BinValue[i]
+            h_ep.SetBinContent(i + 1, Contenti)
+    c = ROOT.TCanvas("myCanvasName", "The Canvas Title", 800, 600)
+    h_ep.Draw("colz")
+    c.SaveAs("JUNOEnergyProfile.png")
+    ff_EL = ROOT.TFile.Open("JUNOEnergyLeakage.root", "RECREATE")
+    ff_EL.cd()
+    h_ep.Write()
+    ff_EL.Close()
+    
+    # x_min=0
     # float(sys.argv[2])
     # x_max=np.max(hitTime)
     # float(sys.argv[3])

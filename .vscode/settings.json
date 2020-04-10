@@ -81,5 +81,6 @@
         "string": "cpp",
         "string_view": "cpp",
         "EvtSelector.C": "cpp"
-    }
+    },
+    "python.formatting.provider": "yapf"
 }
