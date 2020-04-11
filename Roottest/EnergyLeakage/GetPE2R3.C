@@ -58,7 +58,7 @@ void GetPE2R3::SlaveBegin(TTree * /*tree*/)
    // for (int i = 0; i < TotalBin; i++)
    //    BinValue[i] = 0;
 }
-
+int ttt = 0;
 Bool_t GetPE2R3::Process(Long64_t entry)
 {
    // The Process() function is called for each entry in the tree (or possibly
@@ -76,28 +76,35 @@ Bool_t GetPE2R3::Process(Long64_t entry)
    // Use fStatus to set the return value of TTree::Process().
    //
    // The return value is currently not used.
-   TString option = GetOption();
+   // TString option = GetOption();
    // if (option.Contains("prmtrkdep") && option.Contains("geninfo")&&option.Contains("nCapture"))
    // {
-   fReader.SetLocalEntry(entry);
+   evtReader.SetLocalEntry(entry);
    prmtrkdepReader.SetLocalEntry(entry);
    // printf("hitTime:%f\n", hitTime[0]);
    // printf("edep:%f\n", edep.At(1));
    geninfoReader.SetLocalEntry(entry);
    nCaptureReader.SetLocalEntry(entry);
    TVector3 EvtPos(InitX[0] / 1e3, InitY[0] / 1e3, InitZ[0] / 1e3);
-   int PromptCount(0);
-   for (int j = 0; j < *totalPE; j++)
-   { //avoid short time capture
-      if (hitTime[j] < PromptTimeCut && NeutronCaptureT[0] > PromptTimeCut)
-      {
-         PromptCount++;
-      }
-   }
+   int PromptCount = *totalPE; //0;
+   // for (int j = 0; j < *totalPE; j++)
+   // { //avoid short time capture
+   //    if (hitTime[j] < PromptTimeCut && NeutronCaptureT[0] > PromptTimeCut)
+   //    {
+   //       PromptCount++;
+   //    }
+   //    if (ttt < 100)
+   //    {
+   //       printf("j:%d\thitTime:%f\n", j, hitTime[j]);
+   //       ttt++;
+   //    }
+   // }
    float Photon2edep(PromptCount / edep[0]);
+   // printf("edepra:%f\tra:%f\n", edep[0] / (edep[1] + edep[0]),
+   //        (float)PromptCount / *totalPE);
    double R_cubic = pow(EvtPos.Mag2(), 1.5);
    double Costheta = EvtPos.CosTheta();
-   // printf("x:%f\ty:%f\tz:%f\n", R_cubic, Costheta, Photon2edep);
+   // // printf("x:%f\ty:%f\tz:%f\n", R_cubic, Costheta, Photon2edep);
    h_ep->Fill(R_cubic, Costheta, Photon2edep);
    h_ep_count->Fill(R_cubic, Costheta);
    return kTRUE;
@@ -116,18 +123,21 @@ void GetPE2R3::Terminate()
    // The Terminate() function is the last function to be called during
    // a query. It always runs on the client, it can be used to present
    // the results graphically or save the results to file.
+
    h_ep = dynamic_cast<TH2F *>(fOutput->FindObject("EnergyProfile"));
    h_ep_count = dynamic_cast<TH2I *>(fOutput->FindObject("hep_Counts"));
    TCanvas c("myCanvasName", "The Canvas Title", 800, 600);
-   //calculate average
-   h_ep->Divide(h_ep,h_ep_count);
-   
+   // //calculate average
+   // h_ep->Divide(h_ep,h_ep_count);
+
    h_ep->SetXTitle("R^{3} (m^{3})");
    h_ep->SetYTitle("cos#theta");
    h_ep->Draw("colz");
+   // h_ep_count->Draw("colz");
    c.SaveAs("totalPE2R3.png");
    TFile ff_PE2R3("totalPE2R3.root", "RECREATE");
    ff_PE2R3.cd();
    h_ep->Write();
+   h_ep_count->Write();
    ff_PE2R3.Close();
 }

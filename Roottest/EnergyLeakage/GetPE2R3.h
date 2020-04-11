@@ -24,8 +24,8 @@
 class GetPE2R3 : public TSelector
 {
 public:
-   TTreeReader fReader;         //!the tree reader
-   TTree *fChain = 0;           //!pointer to the analyzed TTree or TChain
+   TTreeReader evtReader;         //!the tree reader
+   TTree *evt = 0;           //!pointer to the analyzed TTree or TChain
    TTree *prmtrkdep = 0;        //tree friend
    TTreeReader prmtrkdepReader; //!the tree reader
    TTree *geninfo = 0;          //tree friend
@@ -34,14 +34,14 @@ public:
    TTreeReader nCaptureReader;  //!the tree reader
 
    // Readers to access the data (delete the ones you do not need).
-   // TTreeReaderValue<Int_t> nPhotons = {fReader, "nPhotons"};
-   TTreeReaderValue<Int_t> totalPE = {fReader, "totalPE"};
-   // TTreeReaderArray<Int_t> nPE = {fReader, "nPE"};
-   TTreeReaderArray<Double_t> hitTime = {fReader, "hitTime"};
-   // TTreeReaderValue<Float_t> edep = {fReader, "edep"};
-   // TTreeReaderValue<Float_t> edepX = {fReader, "edepX"};
-   // TTreeReaderValue<Float_t> edepY = {fReader, "edepY"};
-   // TTreeReaderValue<Float_t> edepZ = {fReader, "edepZ"};
+   // TTreeReaderValue<Int_t> nPhotons = {evtReader, "nPhotons"};
+   TTreeReaderValue<Int_t> totalPE = {evtReader, "totalPE"};
+   // TTreeReaderArray<Int_t> nPE = {evtReader, "nPE"};
+   TTreeReaderArray<Double_t> hitTime = {evtReader, "hitTime"};
+   // TTreeReaderValue<Float_t> edep = {evtReader, "edep"};
+   // TTreeReaderValue<Float_t> edepX = {evtReader, "edepX"};
+   // TTreeReaderValue<Float_t> edepY = {evtReader, "edepY"};
+   // TTreeReaderValue<Float_t> edepZ = {evtReader, "edepZ"};
    TTreeReaderArray<Float_t> edep = {prmtrkdepReader, "edep"};
    TTreeReaderArray<Float_t> InitX = {geninfoReader, "InitX"};
    TTreeReaderArray<Float_t> InitY = {geninfoReader, "InitY"};
@@ -52,9 +52,8 @@ public:
    TH2F *h_ep;
    TH2I *h_ep_count;
 
-
    GetPE2R3(TTree * /*tree*/ = 0) { Reset(); }
-   virtual ~GetPE2R3() { }
+   virtual ~GetPE2R3() {}
    virtual Int_t Version() const { return 2; }
    virtual void Begin(TTree *tree);
    virtual void SlaveBegin(TTree *tree);
@@ -70,7 +69,7 @@ public:
       //    geninfo->GetTree()->GetEntry(entry, getall);
       // if (option.Contains("nCapture"))
       //    nCapture->GetTree()->GetEntry(entry, getall);
-      return fChain ? fChain->GetTree()->GetEntry(entry, getall) : 0;
+      return evt ? evt->GetTree()->GetEntry(entry, getall) : 0;
    }
    virtual void SetOption(const char *option) { fOption = option; }
    virtual void SetObject(TObject *obj) { fObject = obj; }
@@ -78,7 +77,11 @@ public:
    virtual TList *GetOutputList() const { return fOutput; }
    virtual void SlaveTerminate();
    virtual void Terminate();
-   void Reset() { h_ep = 0; }
+   void Reset()
+   {
+      h_ep = 0;
+      h_ep_count = 0;
+   }
    ClassDef(GetPE2R3, 0);
 
 private:
@@ -108,7 +111,7 @@ void GetPE2R3::Init(TTree *tree)
    // Init() will be called many times when running on PROOF
    // (once per file to be processed).
 
-   fReader.SetTree(tree);
+   evtReader.SetTree(tree);
    TString option = GetOption();
    if (option.Contains("prmtrkdep"))
    {
