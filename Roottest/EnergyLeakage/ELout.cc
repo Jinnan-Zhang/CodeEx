@@ -29,58 +29,59 @@ int NBiny = 50;
 
 int ELout()
 {
-    TH1::AddDirectory(false);
-    TChain tE_vis("evt");
-    // TChain tE_vis("prmtrkdep");
-    TChain tE_true("geninfo");
+    // TH1::AddDirectory(false);
+    TChain evt("evt");
+    TChain prmtrkdep("prmtrkdep");
+    TChain genifo("geninfo");
     for (int nn = 10000; nn < 10001; nn++)
     {
         if (nn != 10216)
         {
-            tE_vis.Add(Form("%s%d.root", HXD, nn));
-            tE_true.Add(Form("%s%d.root", HXD, nn));
+            evt.Add(Form("%s%d.root", HXD, nn));
+            prmtrkdep.Add(Form("%s%d.root", HXD, nn));
+            genifo.Add(Form("%s%d.root", HXD, nn));
         }
     }
-    // tE_vis.Add(HXD2);
-    // tE_true.Add(HXD1);
-    // tE_true.Add(HXD2);
-    // tE_vis.MakeSelector("E_vis_r");
+    // evt.MakeSelector("E_vis_r");
+    evt.SetBranchStatus("*", 0);
+    prmtrkdep.SetBranchStatus("*", 0);
+    genifo.SetBranchStatus("*", 0);
 
-    tE_vis.SetBranchStatus("*", 0);
-    tE_true.SetBranchStatus("*", 0);
     int totalPE;
     // float E_dep[2], edepX[2], edepY[2], edepZ[2];
     float edep;
-    tE_vis.SetBranchStatus("totalPE", 1);
-    tE_vis.SetBranchAddress("totalPE", &totalPE);
-    tE_vis.SetBranchStatus("edep", 1);
-    tE_vis.SetBranchAddress("edep", &edep);
-    tE_vis.SetBranchStatus("hitTime", 1);
+    evt.SetBranchStatus("totalPE", 1);
+    evt.SetBranchAddress("totalPE", &totalPE);
+    // evt.SetBranchStatus("edep", 1);
+    // evt.SetBranchAddress("edep", &edep);
+    evt.SetBranchStatus("hitTime", 1);
+    double *hitTime;
+    evt.SetBranchAddress("hitTime", hitTime);
 
-    // tE_vis.SetBranchStatus("edepX", 1);
-    // tE_vis.SetBranchAddress("edepX", &edepX);
-    // tE_vis.SetBranchStatus("edepY", 1);
-    // tE_vis.SetBranchAddress("edepY", &edepY);
-    // tE_vis.SetBranchStatus("edepZ", 1);
-    // tE_vis.SetBranchAddress("edepZ", &edepZ);
+    // evt.SetBranchStatus("edepX", 1);
+    // evt.SetBranchAddress("edepX", &edepX);
+    // evt.SetBranchStatus("edepY", 1);
+    // evt.SetBranchAddress("edepY", &edepY);
+    // evt.SetBranchStatus("edepZ", 1);
+    // evt.SetBranchAddress("edepZ", &edepZ);
 
     // int PDGid[2];
     float InitPX[2], InitPY[2], InitPZ[2];
     float InitX[2], InitY[2], InitZ[2];
-    // tE_true.SetBranchStatus("InitPDGID", 1);
-    // tE_true.SetBranchStatus("InitPX", 1);
-    // tE_true.SetBranchStatus("InitPY", 1);
-    // tE_true.SetBranchStatus("InitPZ", 1);
-    tE_true.SetBranchStatus("InitX", 1);
-    tE_true.SetBranchStatus("InitY", 1);
-    tE_true.SetBranchStatus("InitZ", 1);
-    // tE_true.SetBranchAddress("InitPDGID", &PDGid);
-    // tE_true.SetBranchAddress("InitPX", &InitPX);
-    // tE_true.SetBranchAddress("InitPZ", &InitPY);
-    // tE_true.SetBranchAddress("InitPY", &InitPZ);
-    tE_true.SetBranchAddress("InitX", &InitX);
-    tE_true.SetBranchAddress("InitY", &InitY);
-    tE_true.SetBranchAddress("InitZ", &InitZ);
+    // genifo.SetBranchStatus("InitPDGID", 1);
+    // genifo.SetBranchStatus("InitPX", 1);
+    // genifo.SetBranchStatus("InitPY", 1);
+    // genifo.SetBranchStatus("InitPZ", 1);
+    genifo.SetBranchStatus("InitX", 1);
+    genifo.SetBranchStatus("InitY", 1);
+    genifo.SetBranchStatus("InitZ", 1);
+    // genifo.SetBranchAddress("InitPDGID", &PDGid);
+    // genifo.SetBranchAddress("InitPX", &InitPX);
+    // genifo.SetBranchAddress("InitPZ", &InitPY);
+    // genifo.SetBranchAddress("InitPY", &InitPZ);
+    genifo.SetBranchAddress("InitX", &InitX);
+    genifo.SetBranchAddress("InitY", &InitY);
+    genifo.SetBranchAddress("InitZ", &InitZ);
 
     double E_true(0), E_vis(0);
     // TH1D *h_true = new TH1D("E_True", "True Eernergy",NBiny, Ran_x[0], Ran_x[1]);
@@ -119,14 +120,12 @@ int ELout()
     }
     int ithBIN(0);
     int PromptCount(0);
-    for (int i = 0; i < tE_vis.GetEntries(); i++)
+    for (int i = 0; i < evt.GetEntries(); i++)
     {
-        double *hitTime;
-        tE_vis.SetBranchAddress("hitTime", hitTime);
 
-        tE_vis.GetEntry(i);
-        tE_true.GetEntry(i);
-        printf("yes\n");//can't reach here
+        evt.GetEntry(i);
+        genifo.GetEntry(i);
+        printf("yes\n"); //can't reach here
         // E_true = TMath::Sqrt(InitPX[0] * InitPX[0] + InitPY[0] * InitPY[0] + InitPZ[0] * InitPZ[0] + M_electron_sq) + M_e;
         // if ( E_dep < E_true)
         // {

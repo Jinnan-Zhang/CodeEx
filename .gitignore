@@ -2,6 +2,5 @@
 *.d
 *.so
 *.pcm
-*.root
-!/Roottest/EnergyLeakage/JUNOEnergyLeakage.root
-!/Roottest/EnergyLeakage/R3CosThetaNphotons.root
+*.err.*
+*.out.*
