@@ -16,7 +16,7 @@ def TryChainFriend(NFiles):
     evt.AddFriend("geninfo")
     evt.AddFriend("nCapture")
     # evt.MakeSelector("GetPE2R3")
-    evt.Process("GetPE2R3.C","prmtrkdep geninfo")
+    evt.Process("GetPE2R3.C","prmtrkdep geninfo nCapture")
     # evt.ls()
 
 if __name__ == "__main__":

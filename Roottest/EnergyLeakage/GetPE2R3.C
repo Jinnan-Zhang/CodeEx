@@ -82,7 +82,7 @@ Bool_t GetPE2R3::Process(Long64_t entry)
    int PromptCount(0);
    for (int j = 0; j < *totalPE; j++)
    { //avoid short time capture
-      if (hitTime[j] < PromptTimeCut && NeutronCaptureT > PromptTimeCut)
+      if (hitTime[j] < PromptTimeCut && NeutronCaptureT[0] > PromptTimeCut)
       {
          PromptCount++;
       }
