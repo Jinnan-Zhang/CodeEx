@@ -52,7 +52,7 @@ public:
    TH2F *h_ep;
 
    GetPE2R3(TTree * /*tree*/ = 0) { Reset(); }
-   virtual ~GetPE2R3() { delete BinValue; }
+   virtual ~GetPE2R3() { }
    virtual Int_t Version() const { return 2; }
    virtual void Begin(TTree *tree);
    virtual void SlaveBegin(TTree *tree);
@@ -62,10 +62,12 @@ public:
    virtual Int_t GetEntry(Long64_t entry, Int_t getall = 0)
    {
       TString option = GetOption();
-      if (option.Contains("prmtrkdep"))
-         prmtrkdep->GetTree()->GetEntry(entry, getall);
-      if (option.Contains("geninfo"))
-         geninfo->GetTree()->GetEntry(entry, getall);
+      // if (option.Contains("prmtrkdep"))
+      //    prmtrkdep->GetTree()->GetEntry(entry, getall);
+      // if (option.Contains("geninfo"))
+      //    geninfo->GetTree()->GetEntry(entry, getall);
+      // if (option.Contains("nCapture"))
+      //    nCapture->GetTree()->GetEntry(entry, getall);
       return fChain ? fChain->GetTree()->GetEntry(entry, getall) : 0;
    }
    virtual void SetOption(const char *option) { fOption = option; }

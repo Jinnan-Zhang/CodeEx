@@ -55,6 +55,7 @@ void GetPE2R3::SlaveBegin(TTree * /*tree*/)
    BinValue = new int[TotalBin];
    for (int i = 0; i < TotalBin; i++)
       BinValue[i] = 0;
+   // fOutput->Add((TObject *)BinValue);
 }
 
 Bool_t GetPE2R3::Process(Long64_t entry)
@@ -110,6 +111,7 @@ void GetPE2R3::SlaveTerminate()
    // The SlaveTerminate() function is called after all entries or objects
    // have been processed. When running with PROOF SlaveTerminate() is called
    // on each slave server.
+   delete BinValue;
 }
 
 void GetPE2R3::Terminate()
