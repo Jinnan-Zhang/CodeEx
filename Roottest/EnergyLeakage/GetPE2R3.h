@@ -50,6 +50,8 @@ public:
 
    //outputs
    TH2F *h_ep;
+   TH2I *h_ep_count;
+
 
    GetPE2R3(TTree * /*tree*/ = 0) { Reset(); }
    virtual ~GetPE2R3() { }
@@ -91,7 +93,7 @@ private:
    int NBiny = 50;
    double PromptTimeCut = 1000;
    int TotalBin = 0;
-   int *BinValue;
+   // int *BinValue;
 };
 
 #endif

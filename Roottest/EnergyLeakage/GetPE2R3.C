@@ -51,11 +51,12 @@ void GetPE2R3::SlaveBegin(TTree * /*tree*/)
    TString option = GetOption();
    h_ep = new TH2F("EnergyProfile", "Simulation", NBinx, Ran_x[0], Ran_x[1], NBiny, Ran_y[0], Ran_y[1]);
    fOutput->Add(h_ep);
+   h_ep_count = new TH2I("hep_Counts", "Simulation", NBinx, Ran_x[0], Ran_x[1], NBiny, Ran_y[0], Ran_y[1]);
+   fOutput->Add(h_ep_count);
    TotalBin = h_ep->GetSize();
-   BinValue = new int[TotalBin];
-   for (int i = 0; i < TotalBin; i++)
-      BinValue[i] = 0;
-   // fOutput->Add((TObject *)BinValue);
+   // BinValue = new int[TotalBin];
+   // for (int i = 0; i < TotalBin; i++)
+   //    BinValue[i] = 0;
 }
 
 Bool_t GetPE2R3::Process(Long64_t entry)
@@ -94,15 +95,11 @@ Bool_t GetPE2R3::Process(Long64_t entry)
       }
    }
    float Photon2edep(PromptCount / edep[0]);
-   int ithBIN(0);
    double R_cubic = pow(EvtPos.Mag2(), 1.5);
    double Costheta = EvtPos.CosTheta();
    // printf("x:%f\ty:%f\tz:%f\n", R_cubic, Costheta, Photon2edep);
-   ithBIN = h_ep->Fill(R_cubic, Costheta, Photon2edep);
-   if (ithBIN > 0)
-      BinValue[ithBIN - 1]++;
-
-   // }
+   h_ep->Fill(R_cubic, Costheta, Photon2edep);
+   h_ep_count->Fill(R_cubic, Costheta);
    return kTRUE;
 }
 
@@ -111,7 +108,7 @@ void GetPE2R3::SlaveTerminate()
    // The SlaveTerminate() function is called after all entries or objects
    // have been processed. When running with PROOF SlaveTerminate() is called
    // on each slave server.
-   delete BinValue;
+   // delete BinValue;
 }
 
 void GetPE2R3::Terminate()
@@ -120,19 +117,11 @@ void GetPE2R3::Terminate()
    // a query. It always runs on the client, it can be used to present
    // the results graphically or save the results to file.
    h_ep = dynamic_cast<TH2F *>(fOutput->FindObject("EnergyProfile"));
+   h_ep_count = dynamic_cast<TH2I *>(fOutput->FindObject("hep_Counts"));
    TCanvas c("myCanvasName", "The Canvas Title", 800, 600);
-   double Content_i = 0;
    //calculate average
-   for (int i = 0; i < TotalBin; i++)
-   {
-      Content_i = h_ep->GetBinContent(i + 1);
-      if (BinValue[i] > 1)
-      {
-         Content_i /= BinValue[i];
-         h_ep->SetBinContent(i + 1, Content_i);
-         // printf("BinValue[i]：%d\tContent_i:%f\n", BinValue[i], Content_i);
-      }
-   }
+   h_ep->Divide(h_ep,h_ep_count);
+   
    h_ep->SetXTitle("R^{3} (m^{3})");
    h_ep->SetYTitle("cos#theta");
    h_ep->Draw("colz");
