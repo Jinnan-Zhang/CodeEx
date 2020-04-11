@@ -1,8 +1,9 @@
-#define GetPE2R3_cxx
-// The class definition in GetPE2R3.h has been generated automatically
+#define nCaptureT_cxx
+// The class definition in nCaptureT.h has been generated automatically
 // by the ROOT utility TTree::MakeSelector(). This class is derived
 // from the ROOT class TSelector. For more information on the TSelector
 // framework see $ROOTSYS/README/README.SELECTOR or the ROOT User Manual.
+
 
 // The following methods are defined in this file:
 //    Begin():        called every time a loop on the tree starts,
@@ -18,21 +19,17 @@
 //
 // To use this file, try the following session on your Tree T:
 //
-// root> T->Process("GetPE2R3.C")
-// root> T->Process("GetPE2R3.C","some options")
-// root> T->Process("GetPE2R3.C+")
+// root> T->Process("nCaptureT.C")
+// root> T->Process("nCaptureT.C","some options")
+// root> T->Process("nCaptureT.C+")
 //
 
-#include "GetPE2R3.h"
+
+#include "nCaptureT.h"
 #include <TH2.h>
 #include <TStyle.h>
-#include <TCanvas.h>
-#include <TString.h>
-#include <TFile.h>
-#include <TVector3.h>
-#include <vector>
 
-void GetPE2R3::Begin(TTree * /*tree*/)
+void nCaptureT::Begin(TTree * /*tree*/)
 {
    // The Begin() function is called at the start of the query.
    // When running with PROOF Begin() is only called on the client.
@@ -41,18 +38,17 @@ void GetPE2R3::Begin(TTree * /*tree*/)
    TString option = GetOption();
 }
 
-void GetPE2R3::SlaveBegin(TTree * /*tree*/)
+void nCaptureT::SlaveBegin(TTree * /*tree*/)
 {
    // The SlaveBegin() function is called after the Begin() function.
    // When running with PROOF SlaveBegin() is called on each slave server.
    // The tree argument is deprecated (on PROOF 0 is passed).
 
    TString option = GetOption();
-   h_ep = new TH2F("EnergyProfile", "Simulation", NBinx, Ran_x[0], Ran_x[1], NBiny, Ran_y[0], Ran_y[1]);
-   fOutput->Add(h_ep);
+
 }
 
-Bool_t GetPE2R3::Process(Long64_t entry)
+Bool_t nCaptureT::Process(Long64_t entry)
 {
    // The Process() function is called for each entry in the tree (or possibly
    // keyed object in the case of PROOF) to be processed. The entry argument
@@ -69,48 +65,24 @@ Bool_t GetPE2R3::Process(Long64_t entry)
    // Use fStatus to set the return value of TTree::Process().
    //
    // The return value is currently not used.
-   TString option = GetOption();
-   // if (option.Contains("prmtrkdep") && option.Contains("geninfo")&&option.Contains("nCapture"))
-   // {
+
    fReader.SetLocalEntry(entry);
-   prmtrkdepReader.SetLocalEntry(entry);
-   // printf("hitTime:%f\n", hitTime[0]);
-   // printf("edep:%f\n", edep.At(1));
-   geninfoReader.SetLocalEntry(entry);
-   nCaptureReader.SetLocalEntry(entry);
-   TVector3 EvtPos(InitX[0], InitY[0], InitZ[0]);
-   int PromptCount(0);
-   for (int j = 0; j < *totalPE; j++)
-   { //avoid short time capture
-      if (hitTime[j] < PromptTimeCut && NeutronCaptureT > PromptTimeCut)
-      {
-         PromptCount++;
-      }
-   }
-   // }
+
    return kTRUE;
 }
 
-void GetPE2R3::SlaveTerminate()
+void nCaptureT::SlaveTerminate()
 {
    // The SlaveTerminate() function is called after all entries or objects
    // have been processed. When running with PROOF SlaveTerminate() is called
    // on each slave server.
+
 }
 
-void GetPE2R3::Terminate()
+void nCaptureT::Terminate()
 {
    // The Terminate() function is the last function to be called during
    // a query. It always runs on the client, it can be used to present
    // the results graphically or save the results to file.
-   h_ep = dynamic_cast<TH2F *>(fOutput->FindObject("EnergyProfile"));
-   TCanvas c("myCanvasName", "The Canvas Title", 800, 600);
-   h_ep->SetXTitle("R^{3} (m^{3})");
-   h_ep->SetYTitle("cos#theta");
-   h_ep->Draw("colz");
-   c.SaveAs("totalPE2R3.png");
-   TFile ff_PE2R3("totalPE2R3.root", "RECREATE");
-   ff_PE2R3.cd();
-   h_ep->Write();
-   ff_PE2R3.Close();
+
 }

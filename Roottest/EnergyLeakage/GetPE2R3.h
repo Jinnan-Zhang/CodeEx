@@ -16,6 +16,8 @@
 #include <TTreeReaderArray.h>
 #include <TH2.h>
 #include <TH1.h>
+#include <TVector3.h>
+#include <vector>
 
 // Headers needed by this particular selector
 
@@ -28,10 +30,12 @@ public:
    TTreeReader prmtrkdepReader; //!the tree reader
    TTree *geninfo = 0;          //tree friend
    TTreeReader geninfoReader;   //!the tree reader
+   TTree *nCapture = 0;         //tree friend
+   TTreeReader nCaptureReader;  //!the tree reader
 
    // Readers to access the data (delete the ones you do not need).
    // TTreeReaderValue<Int_t> nPhotons = {fReader, "nPhotons"};
-   // TTreeReaderValue<Int_t> totalPE = {fReader, "totalPE"};
+   TTreeReaderValue<Int_t> totalPE = {fReader, "totalPE"};
    // TTreeReaderArray<Int_t> nPE = {fReader, "nPE"};
    TTreeReaderArray<Double_t> hitTime = {fReader, "hitTime"};
    // TTreeReaderValue<Float_t> edep = {fReader, "edep"};
@@ -42,6 +46,7 @@ public:
    TTreeReaderArray<Float_t> InitX = {geninfoReader, "InitX"};
    TTreeReaderArray<Float_t> InitY = {geninfoReader, "InitY"};
    TTreeReaderArray<Float_t> InitZ = {geninfoReader, "InitZ"};
+   TTreeReaderArray<double> NeutronCaptureT = {nCaptureReader, "NeutronCaptureT"};
 
    //outputs
    TH2F *h_ep;
@@ -82,6 +87,7 @@ private:
    double Ran_y[2] = {-1, 1};
    int NBinx = 100;
    int NBiny = 50;
+   double PromptTimeCut = 1000;
 };
 
 #endif
@@ -105,6 +111,10 @@ void GetPE2R3::Init(TTree *tree)
    if (option.Contains("geninfo"))
    {
       geninfoReader.SetTree(tree->GetFriend("geninfo"));
+   }
+   if (option.Contains("nCapture"))
+   {
+      nCaptureReader.SetTree(tree->GetFriend("nCapture"));
    }
 }
 
