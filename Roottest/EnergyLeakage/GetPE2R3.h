@@ -14,6 +14,8 @@
 #include <TTreeReader.h>
 #include <TTreeReaderValue.h>
 #include <TTreeReaderArray.h>
+#include <TH2.h>
+#include <TH1.h>
 
 // Headers needed by this particular selector
 
@@ -37,8 +39,14 @@ public:
    // TTreeReaderValue<Float_t> edepY = {fReader, "edepY"};
    // TTreeReaderValue<Float_t> edepZ = {fReader, "edepZ"};
    TTreeReaderArray<Float_t> edep = {prmtrkdepReader, "edep"};
+   TTreeReaderArray<Float_t> InitX = {geninfoReader, "InitX"};
+   TTreeReaderArray<Float_t> InitY = {geninfoReader, "InitY"};
+   TTreeReaderArray<Float_t> InitZ = {geninfoReader, "InitZ"};
 
-   GetPE2R3(TTree * /*tree*/ = 0) {}
+   //outputs
+   TH2F *h_ep;
+
+   GetPE2R3(TTree * /*tree*/ = 0) { Reset(); }
    virtual ~GetPE2R3() {}
    virtual Int_t Version() const { return 2; }
    virtual void Begin(TTree *tree);
@@ -61,8 +69,19 @@ public:
    virtual TList *GetOutputList() const { return fOutput; }
    virtual void SlaveTerminate();
    virtual void Terminate();
-
+   void Reset() { h_ep = 0; }
    ClassDef(GetPE2R3, 0);
+
+private:
+   double M_electron_sq = 0.26111993;
+   double M_e = 0.51099895;
+   double n_capture = 2.2; //MeV
+   double LightYeild = 1200.;
+
+   double Ran_x[2] = {0, 5300};
+   double Ran_y[2] = {-1, 1};
+   int NBinx = 100;
+   int NBiny = 50;
 };
 
 #endif

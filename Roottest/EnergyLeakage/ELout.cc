@@ -32,20 +32,20 @@ int ELout()
     // TH1::AddDirectory(false);
     TChain evt("evt");
     TChain prmtrkdep("prmtrkdep");
-    TChain genifo("geninfo");
+    TChain geninfo("geninfo");
     for (int nn = 10000; nn < 10001; nn++)
     {
         if (nn != 10216)
         {
             evt.Add(Form("%s%d.root", HXD, nn));
             prmtrkdep.Add(Form("%s%d.root", HXD, nn));
-            genifo.Add(Form("%s%d.root", HXD, nn));
+            geninfo.Add(Form("%s%d.root", HXD, nn));
         }
     }
     // evt.MakeSelector("E_vis_r");
     evt.SetBranchStatus("*", 0);
     prmtrkdep.SetBranchStatus("*", 0);
-    genifo.SetBranchStatus("*", 0);
+    geninfo.SetBranchStatus("*", 0);
 
     int totalPE;
     // float E_dep[2], edepX[2], edepY[2], edepZ[2];
@@ -68,20 +68,20 @@ int ELout()
     // int PDGid[2];
     float InitPX[2], InitPY[2], InitPZ[2];
     float InitX[2], InitY[2], InitZ[2];
-    // genifo.SetBranchStatus("InitPDGID", 1);
-    // genifo.SetBranchStatus("InitPX", 1);
-    // genifo.SetBranchStatus("InitPY", 1);
-    // genifo.SetBranchStatus("InitPZ", 1);
-    genifo.SetBranchStatus("InitX", 1);
-    genifo.SetBranchStatus("InitY", 1);
-    genifo.SetBranchStatus("InitZ", 1);
-    // genifo.SetBranchAddress("InitPDGID", &PDGid);
-    // genifo.SetBranchAddress("InitPX", &InitPX);
-    // genifo.SetBranchAddress("InitPZ", &InitPY);
-    // genifo.SetBranchAddress("InitPY", &InitPZ);
-    genifo.SetBranchAddress("InitX", &InitX);
-    genifo.SetBranchAddress("InitY", &InitY);
-    genifo.SetBranchAddress("InitZ", &InitZ);
+    // geninfo.SetBranchStatus("InitPDGID", 1);
+    // geninfo.SetBranchStatus("InitPX", 1);
+    // geninfo.SetBranchStatus("InitPY", 1);
+    // geninfo.SetBranchStatus("InitPZ", 1);
+    geninfo.SetBranchStatus("InitX", 1);
+    geninfo.SetBranchStatus("InitY", 1);
+    geninfo.SetBranchStatus("InitZ", 1);
+    // geninfo.SetBranchAddress("InitPDGID", &PDGid);
+    // geninfo.SetBranchAddress("InitPX", &InitPX);
+    // geninfo.SetBranchAddress("InitPZ", &InitPY);
+    // geninfo.SetBranchAddress("InitPY", &InitPZ);
+    geninfo.SetBranchAddress("InitX", &InitX);
+    geninfo.SetBranchAddress("InitY", &InitY);
+    geninfo.SetBranchAddress("InitZ", &InitZ);
 
     double E_true(0), E_vis(0);
     // TH1D *h_true = new TH1D("E_True", "True Eernergy",NBiny, Ran_x[0], Ran_x[1]);
@@ -124,7 +124,7 @@ int ELout()
     {
 
         evt.GetEntry(i);
-        genifo.GetEntry(i);
+        geninfo.GetEntry(i);
         printf("yes\n"); //can't reach here
         // E_true = TMath::Sqrt(InitPX[0] * InitPX[0] + InitPY[0] * InitPY[0] + InitPZ[0] * InitPZ[0] + M_electron_sq) + M_e;
         // if ( E_dep < E_true)

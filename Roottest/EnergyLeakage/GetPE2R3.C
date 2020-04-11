@@ -65,12 +65,12 @@ Bool_t GetPE2R3::Process(Long64_t entry)
    // The return value is currently not used.
    TString option = GetOption();
    fReader.SetLocalEntry(entry);
-   if (option.Contains("prmtrkdep"))
+   if (option.Contains("prmtrkdep") && option.Contains("geninfo"))
    {
-
       prmtrkdepReader.SetLocalEntry(entry);
-      // printf("hitTime:%f\n",hitTime.At(0));
-      printf("edep:%f\n", edep.At(1));
+      printf("hitTime:%f\n", hitTime.At(0));
+      // printf("edep:%f\n", edep.At(1));
+      geninfoReader.SetLocalEntry(entry);
    }
    return kTRUE;
 }
