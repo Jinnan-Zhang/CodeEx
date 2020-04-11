@@ -52,7 +52,7 @@ public:
    TH2F *h_ep;
 
    GetPE2R3(TTree * /*tree*/ = 0) { Reset(); }
-   virtual ~GetPE2R3() {}
+   virtual ~GetPE2R3() { delete BinValue; }
    virtual Int_t Version() const { return 2; }
    virtual void Begin(TTree *tree);
    virtual void SlaveBegin(TTree *tree);
@@ -88,6 +88,8 @@ private:
    int NBinx = 100;
    int NBiny = 50;
    double PromptTimeCut = 1000;
+   int TotalBin = 0;
+   int *BinValue;
 };
 
 #endif

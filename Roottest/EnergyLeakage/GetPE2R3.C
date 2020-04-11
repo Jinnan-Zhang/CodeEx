@@ -31,6 +31,7 @@
 #include <TFile.h>
 #include <TVector3.h>
 #include <vector>
+#include <cmath>
 
 void GetPE2R3::Begin(TTree * /*tree*/)
 {
@@ -50,6 +51,10 @@ void GetPE2R3::SlaveBegin(TTree * /*tree*/)
    TString option = GetOption();
    h_ep = new TH2F("EnergyProfile", "Simulation", NBinx, Ran_x[0], Ran_x[1], NBiny, Ran_y[0], Ran_y[1]);
    fOutput->Add(h_ep);
+   TotalBin = h_ep->GetSize();
+   BinValue = new int[TotalBin];
+   for (int i = 0; i < TotalBin; i++)
+      BinValue[i] = 0;
 }
 
 Bool_t GetPE2R3::Process(Long64_t entry)
@@ -78,7 +83,7 @@ Bool_t GetPE2R3::Process(Long64_t entry)
    // printf("edep:%f\n", edep.At(1));
    geninfoReader.SetLocalEntry(entry);
    nCaptureReader.SetLocalEntry(entry);
-   TVector3 EvtPos(InitX[0], InitY[0], InitZ[0]);
+   TVector3 EvtPos(InitX[0] / 1e3, InitY[0] / 1e3, InitZ[0] / 1e3);
    int PromptCount(0);
    for (int j = 0; j < *totalPE; j++)
    { //avoid short time capture
@@ -87,6 +92,15 @@ Bool_t GetPE2R3::Process(Long64_t entry)
          PromptCount++;
       }
    }
+   float Photon2edep(PromptCount / edep[0]);
+   int ithBIN(0);
+   double R_cubic = pow(EvtPos.Mag2(), 1.5);
+   double Costheta = EvtPos.CosTheta();
+   // printf("x:%f\ty:%f\tz:%f\n", R_cubic, Costheta, Photon2edep);
+   ithBIN = h_ep->Fill(R_cubic, Costheta, Photon2edep);
+   if (ithBIN > 0)
+      BinValue[ithBIN - 1]++;
+
    // }
    return kTRUE;
 }
@@ -105,6 +119,18 @@ void GetPE2R3::Terminate()
    // the results graphically or save the results to file.
    h_ep = dynamic_cast<TH2F *>(fOutput->FindObject("EnergyProfile"));
    TCanvas c("myCanvasName", "The Canvas Title", 800, 600);
+   double Content_i = 0;
+   //calculate average
+   for (int i = 0; i < TotalBin; i++)
+   {
+      Content_i = h_ep->GetBinContent(i + 1);
+      if (BinValue[i] > 1)
+      {
+         Content_i /= BinValue[i];
+         h_ep->SetBinContent(i + 1, Content_i);
+         // printf("BinValue[i]：%d\tContent_i:%f\n", BinValue[i], Content_i);
+      }
+   }
    h_ep->SetXTitle("R^{3} (m^{3})");
    h_ep->SetYTitle("cos#theta");
    h_ep->Draw("colz");
