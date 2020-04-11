@@ -13,7 +13,7 @@ def TryChainFriend(NFiles):
     evt.AddFriend("prmtrkdep")
     evt.AddFriend("geninfo")
     # evt.MakeSelector("GetPE2R3")
-    evt.Process("GetPE2R3.C")
+    evt.Process("GetPE2R3.C","prmtrkdep")
     # evt.ls()
 
 if __name__ == "__main__":

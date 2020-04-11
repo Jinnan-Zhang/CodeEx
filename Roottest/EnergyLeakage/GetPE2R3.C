@@ -4,7 +4,6 @@
 // from the ROOT class TSelector. For more information on the TSelector
 // framework see $ROOTSYS/README/README.SELECTOR or the ROOT User Manual.
 
-
 // The following methods are defined in this file:
 //    Begin():        called every time a loop on the tree starts,
 //                    a convenient place to create your histograms.
@@ -23,7 +22,6 @@
 // root> T->Process("GetPE2R3.C","some options")
 // root> T->Process("GetPE2R3.C+")
 //
-
 
 #include "GetPE2R3.h"
 #include <TH2.h>
@@ -46,8 +44,6 @@ void GetPE2R3::SlaveBegin(TTree * /*tree*/)
    // The tree argument is deprecated (on PROOF 0 is passed).
 
    TString option = GetOption();
-   // if(option.Contains())
-
 }
 
 Bool_t GetPE2R3::Process(Long64_t entry)
@@ -67,11 +63,15 @@ Bool_t GetPE2R3::Process(Long64_t entry)
    // Use fStatus to set the return value of TTree::Process().
    //
    // The return value is currently not used.
-
+   TString option = GetOption();
    fReader.SetLocalEntry(entry);
-   prmtrkdepReader.SetLocalEntry(entry);
-   // printf("hitTime:%f\n",hitTime.At(0));
-   printf("edep:%f\n",edep.At(1));
+   if (option.Contains("prmtrkdep"))
+   {
+
+      prmtrkdepReader.SetLocalEntry(entry);
+      // printf("hitTime:%f\n",hitTime.At(0));
+      printf("edep:%f\n", edep.At(1));
+   }
    return kTRUE;
 }
 
@@ -80,7 +80,6 @@ void GetPE2R3::SlaveTerminate()
    // The SlaveTerminate() function is called after all entries or objects
    // have been processed. When running with PROOF SlaveTerminate() is called
    // on each slave server.
-
 }
 
 void GetPE2R3::Terminate()
@@ -88,5 +87,4 @@ void GetPE2R3::Terminate()
    // The Terminate() function is the last function to be called during
    // a query. It always runs on the client, it can be used to present
    // the results graphically or save the results to file.
-
 }
