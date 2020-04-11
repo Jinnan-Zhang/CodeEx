@@ -99,7 +99,7 @@ Bool_t GetPE2R3::Process(Long64_t entry)
    //       ttt++;
    //    }
    // }
-   float Photon2edep(PromptCount / edep[0]);
+   float Photon2edep(PromptCount / (edep[0]+edep[1]));
    // printf("edepra:%f\tra:%f\n", edep[0] / (edep[1] + edep[0]),
    //        (float)PromptCount / *totalPE);
    double R_cubic = pow(EvtPos.Mag2(), 1.5);
@@ -123,12 +123,12 @@ void GetPE2R3::Terminate()
    // The Terminate() function is the last function to be called during
    // a query. It always runs on the client, it can be used to present
    // the results graphically or save the results to file.
-
+   TH1::SetDefaultSumw2();
    h_ep = dynamic_cast<TH2F *>(fOutput->FindObject("EnergyProfile"));
    h_ep_count = dynamic_cast<TH2I *>(fOutput->FindObject("hep_Counts"));
    TCanvas c("myCanvasName", "The Canvas Title", 800, 600);
    // //calculate average
-   // h_ep->Divide(h_ep,h_ep_count);
+   h_ep->Divide(h_ep, h_ep_count);
 
    h_ep->SetXTitle("R^{3} (m^{3})");
    h_ep->SetYTitle("cos#theta");
