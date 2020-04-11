@@ -6,9 +6,12 @@ from ViewTime import *
 def TryChainFriend(NFiles):
     evt = ROOT.TChain("evt")
     prmtrkdep = ROOT.TChain("prmtrkdep")
+    geninfo = ROOT.TChain("geninfo")
     AddFile2TChain(evt,NFiles=NFiles)
     AddFile2TChain(prmtrkdep,NFiles=NFiles)
+    AddFile2TChain(geninfo, NFiles=NFiles)
     evt.AddFriend("prmtrkdep")
+    evt.AddFriend("geninfo")
     # evt.MakeSelector("GetPE2R3")
     evt.Process("GetPE2R3.C")
     # evt.ls()

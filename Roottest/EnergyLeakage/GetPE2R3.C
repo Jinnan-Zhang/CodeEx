@@ -28,6 +28,7 @@
 #include "GetPE2R3.h"
 #include <TH2.h>
 #include <TStyle.h>
+#include <TString.h>
 
 void GetPE2R3::Begin(TTree * /*tree*/)
 {
@@ -45,6 +46,7 @@ void GetPE2R3::SlaveBegin(TTree * /*tree*/)
    // The tree argument is deprecated (on PROOF 0 is passed).
 
    TString option = GetOption();
+   // if(option.Contains())
 
 }
 

@@ -24,6 +24,8 @@ public:
    TTree *fChain = 0;           //!pointer to the analyzed TTree or TChain
    TTree *prmtrkdep = 0;        //tree friend
    TTreeReader prmtrkdepReader; //!the tree reader
+   TTree *geninfo = 0;          //tree friend
+   TTreeReader geninfoReader;   //!the tree reader
 
    // Readers to access the data (delete the ones you do not need).
    // TTreeReaderValue<Int_t> nPhotons = {fReader, "nPhotons"};
@@ -46,7 +48,11 @@ public:
    virtual Bool_t Process(Long64_t entry);
    virtual Int_t GetEntry(Long64_t entry, Int_t getall = 0)
    {
-      prmtrkdep->GetTree()->GetEntry(entry, getall);
+      TString option = GetOption();
+      if (option.Contains("prmtrkdep"))
+         prmtrkdep->GetTree()->GetEntry(entry, getall);
+      if (option.Contains("geninfo"))
+         geninfo->GetTree()->GetEntry(entry, getall);
       return fChain ? fChain->GetTree()->GetEntry(entry, getall) : 0;
    }
    virtual void SetOption(const char *option) { fOption = option; }
@@ -72,7 +78,15 @@ void GetPE2R3::Init(TTree *tree)
    // (once per file to be processed).
 
    fReader.SetTree(tree);
-   prmtrkdepReader.SetTree(tree->GetFriend("prmtrkdep"));
+   TString option = GetOption();
+   if (option.Contains("prmtrkdep"))
+   {
+      prmtrkdepReader.SetTree(tree->GetFriend("prmtrkdep"));
+   }
+   if (option.Contains("geninfo"))
+   {
+      geninfoReader.SetTree(tree->GetFriend("geninfo"));
+   }
 }
 
 Bool_t GetPE2R3::Notify()
