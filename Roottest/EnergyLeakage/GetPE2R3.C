@@ -86,20 +86,10 @@ Bool_t GetPE2R3::Process(Long64_t entry)
    geninfoReader.SetLocalEntry(entry);
    nCaptureReader.SetLocalEntry(entry);
    TVector3 EvtPos(InitX[0] / 1e3, InitY[0] / 1e3, InitZ[0] / 1e3);
-   int PromptCount = 0;
-   for (int j = 0; j < *totalPE; j++)
-   {
-      //avoid short time capture
-      // if (hitTime[j] < PromptTimeCut && NeutronCaptureT[0] > PromptTimeCut)
-      // {
-      PromptCount++;
-      // }
-      // if (ttt < 100)
-      // {
-      //    printf("j:%d\thitTime:%f\n", j, hitTime[j]);
-      //    ttt++;
-      // }
-   }
+   evtReader.GetTree()->Draw("hitTime>>h_pr", "hitTime<1000", "goff", 1, entry);
+   TH1F *h_pr = (TH1F *)gDirectory->Get("h_pr");
+   double PromptCount = h_pr->Integral();
+   // printf("h_pr:%f\ttotalPE:%d\n", PromptCount,*totalPE);
    float Photon2edep(PromptCount / (edep[0] + edep[1]));
    // printf("edepra:%f\tra:%f\n", edep[0] / (edep[1] + edep[0]),
    //        (float)PromptCount / *totalPE);
@@ -130,11 +120,11 @@ void GetPE2R3::Terminate()
    TCanvas c("myCanvasName", "The Canvas Title", 800, 600);
    // //calculate average
    h_ep->Divide(h_ep, h_ep_count);
-   for (int i = 1; i < TotalBin; i++)
-   {
-      if (h_ep_count->GetBinContent(i) > 0)
-         Printf("entry:%d\t%.1f\n", i, h_ep_count->GetBinContent(i));
-   }
+   // for (int i = 1; i < TotalBin; i++)
+   // {
+   //    if (h_ep_count->GetBinContent(i) > 0)
+   //       Printf("entry:%d\t%.1f\n", i, h_ep_count->GetBinContent(i));
+   // }
    h_ep->SetXTitle("R^{3} (m^{3})");
    h_ep->SetYTitle("cos#theta");
    h_ep->Draw("colz");
