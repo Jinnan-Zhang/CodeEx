@@ -24,8 +24,8 @@
 class GetPE2R3 : public TSelector
 {
 public:
-   TTreeReader evtReader;         //!the tree reader
-   TTree *evt = 0;           //!pointer to the analyzed TTree or TChain
+   TTree *evt = 0;              //!pointer to the analyzed TTree or TChain
+   TTreeReader evtReader;       //!the tree reader
    TTree *prmtrkdep = 0;        //tree friend
    TTreeReader prmtrkdepReader; //!the tree reader
    TTree *geninfo = 0;          //tree friend
@@ -35,18 +35,18 @@ public:
 
    // Readers to access the data (delete the ones you do not need).
    // TTreeReaderValue<Int_t> nPhotons = {evtReader, "nPhotons"};
-   TTreeReaderValue<Int_t> totalPE = {evtReader, "totalPE"};
+   // TTreeReaderValue<Int_t> totalPE = {evtReader, "totalPE"};
    // TTreeReaderArray<Int_t> nPE = {evtReader, "nPE"};
-   TTreeReaderArray<Double_t> hitTime = {evtReader, "hitTime"};
+   // TTreeReaderArray<Double_t> hitTime = {evtReader, "hitTime"};
    // TTreeReaderValue<Float_t> edep = {evtReader, "edep"};
    // TTreeReaderValue<Float_t> edepX = {evtReader, "edepX"};
    // TTreeReaderValue<Float_t> edepY = {evtReader, "edepY"};
    // TTreeReaderValue<Float_t> edepZ = {evtReader, "edepZ"};
-   TTreeReaderArray<Float_t> edep = {prmtrkdepReader, "edep"};
+   // TTreeReaderArray<Float_t> edep = {prmtrkdepReader, "edep"};
    TTreeReaderArray<Float_t> InitX = {geninfoReader, "InitX"};
    TTreeReaderArray<Float_t> InitY = {geninfoReader, "InitY"};
    TTreeReaderArray<Float_t> InitZ = {geninfoReader, "InitZ"};
-   TTreeReaderArray<double> NeutronCaptureT = {nCaptureReader, "NeutronCaptureT"};
+   // TTreeReaderArray<double> NeutronCaptureT = {nCaptureReader, "NeutronCaptureT"};
 
    //outputs
    TH2F *h_ep;
@@ -54,23 +54,23 @@ public:
 
    GetPE2R3(TTree * /*tree*/ = 0) { Reset(); }
    virtual ~GetPE2R3() {}
-   virtual Int_t Version() const { return 2; }
+   virtual Int_t Version() const { return 1; }
    virtual void Begin(TTree *tree);
    virtual void SlaveBegin(TTree *tree);
    virtual void Init(TTree *tree);
    virtual Bool_t Notify();
    virtual Bool_t Process(Long64_t entry);
-   virtual Int_t GetEntry(Long64_t entry, Int_t getall = 0)
-   {
-      TString option = GetOption();
-      // if (option.Contains("prmtrkdep"))
-      //    prmtrkdep->GetTree()->GetEntry(entry, getall);
-      // if (option.Contains("geninfo"))
-      //    geninfo->GetTree()->GetEntry(entry, getall);
-      // if (option.Contains("nCapture"))
-      //    nCapture->GetTree()->GetEntry(entry, getall);
-      return evt ? evt->GetTree()->GetEntry(entry, getall) : 0;
-   }
+   // virtual Int_t GetEntry(Long64_t entry, Int_t getall = 0)
+   // {
+   //    TString option = GetOption();
+   //    if (option.Contains("prmtrkdep"))
+   //       prmtrkdep->GetTree()->GetEntry(entry, getall);
+   //    if (option.Contains("geninfo"))
+   //       geninfo->GetTree()->GetEntry(entry, getall);
+   //    if (option.Contains("nCapture"))
+   //       nCapture->GetTree()->GetEntry(entry, getall);
+   //    return evt ? evt->GetTree()->GetEntry(entry, getall) : 0;
+   // }
    virtual void SetOption(const char *option) { fOption = option; }
    virtual void SetObject(TObject *obj) { fObject = obj; }
    virtual void SetInputList(TList *input) { fInput = input; }

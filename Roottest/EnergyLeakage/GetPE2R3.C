@@ -32,12 +32,12 @@
 #include <TVector3.h>
 #include <vector>
 #include <cmath>
-#include <TROOT.h>
-#include <TChain.h>
-#include <TSelector.h>
-#include <TTreeReader.h>
-#include <TTreeReaderValue.h>
-#include <TTreeReaderArray.h>
+// #include <TROOT.h>
+// #include <TChain.h>
+// #include <TSelector.h>
+// #include <TTreeReader.h>
+// #include <TTreeReaderValue.h>
+// #include <TTreeReaderArray.h>
 
 void GetPE2R3::Begin(TTree * /*tree*/)
 {
@@ -46,14 +46,15 @@ void GetPE2R3::Begin(TTree * /*tree*/)
    // The tree argument is deprecated (on PROOF 0 is passed).
 
    TString option = GetOption();
+   Reset();
 }
 
-void GetPE2R3::SlaveBegin(TTree * /*tree*/)
+void GetPE2R3::SlaveBegin(TTree *myTree)
 {
    // The SlaveBegin() function is called after the Begin() function.
    // When running with PROOF SlaveBegin() is called on each slave server.
    // The tree argument is deprecated (on PROOF 0 is passed).
-
+   Init(myTree);
    TString option = GetOption();
    h_ep = new TH2F("EnergyProfile", "Simulation", NBinx, Ran_x[0], Ran_x[1], NBiny, Ran_y[0], Ran_y[1]);
    fOutput->Add(h_ep);
@@ -64,7 +65,6 @@ void GetPE2R3::SlaveBegin(TTree * /*tree*/)
    // for (int i = 0; i < TotalBin; i++)
    //    BinValue[i] = 0;
 }
-int ttt = 0;
 Bool_t GetPE2R3::Process(Long64_t entry)
 {
    // The Process() function is called for each entry in the tree (or possibly
@@ -88,28 +88,28 @@ Bool_t GetPE2R3::Process(Long64_t entry)
    evtReader.SetLocalEntry(entry);
    nCaptureReader.SetLocalEntry(entry);
    // printf("time:%f\n", hitTime[1]);
-   nCaptureReader.GetTree()->Draw("NeutronCaptureT>>h_ncap(1,0,1000)", "NeutronCaptureT<1000", "goff", 1, entry);
+   nCaptureReader.GetTree()->Draw("NeutronCaptureT>>h_ncap(1,0,1000)", "", "goff", 1, entry);
    TH1F *h_ncap = (TH1F *)gDirectory->Get("h_ncap");
-   if (!h_ncap->GetEffectiveEntries())
+   if (!(h_ncap->GetEffectiveEntries()))
    {
       TVector3 EvtPos(InitX[0] / 1e3, InitY[0] / 1e3, InitZ[0] / 1e3);
       evtReader.GetTree()->Draw("hitTime>>h_pr", "hitTime<1000", "goff", 1, entry);
       TH1F *h_pr = (TH1F *)gDirectory->Get("h_pr");
-      double PromptCount = h_pr->Integral();
+      double PromptCount = h_pr->GetEffectiveEntries();
       // printf("h_pr:%f\ttotalPE:%d\n", PromptCount,*totalPE);
-      float Photon2edep(PromptCount / (edep[0] + edep[1]));
+      prmtrkdepReader.GetTree()->Draw("edep[0]>>h_edeps(1)", "edep[0]*(1>0)", "goff", 1, entry);
+      TH1F *h_edeps = (TH1F *)gDirectory->Get("h_edeps");
+      // printf("entries:%f\n", h_edeps->GetBinContent(1));
+      float E_dep(h_edeps->GetBinContent(1));
+      float Photon2edep(PromptCount / E_dep);
       // printf("edepra:%f\tra:%f\n", edep[0] / (edep[1] + edep[0]),
       //        (float)PromptCount / *totalPE);
       double R_cubic = pow(EvtPos.Mag2(), 1.5);
       double Costheta = EvtPos.CosTheta();
-      // // printf("x:%f\ty:%f\tz:%f\n", R_cubic, Costheta, Photon2edep);
+      // printf("x:%f\ty:%f\tz:%f\n", R_cubic, Costheta, E_dep);
       h_ep->Fill(R_cubic, Costheta, Photon2edep);
       h_ep_count->Fill(R_cubic, Costheta);
    }
-   // else
-   // {
-   //    // printf("less\n");
-   // }
 
    return kTRUE;
 }
