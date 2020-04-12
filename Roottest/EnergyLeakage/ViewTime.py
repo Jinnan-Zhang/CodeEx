@@ -13,16 +13,20 @@ from REL import *
 
 def DrawNCaptureTime(NFiles, SaveFileName="nCapture.png"):
     # ROOT.EnableImplicitMT()
-    # evt = ROOT.TChain("evt")
+    evt = ROOT.TChain("evt")
     nCapture = ROOT.TChain("nCapture")
     AddFile2TChain(nCapture, NFiles=NFiles)
-    # evt.SetBranchStatus("*", 0)
+    AddFile2TChain(evt, NFiles=NFiles)
+    evt.SetBranchStatus("*", 0)
     nCapture.SetBranchStatus("*", 0)
     # evt.SetBranchStatus("hitTime", 1)
+    evt.SetBranchStatus("totalPE", 1)
     nCapture.SetBranchStatus("NeutronCaptureT", 1)
-    nCapture.GetEntry(int(sys.argv[1]))
-    NeutronCaptureT = np.asarray(nCapture.NeutronCaptureT)
-    print(NeutronCaptureT)
+    # nCapture.GetEntry(0)
+    evt.GetEntry(0)
+    # NeutronCaptureT = np.asarray(nCapture.NeutronCaptureT)
+    print(evt.totalPE)
+    # nCapture.ls()
     # # evt.GetEntry(int(sys.argv[1]))
     # # nCapture.GetEntry(int(sys.argv[1]))
     # x_min =np.min(NeutronCaptureT)
@@ -51,7 +55,6 @@ def DrawHitTime(NFiles, WhichEntry=1, SaveFileName="hitTime.png"):
     ROOT.gStyle.SetOptStat("ne")
 
     c.SaveAs(SaveFileName)
-
 
 if __name__ == "__main__":
     DrawNCaptureTime(NFiles=int(sys.argv[1]))

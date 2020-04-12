@@ -24,7 +24,7 @@ def AddFile2TChain(tree, NFiles=1):
             tree.Add(HXD + str(nn) + ".root")
 
 
-def DoR3CosThetaProfile(NFiles, SaveFileName="hitTime.png"):
+def DoR3CosThetaProfile(NFiles, SaveFileName="R2Cos"):
     # ROOT.EnableImplicitMT()
     evt = ROOT.TChain("evt")
     geninfo = ROOT.TChain("geninfo")
@@ -76,12 +76,11 @@ def DoR3CosThetaProfile(NFiles, SaveFileName="hitTime.png"):
             # print("num:",BinValue[i],Contenti)
     c = ROOT.TCanvas("myCanvasName", "The Canvas Title", 800, 600)
     h_ep.Draw("colz")
-    c.SaveAs("JUNOEnergyProfile.png")
-    ff_EL = ROOT.TFile.Open("JUNOEnergyLeakage.root", "RECREATE")
+    c.SaveAs(SaveFileName+".png")
+    ff_EL = ROOT.TFile.Open(SaveFileName+".root", "RECREATE")
     ff_EL.cd()
     h_ep.Write()
     ff_EL.Close()
-
     # x_min=0
     # float(sys.argv[2])
     # x_max=np.max(hitTime)
@@ -93,7 +92,7 @@ def DoR3CosThetaProfile(NFiles, SaveFileName="hitTime.png"):
     #     h_hit.Fill(i)
     # c = ROOT.TCanvas("myCanvasName","The Canvas Title",800,600)
     # h_hit.Draw()
-    c.SaveAs(SaveFileName)
+    # c.SaveAs(SaveFileName)
 
 
 def nPE2R3profile(NFiles, SaveFileName="nPE2R3"):
@@ -137,5 +136,5 @@ def nPE2R3profile(NFiles, SaveFileName="nPE2R3"):
 
 
 if __name__ == "__main__":
-    # DoR3CosThetaProfile(NFiles=int(sys.argv[1]))
-    nPE2R3profile(NFiles=int(sys.argv[1]))
+    DoR3CosThetaProfile(NFiles=int(sys.argv[1]))
+    # nPE2R3profile(NFiles=int(sys.argv[1]))

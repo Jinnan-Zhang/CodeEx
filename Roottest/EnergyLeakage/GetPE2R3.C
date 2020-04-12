@@ -76,17 +76,14 @@ Bool_t GetPE2R3::Process(Long64_t entry)
    // Use fStatus to set the return value of TTree::Process().
    //
    // The return value is currently not used.
-   // TString option = GetOption();
-   // if (option.Contains("prmtrkdep") && option.Contains("geninfo")&&option.Contains("nCapture"))
-   // {
-   // printf("hitTime:%f\n", hitTime[0]);
-   // printf("edep:%f\n", edep.At(1));
+
+   geninfoReader.SetLocalEntry(entry);
+   prmtrkdepReader.SetLocalEntry(entry);
+   evtReader.SetLocalEntry(entry);
    nCaptureReader.SetLocalEntry(entry);
-   if (NeutronCaptureT[0] > 1000)
+   printf("time:%f\n", NeutronCaptureT.At(0));
+   // if (NeutronCaptureT.At(0) > 1000.)
    {
-      geninfoReader.SetLocalEntry(entry);
-      prmtrkdepReader.SetLocalEntry(entry);
-      evtReader.SetLocalEntry(entry);
       TVector3 EvtPos(InitX[0] / 1e3, InitY[0] / 1e3, InitZ[0] / 1e3);
       evtReader.GetTree()->Draw("hitTime>>h_pr", "hitTime<1000", "goff", 1, entry);
       TH1F *h_pr = (TH1F *)gDirectory->Get("h_pr");
