@@ -32,6 +32,12 @@
 #include <TVector3.h>
 #include <vector>
 #include <cmath>
+#include <TROOT.h>
+#include <TChain.h>
+#include <TSelector.h>
+#include <TTreeReader.h>
+#include <TTreeReaderValue.h>
+#include <TTreeReaderArray.h>
 
 void GetPE2R3::Begin(TTree * /*tree*/)
 {
@@ -81,9 +87,10 @@ Bool_t GetPE2R3::Process(Long64_t entry)
    prmtrkdepReader.SetLocalEntry(entry);
    evtReader.SetLocalEntry(entry);
    nCaptureReader.SetLocalEntry(entry);
-   // printf("time:%f\n", NeutronCaptureT.At(0));
    // printf("time:%f\n", hitTime[1]);
-   // if (NeutronCaptureT.At(0) > 1000.)
+   nCaptureReader.GetTree()->Draw("NeutronCaptureT>>h_ncap(1,0,1000)", "NeutronCaptureT<1000", "goff", 1, entry);
+   TH1F *h_ncap = (TH1F *)gDirectory->Get("h_ncap");
+   if (!h_ncap->GetEffectiveEntries())
    {
       TVector3 EvtPos(InitX[0] / 1e3, InitY[0] / 1e3, InitZ[0] / 1e3);
       evtReader.GetTree()->Draw("hitTime>>h_pr", "hitTime<1000", "goff", 1, entry);
