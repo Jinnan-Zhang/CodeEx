@@ -81,7 +81,8 @@ Bool_t GetPE2R3::Process(Long64_t entry)
    prmtrkdepReader.SetLocalEntry(entry);
    evtReader.SetLocalEntry(entry);
    nCaptureReader.SetLocalEntry(entry);
-   printf("time:%f\n", NeutronCaptureT.At(0));
+   // printf("time:%f\n", NeutronCaptureT.At(0));
+   // printf("time:%f\n", hitTime[1]);
    // if (NeutronCaptureT.At(0) > 1000.)
    {
       TVector3 EvtPos(InitX[0] / 1e3, InitY[0] / 1e3, InitZ[0] / 1e3);
