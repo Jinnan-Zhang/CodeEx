@@ -79,25 +79,33 @@ Bool_t GetPE2R3::Process(Long64_t entry)
    // TString option = GetOption();
    // if (option.Contains("prmtrkdep") && option.Contains("geninfo")&&option.Contains("nCapture"))
    // {
-   evtReader.SetLocalEntry(entry);
-   prmtrkdepReader.SetLocalEntry(entry);
    // printf("hitTime:%f\n", hitTime[0]);
    // printf("edep:%f\n", edep.At(1));
-   geninfoReader.SetLocalEntry(entry);
    nCaptureReader.SetLocalEntry(entry);
-   TVector3 EvtPos(InitX[0] / 1e3, InitY[0] / 1e3, InitZ[0] / 1e3);
-   evtReader.GetTree()->Draw("hitTime>>h_pr", "hitTime<1000", "goff", 1, entry);
-   TH1F *h_pr = (TH1F *)gDirectory->Get("h_pr");
-   double PromptCount = h_pr->Integral();
-   // printf("h_pr:%f\ttotalPE:%d\n", PromptCount,*totalPE);
-   float Photon2edep(PromptCount / (edep[0] + edep[1]));
-   // printf("edepra:%f\tra:%f\n", edep[0] / (edep[1] + edep[0]),
-   //        (float)PromptCount / *totalPE);
-   double R_cubic = pow(EvtPos.Mag2(), 1.5);
-   double Costheta = EvtPos.CosTheta();
-   // // printf("x:%f\ty:%f\tz:%f\n", R_cubic, Costheta, Photon2edep);
-   h_ep->Fill(R_cubic, Costheta, Photon2edep);
-   h_ep_count->Fill(R_cubic, Costheta);
+   if (NeutronCaptureT[0] > 1000)
+   {
+      geninfoReader.SetLocalEntry(entry);
+      prmtrkdepReader.SetLocalEntry(entry);
+      evtReader.SetLocalEntry(entry);
+      TVector3 EvtPos(InitX[0] / 1e3, InitY[0] / 1e3, InitZ[0] / 1e3);
+      evtReader.GetTree()->Draw("hitTime>>h_pr", "hitTime<1000", "goff", 1, entry);
+      TH1F *h_pr = (TH1F *)gDirectory->Get("h_pr");
+      double PromptCount = h_pr->Integral();
+      // printf("h_pr:%f\ttotalPE:%d\n", PromptCount,*totalPE);
+      float Photon2edep(PromptCount / (edep[0] + edep[1]));
+      // printf("edepra:%f\tra:%f\n", edep[0] / (edep[1] + edep[0]),
+      //        (float)PromptCount / *totalPE);
+      double R_cubic = pow(EvtPos.Mag2(), 1.5);
+      double Costheta = EvtPos.CosTheta();
+      // // printf("x:%f\ty:%f\tz:%f\n", R_cubic, Costheta, Photon2edep);
+      h_ep->Fill(R_cubic, Costheta, Photon2edep);
+      h_ep_count->Fill(R_cubic, Costheta);
+   }
+   // else
+   // {
+   //    // printf("less\n");
+   // }
+
    return kTRUE;
 }
 
