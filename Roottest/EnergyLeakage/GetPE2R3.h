@@ -134,6 +134,7 @@ Bool_t GetPE2R3::Notify()
    // is started when using PROOF. It is normally not necessary to make changes
    // to the generated code, but the routine can be extended by the
    // user if needed. The return value is currently not used.
+   Info("Notify", "processing file: %s", evtReader.GetTree()->GetCurrentFile()->GetName());
 
    return kTRUE;
 }
