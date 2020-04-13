@@ -58,7 +58,7 @@ void GetPE2R3::SlaveBegin(TTree *myTree)
    TString option = GetOption();
    h_ep = new TH2F("EnergyProfile", "Simulation", NBinx, Ran_x[0], Ran_x[1], NBiny, Ran_y[0], Ran_y[1]);
    fOutput->Add(h_ep);
-   h_ep_count = new TH2I("hep_Counts", "Simulation", NBinx, Ran_x[0], Ran_x[1], NBiny, Ran_y[0], Ran_y[1]);
+   h_ep_count = new TH2F("hep_Counts", "Simulation", NBinx, Ran_x[0], Ran_x[1], NBiny, Ran_y[0], Ran_y[1]);
    fOutput->Add(h_ep_count);
    TotalBin = h_ep->GetSize();
    // BinValue = new int[TotalBin];
@@ -134,7 +134,7 @@ void GetPE2R3::Terminate()
    // the results graphically or save the results to file.
    TH1::SetDefaultSumw2();
    h_ep = dynamic_cast<TH2F *>(fOutput->FindObject("EnergyProfile"));
-   h_ep_count = dynamic_cast<TH2I *>(fOutput->FindObject("hep_Counts"));
+   h_ep_count = dynamic_cast<TH2F *>(fOutput->FindObject("hep_Counts"));
    TCanvas c("myCanvasName", "The Canvas Title", 800, 600);
    // //calculate average
    // h_ep->Divide(h_ep, h_ep_count);
