@@ -82,10 +82,10 @@ Bool_t GetPE2R3::Process(Long64_t entry)
    // Use fStatus to set the return value of TTree::Process().
    //
    // The return value is currently not used.
-   TTree *tree = evtReader.GetTree();
-   prmtrkdepReader.SetTree(tree->GetFriend("prmtrkdep"));
-   geninfoReader.SetTree(tree->GetFriend("geninfo"));
-   nCaptureReader.SetTree(tree->GetFriend("nCapture"));
+   // TTree *tree = evtReader.GetTree();
+   // prmtrkdepReader.SetTree(tree->GetFriend("prmtrkdep"));
+   // geninfoReader.SetTree(tree->GetFriend("geninfo"));
+   // nCaptureReader.SetTree(tree->GetFriend("nCapture"));
 
    geninfoReader.SetLocalEntry(entry);
    prmtrkdepReader.SetLocalEntry(entry);
