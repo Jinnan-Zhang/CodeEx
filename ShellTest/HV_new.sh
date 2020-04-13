@@ -5,9 +5,9 @@ USERNAME=pmtRo
 USERPASS=JUNO@PanAsia2017
 string="Pass"
 string1="Go SS"
-echo "PMT_ID HV"
-Drawer=201
 NANs=1
+channel=0
+chArr=()
 while read row1 row2;
 do
     pmtid=$row1;
@@ -17,22 +17,32 @@ do
     if [ "$purpose" == "1000" ]||[ "$purpose" == "1001" ];
     then 
         CMD="select PMT_ID, HV from junopmttest.container_test where PMT_ID = '$pmtid' and Indication in ('$string','$string1') order by Date desc limit 0,1"
-        mysql -u $USERNAME -h $HOST -p$USERPASS $DB_NAME -N -B -e "$CMD"
-        # echo $Drawer 
-        Drawer=`expr $Drawer + 1`
+        mysql -u $USERNAME -h $HOST -p$USERPASS $DB_NAME -N -B -e "$CMD" >> new.txt
     elif [ "$purpose" == "2" ];
     then
-        echo NAN$NANs $Drawer 0 2
+        echo $pmtid$NANs 0 >> new.txt
         NANs=`expr $NANs + 1`
-        Drawer=`expr $Drawer + 1`
     elif [ "$purpose" == "0" ]
     then
         CMD="select SN, Ebb from junopmttest.hamamatsudbt where SN = '$pmtid'"
-        mysql -u $USERNAME -h $HOST -p$USERPASS $DB_NAME -N -B -e "$CMD"
-        Drawer=`expr $Drawer + 1`
+        mysql -u $USERNAME -h $HOST -p$USERPASS $DB_NAME -N -B -e "$CMD" >> new.txt
     else
         CMD="select SN, HV from junopmttest.nnvtdbt where SN = '$pmtid'"
-        mysql -u $USERNAME -h $HOST -p$USERPASS $DB_NAME -N -B -e "$CMD"
-        Drawer=`expr $Drawer + 1`
+        mysql -u $USERNAME -h $HOST -p$USERPASS $DB_NAME -N -B -e "$CMD" >> new.txt
     fi
+    chArr[channel]=$purpose
+    channel=`expr $channel + 1`
 done < pmt_list.txt
+
+echo "PMT_ID Drawer HV types"
+Drawer=201
+channel=0
+while read row1 row2;
+do
+    pmtid=$row1;
+    HV=$row2;
+    echo $pmtid  $Drawer  ${HV%.*}  ${chArr[channel]}
+    Drawer=`expr $Drawer + 1`
+    channel=`expr $channel + 1`
+done < new.txt
+rm new.txt
