@@ -82,14 +82,19 @@ Bool_t GetPE2R3::Process(Long64_t entry)
    // Use fStatus to set the return value of TTree::Process().
    //
    // The return value is currently not used.
+   TTree *tree = evtReader.GetTree();
+   prmtrkdepReader.SetTree(tree->GetFriend("prmtrkdep"));
+   geninfoReader.SetTree(tree->GetFriend("geninfo"));
+   nCaptureReader.SetTree(tree->GetFriend("nCapture"));
 
    geninfoReader.SetLocalEntry(entry);
    prmtrkdepReader.SetLocalEntry(entry);
    evtReader.SetLocalEntry(entry);
    nCaptureReader.SetLocalEntry(entry);
    // printf("time:%f\n", hitTime[1]);
-   nCaptureReader.GetTree()->Draw("NeutronCaptureT>>h_ncap(1,0,1000)", "", "goff", 1, entry);
+   nCaptureReader.GetTree()->Draw("NeutronCaptureT>>h_ncap(1,0,1200)", "", "goff", 1, entry);
    TH1F *h_ncap = (TH1F *)gDirectory->Get("h_ncap");
+
    if (!(h_ncap->GetEffectiveEntries()))
    {
       TVector3 EvtPos(InitX[0] / 1e3, InitY[0] / 1e3, InitZ[0] / 1e3);
@@ -97,13 +102,13 @@ Bool_t GetPE2R3::Process(Long64_t entry)
       TH1F *h_pr = (TH1F *)gDirectory->Get("h_pr");
       double PromptCount = h_pr->GetEffectiveEntries();
       // printf("h_pr:%f\ttotalPE:%d\n", PromptCount,*totalPE);
-      prmtrkdepReader.GetTree()->Draw("edep[0]>>h_edeps(1)", "edep[0]*(1>0)", "goff", 1, entry);
-      TH1F *h_edeps = (TH1F *)gDirectory->Get("h_edeps");
-      // printf("entries:%f\n", h_edeps->GetBinContent(1));
-      float E_dep(h_edeps->GetBinContent(1));
+      // prmtrkdepReader.GetTree()->Draw("edep[0]>>h_edeps(1)", "edep[0]*(1>0)", "goff", 1, entry);
+      // TH1F *h_edeps = (TH1F *)gDirectory->Get("h_edeps");
+      // float E_dep(h_edeps->GetBinContent(1));
+      float E_dep(edep[0]);
       float Photon2edep(PromptCount / E_dep);
-      // printf("edepra:%f\tra:%f\n", edep[0] / (edep[1] + edep[0]),
-      //        (float)PromptCount / *totalPE);
+
+      printf("Photon2edep:%f\n", Photon2edep);
       double R_cubic = pow(EvtPos.Mag2(), 1.5);
       double Costheta = EvtPos.CosTheta();
       // printf("x:%f\ty:%f\tz:%f\n", R_cubic, Costheta, E_dep);
@@ -132,12 +137,18 @@ void GetPE2R3::Terminate()
    h_ep_count = dynamic_cast<TH2I *>(fOutput->FindObject("hep_Counts"));
    TCanvas c("myCanvasName", "The Canvas Title", 800, 600);
    // //calculate average
-   h_ep->Divide(h_ep, h_ep_count);
-   // for (int i = 1; i < TotalBin; i++)
-   // {
-   //    if (h_ep_count->GetBinContent(i) > 0)
-   //       Printf("entry:%d\t%.1f\n", i, h_ep_count->GetBinContent(i));
-   // }
+   // h_ep->Divide(h_ep, h_ep_count);
+   double BinVi[2] = {0};
+   for (int i = 0; i < TotalBin; i++)
+   {
+      BinVi[0] = h_ep_count->GetBinContent(i + 1);
+      if (BinVi[0] > 1)
+      {
+         BinVi[1] = h_ep->GetBinContent(i + 1);
+         BinVi[1] /= BinVi[0];
+         h_ep->SetBinContent(i + 1, BinVi[1]);
+      }
+   }
    h_ep->SetXTitle("R^{3} (m^{3})");
    h_ep->SetYTitle("cos#theta");
    h_ep->Draw("colz");

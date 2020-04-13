@@ -42,7 +42,8 @@ public:
    // TTreeReaderValue<Float_t> edepX = {evtReader, "edepX"};
    // TTreeReaderValue<Float_t> edepY = {evtReader, "edepY"};
    // TTreeReaderValue<Float_t> edepZ = {evtReader, "edepZ"};
-   // TTreeReaderArray<Float_t> edep = {prmtrkdepReader, "edep"};
+   TTreeReaderArray<Float_t> edep = {prmtrkdepReader, "edep"};
+
    TTreeReaderArray<Float_t> InitX = {geninfoReader, "InitX"};
    TTreeReaderArray<Float_t> InitY = {geninfoReader, "InitY"};
    TTreeReaderArray<Float_t> InitZ = {geninfoReader, "InitZ"};
@@ -60,17 +61,17 @@ public:
    virtual void Init(TTree *tree);
    virtual Bool_t Notify();
    virtual Bool_t Process(Long64_t entry);
-   // virtual Int_t GetEntry(Long64_t entry, Int_t getall = 0)
-   // {
-   //    TString option = GetOption();
-   //    if (option.Contains("prmtrkdep"))
-   //       prmtrkdep->GetTree()->GetEntry(entry, getall);
-   //    if (option.Contains("geninfo"))
-   //       geninfo->GetTree()->GetEntry(entry, getall);
-   //    if (option.Contains("nCapture"))
-   //       nCapture->GetTree()->GetEntry(entry, getall);
-   //    return evt ? evt->GetTree()->GetEntry(entry, getall) : 0;
-   // }
+   virtual Int_t GetEntry(Long64_t entry, Int_t getall = 0)
+   {
+      TString option = GetOption();
+      if (option.Contains("prmtrkdep"))
+         prmtrkdep->GetTree()->GetEntry(entry, getall);
+      if (option.Contains("geninfo"))
+         geninfo->GetTree()->GetEntry(entry, getall);
+      if (option.Contains("nCapture"))
+         nCapture->GetTree()->GetEntry(entry, getall);
+      return evt ? evt->GetTree()->GetEntry(entry, getall) : 0;
+   }
    virtual void SetOption(const char *option) { fOption = option; }
    virtual void SetObject(TObject *obj) { fObject = obj; }
    virtual void SetInputList(TList *input) { fInput = input; }
