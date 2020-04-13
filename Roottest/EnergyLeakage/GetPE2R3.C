@@ -108,7 +108,7 @@ Bool_t GetPE2R3::Process(Long64_t entry)
       float E_dep(edep[0]);
       float Photon2edep(PromptCount / E_dep);
 
-      printf("Photon2edep:%f\n", Photon2edep);
+      printf("E_dep:%f\n", E_dep);
       double R_cubic = pow(EvtPos.Mag2(), 1.5);
       double Costheta = EvtPos.CosTheta();
       // printf("x:%f\ty:%f\tz:%f\n", R_cubic, Costheta, E_dep);

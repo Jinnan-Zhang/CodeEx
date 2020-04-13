@@ -64,9 +64,9 @@ public:
    virtual Int_t GetEntry(Long64_t entry, Int_t getall = 0)
    {
       TString option = GetOption();
-      if (option.Contains("prmtrkdep"))
+      // if (option.Contains("prmtrkdep"))
          prmtrkdep->GetTree()->GetEntry(entry, getall);
-      if (option.Contains("geninfo"))
+      // if (option.Contains("geninfo"))
          geninfo->GetTree()->GetEntry(entry, getall);
       if (option.Contains("nCapture"))
          nCapture->GetTree()->GetEntry(entry, getall);
