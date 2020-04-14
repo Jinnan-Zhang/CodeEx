@@ -33,9 +33,14 @@ do
     chArr[channel]=$purpose
     channel=`expr $channel + 1`
 done < pmt_list.txt
-
+read -p "Please input container A or B:" Container
+if [ "$Container" == "A" ]
+then
+    Drawer=101
+else
+    Drawer=201
+fi
 echo "PMT_ID Drawer HV types"
-Drawer=201
 channel=0
 while read row1 row2;
 do
