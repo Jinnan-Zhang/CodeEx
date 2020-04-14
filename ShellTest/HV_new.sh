@@ -46,7 +46,7 @@ while read row1 row2;
 do
     pmtid=$row1;
     HV=$row2;
-    echo $pmtid  $Drawer  ${HV%.*}  ${chArr[channel]}
+    echo -e "$pmtid\t$Drawer\t${HV%.*}\t${chArr[channel]}"
     Drawer=`expr $Drawer + 1`
     channel=`expr $channel + 1`
 done < new.txt
