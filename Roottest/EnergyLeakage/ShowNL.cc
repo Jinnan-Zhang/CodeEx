@@ -16,7 +16,7 @@ int ShowNL()
 {
     TH1::AddDirectory(false);
     TFile *ff = TFile::Open("energymodel_Apr2018_newE.root", "READ");
-    TFile *ff_h = TFile::Open("JunoFullNL.root", "RECREATE");
+    // TFile *ff_h = TFile::Open("JunoFullNL.root", "RECREATE");
     // TFile *ff_h = TFile::Open("JunoFullNL.root", "READ");
     TH1D *h1 = new TH1D("positronFullNL", "Positron Full NL", NBINS, E_LP, E_UP);
     int nform = 0;
@@ -60,35 +60,54 @@ int ShowNL()
         h4->SetBinContent(i + 1, g3->Eval(c));
         h5->SetBinContent(i + 1, g4->Eval(c));
     }
-    ff_h->cd();
+    // ff_h->cd();
 
-    h1->Write();
-    h2->Write();
-    h3->Write();
-    h4->Write();
-    h5->Write();
+    // h1->Write();
+    // h2->Write();
+    // h3->Write();
+    // h4->Write();
+    // h5->Write();
 
     h2->SetLineColor(kBlue);
     h3->SetLineColor(kRed);
     h4->SetLineColor(kGreen);
     h5->SetLineColor(kYellow);
     
+    TLegend leg(3,2);
     h1->SetXTitle("E(MeV)");
+    leg.AddEntry(h1,"Nominal");
+
     h1->Draw();
     h2->Draw("SAME");
     h3->Draw("SAME");
     h4->Draw("SAME");
     h5->Draw("SAME");
-    TLegend leg(3,2);
-    leg.AddEntry(h1,"Nominal");
     nform=0;
     leg.AddEntry(h2,Form("pull%d", nform++));
     leg.AddEntry(h3,Form("pull%d", nform++));
     leg.AddEntry(h4,Form("pull%d", nform++));
     leg.AddEntry(h5,Form("pull%d", nform++));
+    // TFile *ff_NLs=TFile::Open("NLELProfils.root", "READ");
+    // TH1D *h_SubDNL[5] = {0};
+    // for (int i = 0; i < 5; i++)
+    // {
+    //     // ff_NLs->GetObject(Form("NLSubD%d", i), (h_SubDNL[i]));
+    //     h_SubDNL[i]=(TH1D*)ff_NLs->Get(Form("NLSubD%d", i));
+    //     leg.AddEntry(h_SubDNL[i],Form("SubD%d",i));
+    // }
+    // h_SubDNL[0]->Draw("hist");
+    // h1->SetLineColor(kViolet);
+    // h1->Draw("SAME");
+    // leg.AddEntry(h1,"Nominal");
+
+    // for (int i = 1; i < 5; i++)
+    // {
+    //     h_SubDNL[i]->SetLineColor(kBlack + i);
+    //     h_SubDNL[i]->Draw("hist SAME");   
+    // }
     leg.DrawClone("SAME");
 
-    ff_h->Close();
+    // ff_h->Close();
     // TH1D *h2 = 0;
     // ff_h->GetObject("positronFullNL", h2);
     // h2->SetLineColor(kRed);
