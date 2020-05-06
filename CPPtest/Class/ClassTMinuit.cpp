@@ -15,7 +15,12 @@ private:
 public:
     TestFCN(/* args */);
     static void TFCN(Int_t &npar, Double_t *grad, Double_t &fval, Double_t *par, Int_t flag);
-    static double TTF1(double *x, double *par) { return x[0] * x[0]; }
+    static double TTF1(double *x, double *par)
+    {
+        double x1 = xinFCN(x[0]);
+        return x1;
+    }
+    static double xinFCN(double x) { return x * x; }
     ~TestFCN();
 };
 TestFCN::TestFCN(/* args */)
