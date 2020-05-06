@@ -83,7 +83,8 @@
         "EvtSelector.C": "cpp",
         "GetPE2R3.C": "cpp",
         "nCaptureT.C": "cpp",
-        "xmlreadfile.C": "cpp"
+        "xmlreadfile.C": "cpp",
+        "xmlmodifyfile.C": "cpp"
     },
     "python.formatting.provider": "yapf"
 }

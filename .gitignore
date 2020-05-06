@@ -6,3 +6,4 @@
 *.out.*
 /Roottest/data/*.root
 /Roottest/TChaintest/*.root
+*.xml
