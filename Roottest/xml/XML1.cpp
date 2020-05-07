@@ -1,32 +1,64 @@
 #include <TXMLEngine.h>
 #include <TXMLParser.h>
 #include <stdio.h>
+#include <string>
+using namespace std;
 void DisplayNode(TXMLEngine &xml, XMLNodePointer_t node, Int_t level);
+int ScanNode(TXMLEngine &xml, XMLNodePointer_t node);
+void xmlnewfile(const char *filename);
+void myNewXML(const char *filename);
+void myReadXML(const char *filename);
 
 int XML1()
 {
-   const char *filename = "example.xml";
-   // First create engine
-   TXMLEngine xml;
+   // const char *filename = "modify.xml";
+   // // First create engine
+   // TXMLEngine xml;
 
-   // Now try to parse xml file
-   // Only file with restricted xml syntax are supported
-   XMLDocPointer_t xmldoc = xml.ParseFile(filename);
-   if (!xmldoc)
-      return 0;
+   // // Now try to parse xml file
+   // // Only file with restricted xml syntax are supported
+   // XMLDocPointer_t xmldoc = xml.ParseFile(filename);
+   // if (!xmldoc)
+   //    return 0;
 
-   // take access to main node
-   XMLNodePointer_t mainnode = xml.DocGetRootElement(xmldoc);
+   // // take access to main node
+   // XMLNodePointer_t mainnode = xml.DocGetRootElement(xmldoc);
 
-   // display recursively all nodes and subnodes
-   DisplayNode(xml, mainnode, 1);
+   // // display recursively all nodes and subnodes
+   // DisplayNode(xml, mainnode, 1);
 
-   // Release memory before exit
-   xml.FreeDoc(xmldoc);
+   // // Release memory before exit
+   // xml.FreeDoc(xmldoc);
 
+   myNewXML("testJUNO.xml");
+   myReadXML("testJUNO.xml");
    return 0;
 }
 
+void myReadXML(const char *filename)
+{
+   TXMLEngine myXML;
+   XMLDocPointer_t myXMLDoc=myXML.ParseFile(filename);
+   XMLNodePointer_t mainNode=myXML.DocGetRootElement(myXMLDoc);
+   XMLNodePointer_t C1=myXML.GetChild(mainNode);
+   // DisplayNode(myXML,mainNode,1);
+   double BinWidth=stod(string(myXML.GetNodeContent(C1)));
+   printf("%s=%f\n",myXML.GetNodeName(C1),BinWidth);
+
+   myXML.FreeDoc(myXMLDoc);
+}
+void myNewXML(const char *filename)
+{
+   TXMLEngine myXML;
+
+   XMLNodePointer_t JUNONode=myXML.NewChild(0,0,"JUNO");
+   myXML.NewChild(JUNONode,0,"BinWidth","0.02");
+   XMLDocPointer_t myXMLdoc=myXML.NewDoc();
+   myXML.DocSetRootElement(myXMLdoc,JUNONode);
+   myXML.SaveDoc(myXMLdoc,filename);
+   myXML.FreeDoc(myXMLdoc);
+
+}
 void DisplayNode(TXMLEngine &xml, XMLNodePointer_t node, Int_t level)
 {
    // this function display all accessible
@@ -64,4 +96,74 @@ void DisplayNode(TXMLEngine &xml, XMLNodePointer_t node, Int_t level)
       DisplayNode(xml, child, level + 2);
       child = xml.GetNext(child);
    }
+}
+// scan node and returns number of childs
+// for each child create info node with name and number of childs
+int ScanNode(TXMLEngine &xml, XMLNodePointer_t node)
+{
+   int cnt = 0;
+   XMLNodePointer_t child = xml.GetChild(node);
+   while (child)
+   {
+      cnt++;
+
+      int numsub = ScanNode(xml, child);
+
+      // create new <info> node
+      XMLNodePointer_t info = xml.NewChild(node,
+                                           xml.GetNS(child), "info");
+
+      // set name and num attributes of info node
+      xml.NewAttr(info, 0, "name", xml.GetNodeName(child));
+      if (numsub > 0)
+         xml.NewIntAttr(info, "num", numsub);
+
+      // move it after current node
+      xml.AddChildAfter(node, info, child);
+
+      // set pointer to new node
+      child = info;
+
+      xml.ShiftToNext(child);
+   }
+   return cnt;
+}
+void xmlnewfile(const char *filename)
+{
+   // First create engine
+   TXMLEngine xml;
+
+   // Create main node of document tree
+   XMLNodePointer_t mainnode = xml.NewChild(0, 0, "main");
+
+   // Simple child node with content inside
+   xml.NewChild(mainnode, 0, "child1", "Content of child1 node");
+
+   // Other child node with attributes
+   XMLNodePointer_t child2 = xml.NewChild(mainnode, 0, "child2");
+   xml.NewAttr(child2, 0, "attr1", "value1");
+   xml.NewAttr(child2, 0, "attr2", "value2");
+
+   // Child node with subnodes
+   XMLNodePointer_t child3 = xml.NewChild(mainnode, 0, "child3");
+   xml.NewChild(child3, 0, "subchild1", "subchild1 content");
+   xml.NewChild(child3, 0, "subchild2", "subchild2 content");
+   xml.NewChild(child3, 0, "subchild3", "subchild3 content");
+
+   // Child node with subnodes and namespace
+   XMLNodePointer_t child4 = xml.NewChild(mainnode, 0, "child4");
+   XMLNsPointer_t ns4 = xml.NewNS(child4, "http://website/webpage");
+   xml.NewChild(child4, ns4, "subchild1", "subchild1 content");
+   xml.NewChild(child4, ns4, "subchild2", "subchild2 content");
+   xml.NewChild(child4, ns4, "subchild3", "subchild3 content");
+
+   // now create document and assign main node of document
+   XMLDocPointer_t xmldoc = xml.NewDoc();
+   xml.DocSetRootElement(xmldoc, mainnode);
+
+   // Save document to file
+   xml.SaveDoc(xmldoc, filename);
+
+   // Release memory before exit
+   xml.FreeDoc(xmldoc);
 }
