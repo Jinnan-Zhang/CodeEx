@@ -8,7 +8,9 @@ int ScanNode(TXMLEngine &xml, XMLNodePointer_t node);
 void xmlnewfile(const char *filename);
 void myNewXML(const char *filename);
 void myReadXML(const char *filename);
-void LoadXMLConfig(const char *VariableName, double &Variable, const char *filename);
+void LoadXMLConfig(const char *VariableName,
+                   double &Variable,
+                   const char *filename);
 
 int XML1()
 {
@@ -35,6 +37,22 @@ int XML1()
    // myReadXML("modify.xml");
    return 0;
 }
+void LoadXMLConfig(const char *VariableName,
+                   double &Variable,
+                   const char *filename)
+{
+   TXMLEngine tXML;
+   XMLDocPointer_t tXMLDoc = tXML.ParseFile(filename);
+   XMLNodePointer_t mainNode = tXML.DocGetRootElement(tXMLDoc);
+   XMLNodePointer_t tNode0=tXML.GetChild(mainNode);
+   while (tNode0!=NULL)
+   {
+      if(strcmp(VariableName,tXML.GetNodeName(tNode0))==0)
+         Variable=stod(string(tXML.GetNodeContent(tNode0)));
+      tNode0=tXML.GetNext(tNode0);
+   }
+
+}
 
 void myReadXML(const char *filename)
 {
@@ -44,7 +62,7 @@ void myReadXML(const char *filename)
    XMLNodePointer_t C1 = myXML.GetChild(mainNode);
    double BinWidth;
 
-//find what we need
+   //find what we need
    while (C1 != NULL)
    {
       if (strcmp(myXML.GetNodeName(C1), "BinWidth") == 0)
@@ -62,18 +80,18 @@ void myNewXML(const char *filename)
    TXMLEngine myXML;
 
    XMLNodePointer_t JUNONode = myXML.NewChild(0, 0, "JUNOConfigs");
-   XMLNodePointer_t BinWith= myXML.NewChild(JUNONode, 0, "BinWidth", "0.02");
-   myXML.NewAttr(BinWith,0,"type","double");
-   myXML.NewAttr(BinWith,0,"Note","Analysis Energy Spectrum BinWidth");
-   myXML.NewAttr(BinWith,0,"Units","MeV");
-   XMLNodePointer_t E_LP= myXML.NewChild(JUNONode, 0, "E_LP", "1.3109989");
-   myXML.NewAttr(E_LP,0,"type","double");
-   myXML.NewAttr(E_LP,0,"Note","Lower Bound of Prompt Energy Spectrum");
-   myXML.NewAttr(E_LP,0,"Units","MeV");
-   XMLNodePointer_t E_UP= myXML.NewChild(JUNONode, 0, "E_LP", "8.5109989");
-   myXML.NewAttr(E_UP,0,"type","double");
-   myXML.NewAttr(E_UP,0,"Note","Upper Bound of Prompt Energy Spectrum");
-   myXML.NewAttr(E_UP,0,"Units","MeV");
+   XMLNodePointer_t BinWith = myXML.NewChild(JUNONode, 0, "BinWidth", "0.02");
+   myXML.NewAttr(BinWith, 0, "type", "double");
+   myXML.NewAttr(BinWith, 0, "Note", "Analysis Energy Spectrum BinWidth");
+   myXML.NewAttr(BinWith, 0, "Units", "MeV");
+   XMLNodePointer_t E_LP = myXML.NewChild(JUNONode, 0, "E_LP", "1.3109989");
+   myXML.NewAttr(E_LP, 0, "type", "double");
+   myXML.NewAttr(E_LP, 0, "Note", "Lower Bound of Prompt Energy Spectrum");
+   myXML.NewAttr(E_LP, 0, "Units", "MeV");
+   XMLNodePointer_t E_UP = myXML.NewChild(JUNONode, 0, "E_LP", "8.5109989");
+   myXML.NewAttr(E_UP, 0, "type", "double");
+   myXML.NewAttr(E_UP, 0, "Note", "Upper Bound of Prompt Energy Spectrum");
+   myXML.NewAttr(E_UP, 0, "Units", "MeV");
 
    XMLDocPointer_t myXMLdoc = myXML.NewDoc();
    myXML.DocSetRootElement(myXMLdoc, JUNONode);
