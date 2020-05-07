@@ -31,8 +31,8 @@ int XML1()
    // // Release memory before exit
    // xml.FreeDoc(xmldoc);
 
-   // myNewXML("testJUNO.xml");
-   myReadXML("modify.xml");
+   myNewXML("JUNOConfigs.xml");
+   // myReadXML("modify.xml");
    return 0;
 }
 
@@ -61,8 +61,20 @@ void myNewXML(const char *filename)
 {
    TXMLEngine myXML;
 
-   XMLNodePointer_t JUNONode = myXML.NewChild(0, 0, "JUNO");
-   myXML.NewChild(JUNONode, 0, "BinWidth", "0.02");
+   XMLNodePointer_t JUNONode = myXML.NewChild(0, 0, "JUNOConfigs");
+   XMLNodePointer_t BinWith= myXML.NewChild(JUNONode, 0, "BinWidth", "0.02");
+   myXML.NewAttr(BinWith,0,"type","double");
+   myXML.NewAttr(BinWith,0,"Note","Analysis Energy Spectrum BinWidth");
+   myXML.NewAttr(BinWith,0,"Units","MeV");
+   XMLNodePointer_t E_LP= myXML.NewChild(JUNONode, 0, "E_LP", "1.3109989");
+   myXML.NewAttr(E_LP,0,"type","double");
+   myXML.NewAttr(E_LP,0,"Note","Lower Bound of Prompt Energy Spectrum");
+   myXML.NewAttr(E_LP,0,"Units","MeV");
+   XMLNodePointer_t E_UP= myXML.NewChild(JUNONode, 0, "E_LP", "8.5109989");
+   myXML.NewAttr(E_UP,0,"type","double");
+   myXML.NewAttr(E_UP,0,"Note","Upper Bound of Prompt Energy Spectrum");
+   myXML.NewAttr(E_UP,0,"Units","MeV");
+
    XMLDocPointer_t myXMLdoc = myXML.NewDoc();
    myXML.DocSetRootElement(myXMLdoc, JUNONode);
    myXML.SaveDoc(myXMLdoc, filename);
