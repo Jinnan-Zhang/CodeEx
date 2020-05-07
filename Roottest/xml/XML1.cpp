@@ -8,6 +8,7 @@ int ScanNode(TXMLEngine &xml, XMLNodePointer_t node);
 void xmlnewfile(const char *filename);
 void myNewXML(const char *filename);
 void myReadXML(const char *filename);
+void LoadXMLConfig(const char *VariableName, double &Variable, const char *filename);
 
 int XML1()
 {
@@ -30,20 +31,29 @@ int XML1()
    // // Release memory before exit
    // xml.FreeDoc(xmldoc);
 
-   myNewXML("testJUNO.xml");
-   myReadXML("testJUNO.xml");
+   // myNewXML("testJUNO.xml");
+   myReadXML("modify.xml");
    return 0;
 }
 
 void myReadXML(const char *filename)
 {
    TXMLEngine myXML;
-   XMLDocPointer_t myXMLDoc=myXML.ParseFile(filename);
-   XMLNodePointer_t mainNode=myXML.DocGetRootElement(myXMLDoc);
-   XMLNodePointer_t C1=myXML.GetChild(mainNode);
+   XMLDocPointer_t myXMLDoc = myXML.ParseFile(filename);
+   XMLNodePointer_t mainNode = myXML.DocGetRootElement(myXMLDoc);
+   XMLNodePointer_t C1 = myXML.GetChild(mainNode);
+   double BinWidth;
+
+//find what we need
+   while (C1 != NULL)
+   {
+      if (strcmp(myXML.GetNodeName(C1), "BinWidth") == 0)
+         BinWidth = stod(string(myXML.GetNodeContent(C1)));
+      C1 = myXML.GetNext(C1);
+   }
+
    // DisplayNode(myXML,mainNode,1);
-   double BinWidth=stod(string(myXML.GetNodeContent(C1)));
-   printf("%s=%f\n",myXML.GetNodeName(C1),BinWidth);
+   printf("%s=%f\n", myXML.GetNodeName(C1), BinWidth);
 
    myXML.FreeDoc(myXMLDoc);
 }
@@ -51,13 +61,12 @@ void myNewXML(const char *filename)
 {
    TXMLEngine myXML;
 
-   XMLNodePointer_t JUNONode=myXML.NewChild(0,0,"JUNO");
-   myXML.NewChild(JUNONode,0,"BinWidth","0.02");
-   XMLDocPointer_t myXMLdoc=myXML.NewDoc();
-   myXML.DocSetRootElement(myXMLdoc,JUNONode);
-   myXML.SaveDoc(myXMLdoc,filename);
+   XMLNodePointer_t JUNONode = myXML.NewChild(0, 0, "JUNO");
+   myXML.NewChild(JUNONode, 0, "BinWidth", "0.02");
+   XMLDocPointer_t myXMLdoc = myXML.NewDoc();
+   myXML.DocSetRootElement(myXMLdoc, JUNONode);
+   myXML.SaveDoc(myXMLdoc, filename);
    myXML.FreeDoc(myXMLdoc);
-
 }
 void DisplayNode(TXMLEngine &xml, XMLNodePointer_t node, Int_t level)
 {
