@@ -2,7 +2,7 @@
 #include <TXMLParser.h>
 #include <stdio.h>
 #include <string>
-using namespace std;
+// using namespace std;
 void DisplayNode(TXMLEngine &xml, XMLNodePointer_t node, Int_t level);
 int ScanNode(TXMLEngine &xml, XMLNodePointer_t node);
 void xmlnewfile(const char *filename);
@@ -11,6 +11,8 @@ void myReadXML(const char *filename);
 void LoadXMLConfig(const char *VariableName,
                    double &Variable,
                    const char *filename);
+const char *LoadXMLConfig(const char *VariableName,
+                          const char *filename);
 
 int XML1()
 {
@@ -32,20 +34,40 @@ int XML1()
 
    // // Release memory before exit
    // xml.FreeDoc(xmldoc);
-
-   myNewXML("JUNOConfigs.xml");
    // myReadXML("modify.xml");
-   double BinWidth,E_LP,E_UP;
-   LoadXMLConfig("BinWidth",BinWidth,"JUNOConfigs.xml");
-   LoadXMLConfig("E_LP",E_LP,"JUNOConfigs.xml");
-   LoadXMLConfig("E_UP",E_UP,"JUNOConfigs.xml");
-   printf("BinWidth:%f\n",BinWidth);
-   printf("E_LP:%f\n",E_LP);
-   printf("E_UP:%f\n",E_UP);
-   printf("BinNUM:%d\n",(int)((E_UP-E_LP)/BinWidth));
 
+   const char *filename="JUNOConfigs.xml";
+   myNewXML(filename);
+   // double BinWidth, E_LP, E_UP;
+   // LoadXMLConfig("BinWidth", BinWidth, "JUNOConfigs.xml");
+   // LoadXMLConfig("E_LP", E_LP, "JUNOConfigs.xml");
+   // LoadXMLConfig("E_UP", E_UP, "JUNOConfigs.xml");
+   // printf("BinWidth:%f\n", BinWidth);
+   // printf("E_LP:%f\n", E_LP);
+   // printf("E_UP:%f\n", E_UP);
+   // printf("BinNUM:%d\n", (int)((E_UP - E_LP) / BinWidth));
+   const char *DefaultData=LoadXMLConfig("DefaultData",filename);
+   printf("DefaultData:%s\n",DefaultData);
    return 0;
 }
+const char *LoadXMLConfig(const char *VariableName,
+                          const char *filename)
+{
+   TXMLEngine tXML;
+   XMLDocPointer_t tXMLDoc = tXML.ParseFile(filename);
+   XMLNodePointer_t mainNode = tXML.DocGetRootElement(tXMLDoc);
+   XMLNodePointer_t tNode0 = tXML.GetChild(mainNode);
+   while (tNode0 != NULL)
+   {
+      if (strcmp(VariableName, tXML.GetNodeName(tNode0)) == 0)
+      {
+         return tXML.GetNodeContent(tNode0);
+      }
+      tNode0 = tXML.GetNext(tNode0);
+   }
+   return NULL;
+}
+
 void LoadXMLConfig(const char *VariableName,
                    double &Variable,
                    const char *filename)
@@ -58,7 +80,7 @@ void LoadXMLConfig(const char *VariableName,
    {
       if (strcmp(VariableName, tXML.GetNodeName(tNode0)) == 0)
       {
-         Variable = stod(string(tXML.GetNodeContent(tNode0)));
+         Variable = std::stod(std::string(tXML.GetNodeContent(tNode0)));
       }
       tNode0 = tXML.GetNext(tNode0);
    }
@@ -76,7 +98,7 @@ void myReadXML(const char *filename)
    while (C1 != NULL)
    {
       if (strcmp(myXML.GetNodeName(C1), "BinWidth") == 0)
-         BinWidth = stod(string(myXML.GetNodeContent(C1)));
+         BinWidth = std::stod(std::string(myXML.GetNodeContent(C1)));
       C1 = myXML.GetNext(C1);
    }
 
@@ -102,6 +124,12 @@ void myNewXML(const char *filename)
    myXML.NewAttr(E_UP, 0, "type", "double");
    myXML.NewAttr(E_UP, 0, "Note", "Upper Bound of Prompt Energy Spectrum");
    myXML.NewAttr(E_UP, 0, "Units", "MeV");
+   XMLNodePointer_t DefaultData = myXML.NewChild(JUNONode, 0,
+                                                 "DefaultData",
+                                                 "SoCallData_NO.root");
+   myXML.NewAttr(DefaultData, 0, "type", "string");
+   myXML.NewAttr(DefaultData, 0, "Note", "Default Spectrum Data File Path");
+   myXML.NewAttr(DefaultData, 0, "Units", "\\");
 
    XMLDocPointer_t myXMLdoc = myXML.NewDoc();
    myXML.DocSetRootElement(myXMLdoc, JUNONode);

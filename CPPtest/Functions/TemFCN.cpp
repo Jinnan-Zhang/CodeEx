@@ -1,5 +1,6 @@
 //purpose: test template function method
 #include <TXMLEngine.h>
+#include <string>
 
 template <class AnyType>
 void LoadXMLConfig(const char *VariableName,
@@ -13,11 +14,21 @@ void LoadXMLConfig(const char *VariableName,
     while (tNode0 != NULL)
     {
         if (strcmp(VariableName, tXML.GetNodeName(tNode0)) == 0)
-            Variable = stod(string(tXML.GetNodeContent(tNode0)));
+            Variable = std::stod(std::string(tXML.GetNodeContent(tNode0)));
         tNode0 = tXML.GetNext(tNode0);
     }
 }
 
+const char *tChar()
+{
+    const char *tca="xx";
+    return tca;
+}
+
 int TemFCN()
 {
+    const char *ac=tChar();
+    printf("if:%s\n",ac);
+    return 0;
+
 }
