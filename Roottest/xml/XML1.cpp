@@ -35,6 +35,15 @@ int XML1()
 
    myNewXML("JUNOConfigs.xml");
    // myReadXML("modify.xml");
+   double BinWidth,E_LP,E_UP;
+   LoadXMLConfig("BinWidth",BinWidth,"JUNOConfigs.xml");
+   LoadXMLConfig("E_LP",E_LP,"JUNOConfigs.xml");
+   LoadXMLConfig("E_UP",E_UP,"JUNOConfigs.xml");
+   printf("BinWidth:%f\n",BinWidth);
+   printf("E_LP:%f\n",E_LP);
+   printf("E_UP:%f\n",E_UP);
+   printf("BinNUM:%d\n",(int)((E_UP-E_LP)/BinWidth));
+
    return 0;
 }
 void LoadXMLConfig(const char *VariableName,
@@ -44,14 +53,15 @@ void LoadXMLConfig(const char *VariableName,
    TXMLEngine tXML;
    XMLDocPointer_t tXMLDoc = tXML.ParseFile(filename);
    XMLNodePointer_t mainNode = tXML.DocGetRootElement(tXMLDoc);
-   XMLNodePointer_t tNode0=tXML.GetChild(mainNode);
-   while (tNode0!=NULL)
+   XMLNodePointer_t tNode0 = tXML.GetChild(mainNode);
+   while (tNode0 != NULL)
    {
-      if(strcmp(VariableName,tXML.GetNodeName(tNode0))==0)
-         Variable=stod(string(tXML.GetNodeContent(tNode0)));
-      tNode0=tXML.GetNext(tNode0);
+      if (strcmp(VariableName, tXML.GetNodeName(tNode0)) == 0)
+      {
+         Variable = stod(string(tXML.GetNodeContent(tNode0)));
+      }
+      tNode0 = tXML.GetNext(tNode0);
    }
-
 }
 
 void myReadXML(const char *filename)
@@ -88,7 +98,7 @@ void myNewXML(const char *filename)
    myXML.NewAttr(E_LP, 0, "type", "double");
    myXML.NewAttr(E_LP, 0, "Note", "Lower Bound of Prompt Energy Spectrum");
    myXML.NewAttr(E_LP, 0, "Units", "MeV");
-   XMLNodePointer_t E_UP = myXML.NewChild(JUNONode, 0, "E_LP", "8.5109989");
+   XMLNodePointer_t E_UP = myXML.NewChild(JUNONode, 0, "E_UP", "8.5109989");
    myXML.NewAttr(E_UP, 0, "type", "double");
    myXML.NewAttr(E_UP, 0, "Note", "Upper Bound of Prompt Energy Spectrum");
    myXML.NewAttr(E_UP, 0, "Units", "MeV");
