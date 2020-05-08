@@ -36,7 +36,7 @@ int XML1()
    // xml.FreeDoc(xmldoc);
    // myReadXML("modify.xml");
 
-   const char *filename="JUNOConfigs.xml";
+   const char *filename = "JUNOGlobalConfigs.xml";
    myNewXML(filename);
    // double BinWidth, E_LP, E_UP;
    // LoadXMLConfig("BinWidth", BinWidth, "JUNOConfigs.xml");
@@ -46,8 +46,8 @@ int XML1()
    // printf("E_LP:%f\n", E_LP);
    // printf("E_UP:%f\n", E_UP);
    // printf("BinNUM:%d\n", (int)((E_UP - E_LP) / BinWidth));
-   const char *DefaultData=LoadXMLConfig("DefaultData",filename);
-   printf("DefaultData:%s\n",DefaultData);
+   const char *DefaultData = LoadXMLConfig("DefaultData", filename);
+   printf("DefaultData:%s\n", DefaultData);
    return 0;
 }
 const char *LoadXMLConfig(const char *VariableName,
@@ -124,12 +124,114 @@ void myNewXML(const char *filename)
    myXML.NewAttr(E_UP, 0, "type", "double");
    myXML.NewAttr(E_UP, 0, "Note", "Upper Bound of Prompt Energy Spectrum");
    myXML.NewAttr(E_UP, 0, "Units", "MeV");
+   XMLNodePointer_t JunoRuntime = myXML.NewChild(JUNONode, 0,
+                                                 "JunoRuntime",
+                                                 "2000");
+   myXML.NewAttr(JunoRuntime, 0, "type", "double");
+   myXML.NewAttr(JunoRuntime, 0, "Note", "Default JUNO Runtime in Analysis");
+   myXML.NewAttr(JunoRuntime, 0, "Units", "day");
+   XMLNodePointer_t a_res_Default = myXML.NewChild(JUNONode, 0,
+                                                   "a_res_Default",
+                                                   "2.62e-2");
+   myXML.NewAttr(a_res_Default, 0, "type", "double");
+   myXML.NewAttr(a_res_Default, 0, "Note", "Default JUNO Energy Resolution Model: a Term");
+   myXML.NewAttr(a_res_Default, 0, "Units", "\\");
+   XMLNodePointer_t b_res_Default = myXML.NewChild(JUNONode, 0,
+                                                   "b_res_Default",
+                                                   "0.73e-2");
+   myXML.NewAttr(b_res_Default, 0, "type", "double");
+   myXML.NewAttr(b_res_Default, 0, "Note", "Default JUNO Energy Resolution Model: b Term");
+   myXML.NewAttr(b_res_Default, 0, "Units", "\\");
+   XMLNodePointer_t c_res_Default = myXML.NewChild(JUNONode, 0,
+                                                   "c_res_Default",
+                                                   "1.38e-2");
+   myXML.NewAttr(c_res_Default, 0, "type", "double");
+   myXML.NewAttr(c_res_Default, 0, "Note", "Default JUNO Energy Resolution Model: b Term");
+   myXML.NewAttr(c_res_Default, 0, "Units", "\\");
+   XMLNodePointer_t dm21sq = myXML.NewChild(JUNONode, 0,
+                                            "dm21sq",
+                                            "7.54e-5");
+   myXML.NewAttr(dm21sq, 0, "type", "double");
+   myXML.NewAttr(dm21sq, 0, "Note", "DeltaM_21^2 Value Used in JUNO Yellow Book");
+   myXML.NewAttr(dm21sq, 0, "Units", "eV^2");
+   myXML.NewNS(dm21sq,"DOI:10.1088/0954-3899/43/3/030401","JUNOYB");
+   
+   XMLNodePointer_t dmsq32_NO = myXML.NewChild(JUNONode, 0,
+                                               "dmsq32_NO",
+                                               "0.0023923");
+   myXML.NewAttr(dmsq32_NO, 0, "type", "double");
+   myXML.NewAttr(dmsq32_NO, 0, "Note", "DeltaM_32^2 Value for Normal Ordering Used in JUNO Yellow Book");
+   myXML.NewAttr(dmsq32_NO, 0, "Units", "eV^2");
+   myXML.NewNS(dmsq32_NO,"DOI:10.1088/0954-3899/43/3/030401","JUNOYB");
+
+   XMLNodePointer_t dmsq32_IO = myXML.NewChild(JUNONode, 0,
+                                               "dmsq32_IO",
+                                               "-0.0024177");
+   myXML.NewAttr(dmsq32_IO, 0, "type", "double");
+   myXML.NewAttr(dmsq32_IO, 0, "Note", "DeltaM_32^2 Value for Normal Ordering Used in JUNO Yellow Book");
+   myXML.NewAttr(dmsq32_IO, 0, "Units", "eV^2");
+   myXML.NewNS(dmsq32_IO,"DOI:10.1088/0954-3899/43/3/030401","JUNOYB");
+
+   XMLNodePointer_t sinsq12 = myXML.NewChild(JUNONode, 0,
+                                             "sinsq12",
+                                             "0.308");
+   myXML.NewAttr(sinsq12, 0, "type", "double");
+   myXML.NewAttr(sinsq12, 0, "Note", "sin^2(theta_12) Value Used in JUNO Yellow Book");
+   myXML.NewAttr(sinsq12, 0, "Units", "\\");
+   myXML.NewNS(sinsq12,"DOI:10.1088/0954-3899/43/3/030401","JUNOYB");
+
+   XMLNodePointer_t sinsq13_NO = myXML.NewChild(JUNONode, 0,
+                                                "sinsq13_NO",
+                                                "0.0234");
+   myXML.NewAttr(sinsq13_NO, 0, "type", "double");
+   myXML.NewAttr(sinsq13_NO, 0, "Note", "sin^2(theta_1) Value for Normal Ordering Used in JUNO Yellow Book");
+   myXML.NewAttr(sinsq13_NO, 0, "Units", "\\");
+   myXML.NewNS(sinsq13_NO,"DOI:10.1088/0954-3899/43/3/030401","JUNOYB");
+
+   XMLNodePointer_t sinsq13_IO = myXML.NewChild(JUNONode, 0,
+                                                "sinsq13_IO",
+                                                "0.0240");
+   myXML.NewAttr(sinsq13_IO, 0, "type", "double");
+   myXML.NewAttr(sinsq13_IO, 0, "Note", "sin^2(theta_1) Value for Normal Ordering Used in JUNO Yellow Book");
+   myXML.NewAttr(sinsq13_IO, 0, "Units", "\\");
+   myXML.NewNS(sinsq13_IO,"DOI:10.1088/0954-3899/43/3/030401","JUNOYB");
+
    XMLNodePointer_t DefaultData = myXML.NewChild(JUNONode, 0,
                                                  "DefaultData",
                                                  "SoCallData_NO.root");
    myXML.NewAttr(DefaultData, 0, "type", "string");
-   myXML.NewAttr(DefaultData, 0, "Note", "Default Spectrum Data File Path");
+   myXML.NewAttr(DefaultData, 0, "Note", "Default Prompt Signal Spectrum Data File Path");
    myXML.NewAttr(DefaultData, 0, "Units", "\\");
+   XMLNodePointer_t DefaultBkg = myXML.NewChild(JUNONode, 0,
+                                                "DefaultBkg",
+                                                "../data/Background/JunoBkg.root");
+   myXML.NewAttr(DefaultBkg, 0, "type", "string");
+   myXML.NewAttr(DefaultBkg, 0, "Note", "Default Backgrounds Spectra Data File Path");
+   myXML.NewAttr(DefaultBkg, 0, "Units", "\\");
+   XMLNodePointer_t DefaultDataObj = myXML.NewChild(JUNONode, 0,
+                                                    "DefaultDataObj",
+                                                    "h_NMO");
+   myXML.NewAttr(DefaultDataObj, 0, "type", "string");
+   myXML.NewAttr(DefaultDataObj, 0, "Note", "Default ROOT::TObject Name of Prompt Signal Spectrum");
+   myXML.NewAttr(DefaultDataObj, 0, "Units", "\\");
+   XMLNodePointer_t JUNO_NL_file = myXML.NewChild(JUNONode, 0,
+                                                  "JUNO_NL_file",
+                                                  "../data/JunoFullNL.root");
+   myXML.NewAttr(JUNO_NL_file, 0, "type", "string");
+   myXML.NewAttr(JUNO_NL_file, 0, "Note", "Default Liquid Scintillator Nonlinearity Data File Path");
+   myXML.NewAttr(JUNO_NL_file, 0, "Units", "\\");
+   XMLNodePointer_t DefaultNLObj = myXML.NewChild(JUNONode, 0,
+                                                  "DefaultNLObj",
+                                                  "positronFullNL");
+   myXML.NewAttr(DefaultNLObj, 0, "type", "string");
+   myXML.NewAttr(DefaultNLObj, 0, "Note", "Default ROOT::TObject Name of Liquid Scintillator Nonlinearity Curve");
+   myXML.NewAttr(DefaultNLObj, 0, "Units", "\\");
+   XMLNodePointer_t FluxDataFile = myXML.NewChild(JUNONode, 0,
+                                                  "FluxDataFile",
+                                                  "../data/Flux/HuberMuellerFlux.root");
+   myXML.NewAttr(FluxDataFile, 0, "type", "string");
+   myXML.NewAttr(FluxDataFile, 0, "Note", "Default Reactor Neutrino Flux Model Data File Path");
+   myXML.NewAttr(FluxDataFile, 0, "Units", "\\");
 
    XMLDocPointer_t myXMLdoc = myXML.NewDoc();
    myXML.DocSetRootElement(myXMLdoc, JUNONode);
