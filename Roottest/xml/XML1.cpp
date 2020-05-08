@@ -13,6 +13,7 @@ void LoadXMLConfig(const char *VariableName,
                    const char *filename);
 const char *LoadXMLConfig(const char *VariableName,
                           const char *filename);
+void LoadXMLConfig(const char *VariableName, const char *XMLNameSpace, double &Variable, const char *filename);
 
 int XML1()
 {
@@ -46,8 +47,11 @@ int XML1()
    // printf("E_LP:%f\n", E_LP);
    // printf("E_UP:%f\n", E_UP);
    // printf("BinNUM:%d\n", (int)((E_UP - E_LP) / BinWidth));
-   const char *DefaultData = LoadXMLConfig("DefaultData", filename);
-   printf("DefaultData:%s\n", DefaultData);
+   // const char *DefaultData = LoadXMLConfig("DefaultData", filename);
+   // printf("DefaultData:%s\n", DefaultData);
+   double dmsq32_NO;
+   LoadXMLConfig("dmsq32_NO", "JUNOYB", dmsq32_NO, filename);
+   printf("dmsq32_NO:%f\n", dmsq32_NO);
    return 0;
 }
 const char *LoadXMLConfig(const char *VariableName,
@@ -67,7 +71,29 @@ const char *LoadXMLConfig(const char *VariableName,
    }
    return NULL;
 }
-
+void LoadXMLConfig(const char *VariableName,
+                   const char *XMLNameSpace,
+                   double &Variable,
+                   const char *filename)
+{
+   TXMLEngine tXML;
+   XMLDocPointer_t tXMLDoc = tXML.ParseFile(filename);
+   XMLNodePointer_t mainNode = tXML.DocGetRootElement(tXMLDoc);
+   XMLNodePointer_t tNode0 = tXML.GetChild(mainNode);
+   XMLNsPointer_t tNS = tXML.GetNS(tNode0);
+   while (tNode0 != NULL)
+   {
+      if (tNS != NULL && strcmp(XMLNameSpace, tXML.GetNSName(tNS)) == 0)
+      {
+         if (strcmp(VariableName, tXML.GetNodeName(tNode0)) == 0)
+         {
+            Variable = std::stod(std::string(tXML.GetNodeContent(tNode0)));
+         }
+      }
+      tNode0 = tXML.GetNext(tNode0);
+      tNS = tXML.GetNS(tNode0);
+   }
+}
 void LoadXMLConfig(const char *VariableName,
                    double &Variable,
                    const char *filename)
@@ -107,6 +133,7 @@ void myReadXML(const char *filename)
 
    myXML.FreeDoc(myXMLDoc);
 }
+//Create configration xml file
 void myNewXML(const char *filename)
 {
    TXMLEngine myXML;
@@ -154,15 +181,15 @@ void myNewXML(const char *filename)
    myXML.NewAttr(dm21sq, 0, "type", "double");
    myXML.NewAttr(dm21sq, 0, "Note", "DeltaM_21^2 Value Used in JUNO Yellow Book");
    myXML.NewAttr(dm21sq, 0, "Units", "eV^2");
-   myXML.NewNS(dm21sq,"DOI:10.1088/0954-3899/43/3/030401","JUNOYB");
-   
+   myXML.NewNS(dm21sq, "DOI:10.1088/0954-3899/43/3/030401", "JUNOYB");
+
    XMLNodePointer_t dmsq32_NO = myXML.NewChild(JUNONode, 0,
                                                "dmsq32_NO",
                                                "0.0023923");
    myXML.NewAttr(dmsq32_NO, 0, "type", "double");
    myXML.NewAttr(dmsq32_NO, 0, "Note", "DeltaM_32^2 Value for Normal Ordering Used in JUNO Yellow Book");
    myXML.NewAttr(dmsq32_NO, 0, "Units", "eV^2");
-   myXML.NewNS(dmsq32_NO,"DOI:10.1088/0954-3899/43/3/030401","JUNOYB");
+   myXML.NewNS(dmsq32_NO, "DOI:10.1088/0954-3899/43/3/030401", "JUNOYB");
 
    XMLNodePointer_t dmsq32_IO = myXML.NewChild(JUNONode, 0,
                                                "dmsq32_IO",
@@ -170,7 +197,7 @@ void myNewXML(const char *filename)
    myXML.NewAttr(dmsq32_IO, 0, "type", "double");
    myXML.NewAttr(dmsq32_IO, 0, "Note", "DeltaM_32^2 Value for Normal Ordering Used in JUNO Yellow Book");
    myXML.NewAttr(dmsq32_IO, 0, "Units", "eV^2");
-   myXML.NewNS(dmsq32_IO,"DOI:10.1088/0954-3899/43/3/030401","JUNOYB");
+   myXML.NewNS(dmsq32_IO, "DOI:10.1088/0954-3899/43/3/030401", "JUNOYB");
 
    XMLNodePointer_t sinsq12 = myXML.NewChild(JUNONode, 0,
                                              "sinsq12",
@@ -178,7 +205,7 @@ void myNewXML(const char *filename)
    myXML.NewAttr(sinsq12, 0, "type", "double");
    myXML.NewAttr(sinsq12, 0, "Note", "sin^2(theta_12) Value Used in JUNO Yellow Book");
    myXML.NewAttr(sinsq12, 0, "Units", "\\");
-   myXML.NewNS(sinsq12,"DOI:10.1088/0954-3899/43/3/030401","JUNOYB");
+   myXML.NewNS(sinsq12, "DOI:10.1088/0954-3899/43/3/030401", "JUNOYB");
 
    XMLNodePointer_t sinsq13_NO = myXML.NewChild(JUNONode, 0,
                                                 "sinsq13_NO",
@@ -186,7 +213,7 @@ void myNewXML(const char *filename)
    myXML.NewAttr(sinsq13_NO, 0, "type", "double");
    myXML.NewAttr(sinsq13_NO, 0, "Note", "sin^2(theta_1) Value for Normal Ordering Used in JUNO Yellow Book");
    myXML.NewAttr(sinsq13_NO, 0, "Units", "\\");
-   myXML.NewNS(sinsq13_NO,"DOI:10.1088/0954-3899/43/3/030401","JUNOYB");
+   myXML.NewNS(sinsq13_NO, "DOI:10.1088/0954-3899/43/3/030401", "JUNOYB");
 
    XMLNodePointer_t sinsq13_IO = myXML.NewChild(JUNONode, 0,
                                                 "sinsq13_IO",
@@ -194,7 +221,7 @@ void myNewXML(const char *filename)
    myXML.NewAttr(sinsq13_IO, 0, "type", "double");
    myXML.NewAttr(sinsq13_IO, 0, "Note", "sin^2(theta_1) Value for Normal Ordering Used in JUNO Yellow Book");
    myXML.NewAttr(sinsq13_IO, 0, "Units", "\\");
-   myXML.NewNS(sinsq13_IO,"DOI:10.1088/0954-3899/43/3/030401","JUNOYB");
+   myXML.NewNS(sinsq13_IO, "DOI:10.1088/0954-3899/43/3/030401", "JUNOYB");
 
    XMLNodePointer_t DefaultData = myXML.NewChild(JUNONode, 0,
                                                  "DefaultData",
@@ -238,6 +265,7 @@ void myNewXML(const char *filename)
    myXML.SaveDoc(myXMLdoc, filename);
    myXML.FreeDoc(myXMLdoc);
 }
+
 void DisplayNode(TXMLEngine &xml, XMLNodePointer_t node, Int_t level)
 {
    // this function display all accessible
