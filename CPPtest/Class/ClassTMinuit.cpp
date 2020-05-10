@@ -14,7 +14,10 @@ private:
 
 public:
     TestFCN(/* args */);
-    static void TFCN(Int_t &npar, Double_t *grad, Double_t &fval, Double_t *par, Int_t flag);
+    static void TFCN(Int_t &npar, Double_t *grad, Double_t &fval, Double_t *par, Int_t flag)
+    {
+        fval=par[0];
+    }
     static double TTF1(double *x, double *par)
     {
         double x1 = xinFCN(x[0]);
@@ -44,8 +47,10 @@ public:
 
 TestFCN1::TestFCN1(/* args */)
 {
-    f_1 = new TF1("f1", TestFCN::TTF1, -5, 5, 0);
-    f_1->Draw();
+    // f_1 = new TF1("f1", TestFCN::TTF1, -5, 5, 0);
+    // f_1->Draw();
+    TMinuit minn;
+    minn.SetFCN(TestFCN::TFCN);
 }
 
 TestFCN1::~TestFCN1()
