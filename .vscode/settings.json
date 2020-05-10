@@ -85,7 +85,8 @@
         "nCaptureT.C": "cpp",
         "xmlreadfile.C": "cpp",
         "xmlmodifyfile.C": "cpp",
-        "xmlnewfile.C": "cpp"
+        "xmlnewfile.C": "cpp",
+        "NumericalMinimization.C": "cpp"
     },
     "python.formatting.provider": "yapf"
 }

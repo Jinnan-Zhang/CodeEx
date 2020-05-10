@@ -2,6 +2,9 @@
 #include <TMinuit.h>
 #include <TF1.h>
 #include <TH1.h>
+#include "Math/Minimizer.h"
+#include "Math/Factory.h"
+#include "Math/Functor.h"
 
 class TestFCN
 {
@@ -16,7 +19,11 @@ public:
     TestFCN(/* args */);
     static void TFCN(Int_t &npar, Double_t *grad, Double_t &fval, Double_t *par, Int_t flag)
     {
-        fval=par[0];
+        fval = par[0];
+    }
+    static double VFCN(const double *var)
+    {
+        return var[0] * var[0] + 1 + var[1] * var[1];
     }
     static double TTF1(double *x, double *par)
     {
@@ -28,6 +35,18 @@ public:
 };
 TestFCN::TestFCN(/* args */)
 {
+    ROOT::Math::Minimizer *minimum =
+        ROOT::Math::Factory::CreateMinimizer("Minuit2", "MINIMIZE");
+    minimum->SetMaxFunctionCalls(1000000); // for Minuit/Minuit2
+    minimum->SetMaxIterations(10000);      // for GSL
+    minimum->SetTolerance(0.001);
+    minimum->SetPrintLevel(1);
+
+    ROOT::Math::Functor f(&TestFCN::VFCN, 2);
+    minimum->SetFunction(f);
+    minimum->SetVariable(0, "x", 0, 0.01);
+    minimum->SetVariable(0, "y", 0, 0.01);
+    minimum->Minimize();
 }
 
 TestFCN::~TestFCN()
