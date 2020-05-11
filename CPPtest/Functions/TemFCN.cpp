@@ -21,14 +21,19 @@ void LoadXMLConfig(const char *VariableName,
 
 const char *tChar()
 {
-    const char *tca="xx";
+    const char *tca = "xx";
     return tca;
+}
+template <class T>
+inline T LoadXMLConfig(const char *VariableName,
+                       const char *filename)
+{
+    
 }
 
 int TemFCN()
 {
-    const char *ac=tChar();
-    printf("if:%s\n",ac);
+    const char *ac = tChar();
+    printf("if:%s\n", ac);
     return 0;
-
 }
