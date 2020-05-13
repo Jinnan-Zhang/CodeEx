@@ -57,7 +57,9 @@ int Arrays()
     StartTimeChrono(3);
     for (int i = 0; i < N; i++)
     {
-        sum += c[2];
+        double cc=1;
+        // sum += c[2];
+        sum += cc;
     }
     StopTimeChrono(3);
     PrintTimeChrono(3, "map");
