@@ -29,12 +29,14 @@ PrintTimeChrono(num,"discription")
     printf("Time for calculating %s is %f second.\n", _str, dura##_num.count() / 1.e6)
 #endif
 double *GetArr();
+#include <map>
 
 int Arrays()
 {
     double N=3e8;
     double a[5] = {1, 3, 4, 2, 0};
     vector<double> b = {1, 3, 4, 2, 0};
+    map<int,double> c={{1,1},{2,3},{3,4},{4,2},{0,0}};
     double sum(0);
     StartTimeChrono(1);
     for (int i = 0; i < N; i++)
@@ -51,6 +53,14 @@ int Arrays()
     }
     StopTimeChrono(2);
     PrintTimeChrono(2, "array");
+    sum = 0;
+    StartTimeChrono(3);
+    for (int i = 0; i < N; i++)
+    {
+        sum += c[2];
+    }
+    StopTimeChrono(3);
+    PrintTimeChrono(3, "map");
     return 0;
 }
 double *GetArr()
