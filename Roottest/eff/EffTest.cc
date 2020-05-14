@@ -27,10 +27,12 @@ PrintTimeChrono(num,"discription")
 #endif
 double GFCN(double x)
 {
-    double a = 1. / sqrt(2 * 3.14) / 1. * exp(-0.5 * x * x);
-    double b = 1. / sqrt(2 * 3.14) / 1. * exp(-0.5 * x * x);
-    double c = 1. / sqrt(2 * 3.14) / 1. * exp(-0.5 * x * x);
-    return a + b * c;
+    // double a = 1. / sqrt(2 * 3.14) / 1. * exp(-0.5 * x * x);
+    // double b = 1. / sqrt(2 * 3.14) / 1. * exp(-0.5 * x * x);
+    // double c = 1. / sqrt(2 * 3.14) / 1. * exp(-0.5 * x * x);
+    // return a + b * c;
+    double a=exp(x)+exp(x+1)+exp(x*1)+exp(x-1)+exp(x+7);
+    return a;
 }
 void tHistFCN()
 {
@@ -41,6 +43,10 @@ void tHistFCN()
     StartTimeChrono(1);
     for (int i = 0; i < N; i++)
     {
+        sum += h_d->Interpolate(0.15);
+        sum += h_d->Interpolate(0.15);
+        sum += h_d->Interpolate(0.15);
+        sum += h_d->Interpolate(0.15);
         sum += h_d->Interpolate(0.15);
     }
     StopTimeChrono(1);
