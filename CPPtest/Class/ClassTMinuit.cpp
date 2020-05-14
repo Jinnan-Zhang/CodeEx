@@ -35,18 +35,18 @@ public:
 };
 TestFCN::TestFCN(/* args */)
 {
-    ROOT::Math::Minimizer *minimum =
-        ROOT::Math::Factory::CreateMinimizer("Minuit2", "MINIMIZE");
-    minimum->SetMaxFunctionCalls(1000000); // for Minuit/Minuit2
-    minimum->SetMaxIterations(10000);      // for GSL
-    minimum->SetTolerance(0.001);
-    minimum->SetPrintLevel(1);
+    // ROOT::Math::Minimizer *minimum =
+    //     ROOT::Math::Factory::CreateMinimizer("Minuit2", "MINIMIZE");
+    // minimum->SetMaxFunctionCalls(1000000); // for Minuit/Minuit2
+    // minimum->SetMaxIterations(10000);      // for GSL
+    // minimum->SetTolerance(0.001);
+    // minimum->SetPrintLevel(1);
 
-    ROOT::Math::Functor f(&TestFCN::VFCN, 2);
-    minimum->SetFunction(f);
-    minimum->SetVariable(0, "x", 0, 0.01);
-    minimum->SetVariable(0, "y", 0, 0.01);
-    minimum->Minimize();
+    // ROOT::Math::Functor f(&TestFCN::VFCN, 2);
+    // minimum->SetFunction(f);
+    // minimum->SetVariable(0, "x", 0, 0.01);
+    // minimum->SetVariable(0, "y", 0, 0.01);
+    // minimum->Minimize();
 }
 
 TestFCN::~TestFCN()
