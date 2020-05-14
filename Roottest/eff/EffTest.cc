@@ -62,6 +62,6 @@ void tHistFCN()
 }
 int EffTest()
 {
-    tHistFCN();
+    // tHistFCN();
     return 0;
 }

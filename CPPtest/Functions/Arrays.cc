@@ -56,8 +56,16 @@ const double LoadXMLConfig(const char *VariableName,
     printf("VariableName:%s or XMLNameSpace:%s not FOUND!\n", VariableName, XMLNameSpace);
     return 0;
 }
-
-int Arrays()
+double *GetArr()
+{
+    static double Target[10];
+    for (int i = 0; i < 10; i++)
+    {
+        Target[i] = 10 - i;
+    }
+    return Target;
+}
+void TArr()
 {
     double N = 3e8;
     double a[5] = {1, 3, 4, 2, 0};
@@ -80,7 +88,7 @@ int Arrays()
     StopTimeChrono(2);
     PrintTimeChrono(2, "array");
     sum = 0;
-    double cc=LoadXMLConfig("sinsq12","JUNOYB",xmlfilePath);
+    double cc = LoadXMLConfig("sinsq12", "JUNOYB", xmlfilePath);
     StartTimeChrono(3);
     for (int i = 0; i < N; i++)
     {
@@ -90,14 +98,42 @@ int Arrays()
     }
     StopTimeChrono(3);
     PrintTimeChrono(3, "xml");
-    return 0;
 }
-double *GetArr()
+
+void newArr()
 {
-    static double Target[10];
-    for (int i = 0; i < 10; i++)
+    double a[3] = {1, 20, 0};
+    vector<double> b = {1, 2, 1};
+    double *c;
+    c = new double[3];
+    double N = 1e9;
+    double Sum = 0;
+    StartTimeChrono(1);
+    for (int i = 0; i < N; i++)
     {
-        Target[i] = 10 - i;
+        Sum += a[1];
     }
-    return Target;
+    StopTimeChrono(1);
+    PrintTimeChrono(1,"array");
+    Sum = 0;
+    StartTimeChrono(2);
+    for (int i = 0; i < N; i++)
+    {
+        Sum += b[1];
+    }
+    StopTimeChrono(2);
+    PrintTimeChrono(2,"vector");
+    Sum = 0;
+    StartTimeChrono(3);
+    for (int i = 0; i < N; i++)
+    {
+        Sum += c[1];
+    }
+    StopTimeChrono(3);
+    PrintTimeChrono(3,"new Array");
+}
+int Arrays()
+{
+    newArr();
+    return 0;
 }
