@@ -34,9 +34,9 @@ double GFCN(double x)
 }
 void tHistFCN()
 {
-    TH1D *h_d = new TH1D("h_d", "hh", 200, -1, 1);
-    h_d->FillRandom("gaus");
-    double N = 1e8;
+    TH1D *h_d = new TH1D("h_d", "hh", 600, -1, 1);
+    h_d->FillRandom("gaus",1e5);
+    double N = 1e7;
     double sum = 0;
     StartTimeChrono(1);
     for (int i = 0; i < N; i++)
