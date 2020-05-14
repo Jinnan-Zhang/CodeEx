@@ -30,7 +30,7 @@ public:
         double x1 = xinFCN(x[0]);
         return x1;
     }
-    static double xinFCN(double x) { return x * x; }
+    static double xinFCN(double x) { return a_res*x * x; }
     ~TestFCN();
 };
 TestFCN::TestFCN(/* args */)
