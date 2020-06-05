@@ -79,9 +79,19 @@ if [ -x /usr/bin/dircolors ]; then
 fi
 
 # some more ls aliases
+alias rm='rm -i'
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
+alias duh1='du -h --max-depth=1'
+alias cdc='cd "/mnt/c/Users/JinnanZhang/OneDrive - Australian National University/Neutrino/Code"'
+alias cdb='cd "/mnt/c/Users/JinnanZhang/OneDrive - Australian National University/Neutrino/Code/Reactor/JUNO_Atm_Rea/JunoARCon/build"'
+alias cdO='cd "/mnt/c/Users/JinnanZhang/OneDrive - Australian National University/Neutrino/Code/Reactor/ShellScript/OutputPlots"'
+alias cdT='cd "/mnt/c/Users/JinnanZhang/OneDrive - Australian National University/Neutrino/Code/Reactor/RecreateCode/PyAnalysisJuno/srcCpp"'
+alias cdA='cd "/mnt/c/Users/JinnanZhang/OneDrive - Australian National University/Neutrino/Code/CNAF_Atm/Project/Py_AtmJUNO"'
+export Bpath="../../JUNO_Atm_Rea/JunoARCon/build"
+export DPath="../../JUNO_Atm_Rea/JunoARCon/data"
+
 
 # Alias definitions.
 # You may want to put all your additions into a separate file like
@@ -99,13 +109,14 @@ fi
 #    . /etc/bash_completion
 #fi
 
-source ~/tools/bin/thisroot.sh 
-export DISPLAY=:0.0
-export LIBRARY_PATH=${LIBRARY_PATH}:${ROOTSYS}/lib
-export PYTHONPATH=${PYTHONPATH}:${ROOTSYS}/lib
-export CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:${ROOTSYS}
-export JUPYTER_PATH=${JUPYTER_PATH}:${ROOTSYS}/etc/notebook
-export PATH=${PATH}:${ROOTSYS}/bin
+# source ~/tools/bin/thisroot.sh
+source /root/SoftWare/ROOT/root_v6.20.04/bin/thisroot.sh
+export DISPLAY=localhost:0.0
+# export LIBRARY_PATH=${LIBRARY_PATH}:${ROOTSYS}/lib
+# export PYTHONPATH=${PYTHONPATH}:${ROOTSYS}/lib
+# export CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:${ROOTSYS}
+# export JUPYTER_PATH=${JUPYTER_PATH}:${ROOTSYS}/etc/notebook
+# export PATH=${PATH}:${ROOTSYS}/bin
 #alias python='/usr/bin/python3'
 
 #G4
@@ -126,7 +137,5 @@ source /home/jinnan/geant4.10.05.p01/bin/geant4.sh
 export PS1='\[\033[01;34m\]\w\[\033[01;32m\] % \[\033[00m\]'
 
 
-export DISPLAY=localhost:0.0
-export CC="clang"
-export CXX="clang++"
-alias cdc='cd "/mnt/c/Users/JinnanZhang/OneDrive - Australian National University/Neutrino/Code"'
+#export CC="clang"
+#export CXX="clang++"
