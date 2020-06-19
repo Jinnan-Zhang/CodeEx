@@ -1,5 +1,5 @@
 {
-    "python.pythonPath": "C:\\Users\\zjnti\\AppData\\Local\\Microsoft\\WindowsApps\\python.exe",
+    "python.pythonPath": "/usr/bin/python",
     "python.linting.pylintEnabled": true,
     "python.linting.enabled": true,
     "files.associations": {
@@ -88,5 +88,6 @@
         "xmlnewfile.C": "cpp",
         "NumericalMinimization.C": "cpp"
     },
-    "python.formatting.provider": "yapf"
+    "python.formatting.provider": "yapf",
+    "python.linting.mypyEnabled": false
 }
