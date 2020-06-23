@@ -23,9 +23,16 @@ int ShowNOIO()
     // TH1D *h_new=new TH1D("h_ratio","",200,E_LP,E_UP);
     TH1 *h_new = (TH1 *)h_IO->Clone();
 
-    h_new0->Add(h_IO, h_NO, 1., -1.);
-    h_new->Divide(h_new0, h_NO);
-    h_new->SetLineColor(kRed);
+    // h_new0->Add(h_IO, h_NO, 1., -1.);
+    // h_new->Divide(h_new0, h_NO);
+    // h_new->SetLineColor(kRed);
+    for(int i=0;i<h_new->GetNbinsX();i++)
+    {
+        double V_NO=h_NO->GetBinContent(i+1);
+        double V_IO=h_IO->GetBinContent(i+1);
+        h_new->SetBinContent(i+1,pow(V_IO-V_NO,2)/V_NO);
+    }
+
 
     // h_NO->Draw();
     // h_IO->Draw("SAME");
@@ -37,13 +44,15 @@ int ShowNOIO()
     // leg.AddEntry(h_IO,"Invert Ordering");
     leg.AddEntry(h_new, "(IH-NH)/NH");
     leg.DrawClone("SAME");
-    TFile *ff_r = TFile::Open("NOIOratio.root", "RECREATE");
-    ff_r->cd();
-    h_new->Write();
-    h_NO->SetName("h_NO");
-    h_NO->Write();
-    h_IO->SetName("h_IO");
-    h_IO->Write();
-    ff_r->Close();
+    printf("SumAll: %f\n",h_new->Integral());
+
+    // TFile *ff_r = TFile::Open("NOIOratio.root", "RECREATE");
+    // ff_r->cd();
+    // h_new->Write();
+    // h_NO->SetName("h_NO");
+    // h_NO->Write();
+    // h_IO->SetName("h_IO");
+    // h_IO->Write();
+    // ff_r->Close();
     return 0;
 }
