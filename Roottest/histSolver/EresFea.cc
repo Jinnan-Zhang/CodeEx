@@ -8,7 +8,7 @@
 using namespace std;
 
 double E_Lower = 0.8; //energy threshold of IBD
-double E_Upper = 10.; //energy cut for neutrino energy
+double E_Upper = 16.; //energy cut for neutrino energy
 double simpleEres(double *Es, double *par);
 double ThreeEres(double *Es, double *par);
 double a_res = 2.62 ; //stochastic term a/sqrt(E)
@@ -37,9 +37,10 @@ int EresFea()
     f1->SetLineWidth(3.5);
     f0->SetYTitle("#sigma (MeV)");
     f0->SetXTitle("E (MeV)");
-    f0->Draw();
+    f1->Draw("");
 
-    f1->Draw("SAME");
+    f0->Draw("SAME");
+
     TLegend leg(20, 30);
     leg.AddEntry(f0, "#sigma/#sqrt{E}=3%");
     leg.AddEntry(f1, Form("#sigma/E=#sqrt{(%0.3f/#sqrt{E})^{2}+%0.3f^{2}+(%0.3f/E)^{2}} %%", a_res, b_res, c_res));

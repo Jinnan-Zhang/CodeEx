@@ -5,7 +5,8 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "~/tools/include/",
-                "/afs/ihep.ac.cn/soft/lqcd/root/6.18.00/include/**"
+                "/afs/ihep.ac.cn/soft/lqcd/root/6.18.00/include/**",
+                "${ROOTSYS}/include/**"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",
