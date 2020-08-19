@@ -35,6 +35,8 @@ int EresFea()
     f1->SetLineColor(kBlue);
     f0->SetLineWidth(3.5);
     f1->SetLineWidth(3.5);
+    f1->SetYTitle("#sigma (MeV)");
+    f1->SetXTitle("E (MeV)");
     f0->SetYTitle("#sigma (MeV)");
     f0->SetXTitle("E (MeV)");
     f1->Draw("");
