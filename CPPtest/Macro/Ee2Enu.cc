@@ -2,7 +2,7 @@
 
 int Ee2Enu()
 {
-    double a=4;
+    double a=5;
     cout<<FCN_Epr2Enu(a)<<endl;
     return 0;
 }
