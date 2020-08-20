@@ -86,7 +86,8 @@
         "xmlreadfile.C": "cpp",
         "xmlmodifyfile.C": "cpp",
         "xmlnewfile.C": "cpp",
-        "NumericalMinimization.C": "cpp"
+        "NumericalMinimization.C": "cpp",
+        "div2.C": "cpp"
     },
     "python.formatting.provider": "yapf",
     "python.linting.mypyEnabled": false
