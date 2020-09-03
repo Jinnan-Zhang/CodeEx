@@ -4,6 +4,7 @@
 *.pcm
 *.err.*
 *.out.*
+*.out
 /Roottest/data/*.root
 /Roottest/data/Bkg/*.root
 /Roottest/TChaintest/*.root
