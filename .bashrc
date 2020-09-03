@@ -51,16 +51,16 @@ if [ -n "$force_color_prompt" ]; then
 fi
 
 if [ "$color_prompt" = yes ]; then
-    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\W\[\033[00m\]\$ '
 else
-    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\W\$ '
 fi
 unset color_prompt force_color_prompt
 
 # If this is an xterm set the title to user@host:dir
 case "$TERM" in
 xterm*|rxvt*)
-    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
+    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \W\a\]$PS1"
     ;;
 *)
     ;;
@@ -84,11 +84,11 @@ alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
 alias duh1='du -h --max-depth=1'
-alias cdc='cd "/mnt/c/Users/JinnanZhang/OneDrive - Australian National University/Neutrino/Code"'
-alias cdb='cd "/mnt/c/Users/JinnanZhang/OneDrive - Australian National University/Neutrino/Code/Reactor/JUNO_Atm_Rea/JunoARCon/build"'
-alias cdO='cd "/mnt/c/Users/JinnanZhang/OneDrive - Australian National University/Neutrino/Code/Reactor/ShellScript/OutputPlots"'
-alias cdT='cd "/mnt/c/Users/JinnanZhang/OneDrive - Australian National University/Neutrino/Code/Reactor/RecreateCode/PyAnalysisJuno/srcCpp"'
-alias cdA='cd "/mnt/c/Users/JinnanZhang/OneDrive - Australian National University/Neutrino/Code/CNAF_Atm/Project/Py_AtmJUNO"'
+alias cdc='cd /mnt/c/Users/zjnti/OneDrive/Work/Code'
+alias cdb='cd /mnt/c/Users/zjnti/OneDrive/Work/Code/Reactor/JUNO_Atm_Rea/JunoARCon/build'
+alias cdO='cd "/mnt/c/Users/zjnti/OneDrive/Work/Code/Reactor/ShellScript/OutputPlots"'
+alias cdT='cd "/mnt/c/Users/zjnti/OneDrive/Work/Code/Reactor/RecreateCode/PyAnalysisJuno/srcCpp"'
+alias cdA='cd "/mnt/c/Users/zjnti/OneDrive/Work/Code/CNAF_Atm/Project/Py_AtmJUNO"'
 export Bpath="../../JUNO_Atm_Rea/JunoARCon/build"
 export DPath="../../JUNO_Atm_Rea/JunoARCon/data"
 
@@ -110,8 +110,12 @@ fi
 #fi
 
 # source ~/tools/bin/thisroot.sh
-source /root/SoftWare/ROOT/root_v6.20.04/bin/thisroot.sh
+alias ssrootpyhong2='source ~/SoftWare/ROOT/root_v6.20.04/bin/thisroot.sh'
+# source ~/SoftWare/ROOT/root_v6.20.04_python3/bin/thisroot.sh
+source /home/jinnan/SoftWare/ROOT/root_v6.22.00/bin/thisroot.sh
 export DISPLAY=localhost:0.0
+# export DISPLAY=172.18.144.1:0
+# export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2}'):0.0
 # export LIBRARY_PATH=${LIBRARY_PATH}:${ROOTSYS}/lib
 # export PYTHONPATH=${PYTHONPATH}:${ROOTSYS}/lib
 # export CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:${ROOTSYS}
@@ -120,22 +124,22 @@ export DISPLAY=localhost:0.0
 #alias python='/usr/bin/python3'
 
 #G4
-export G4SAIDXSDATA=/home/G4/geant4.10.05.p01/geant4.10.05.p01-data/G4SAIDDATA1.1
-export G4LEDATA=/home/G4/geant4.10.05.p01/geant4.10.05.p01-data/G4EMLOW7.3
-export G4LEVELGAMMADATA=/home/G4/geant4.10.05.p01/geant4.10.05.p01-data/PhotonEvaporation5.2
-export G4NEUTRONXSDATA=/home/G4/geant4.10.05.p01/geant4.10.05.p01-data/G4NEUTRONXS1.4
-export G4PIIDATA=/home/G4/geant4.10.05.p01/geant4.10.05.p01-data/G4PII1.3
-export G4RADIOACTIVEDATA=/home/G4/geant4.10.05.p01/geant4.10.05.p01-data/RadioactiveDecay5.2
-export G4REALSURFACEDATA=/home/G4/geant4.10.05.p01/geant4.10.05.p01-data/RealSurface2.1
-export G4ABLADATA=/home/G4/geant4.10.05.p01/geant4.10.05.p01-data/G4ABLA3.1
-export G4NEUTRONHPDATA=/home/G4/geant4.10.05.p01/geant4.10.05.p01-data/G4NDL4.5
-export G4ENSDFSTATEDATA=/home/G4/geant4.10.05.p01/geant4.10.05.p01-data/G4ENSDFSTATE2.2
-export G4TENDLDATA=/home/G4/geant4.10.05.p01/geant4.10.05.p01-data/G4TENDL1.3.2
+#export G4SAIDXSDATA=/home/G4/geant4.10.05.p01/geant4.10.05.p01-data/G4SAIDDATA1.1
+#export G4LEDATA=/home/G4/geant4.10.05.p01/geant4.10.05.p01-data/G4EMLOW7.3
+#export G4LEVELGAMMADATA=/home/G4/geant4.10.05.p01/geant4.10.05.p01-data/PhotonEvaporation5.2
+#export G4NEUTRONXSDATA=/home/G4/geant4.10.05.p01/geant4.10.05.p01-data/G4NEUTRONXS1.4
+#export G4PIIDATA=/home/G4/geant4.10.05.p01/geant4.10.05.p01-data/G4PII1.3
+#export G4RADIOACTIVEDATA=/home/G4/geant4.10.05.p01/geant4.10.05.p01-data/RadioactiveDecay5.2
+#export G4REALSURFACEDATA=/home/G4/geant4.10.05.p01/geant4.10.05.p01-data/RealSurface2.1
+#export G4ABLADATA=/home/G4/geant4.10.05.p01/geant4.10.05.p01-data/G4ABLA3.1
+#export G4NEUTRONHPDATA=/home/G4/geant4.10.05.p01/geant4.10.05.p01-data/G4NDL4.5
+#export G4ENSDFSTATEDATA=/home/G4/geant4.10.05.p01/geant4.10.05.p01-data/G4ENSDFSTATE2.2
+#export G4TENDLDATA=/home/G4/geant4.10.05.p01/geant4.10.05.p01-data/G4TENDL1.3.2
 
-source /home/jinnan/geant4.10.05.p01/bin/geant4.sh
+#source /home/jinnan/geant4.10.05.p01/bin/geant4.sh
 
-export PS1='\[\033[01;34m\]\w\[\033[01;32m\] % \[\033[00m\]'
+export PS1='\[\033[01;34m\]\W\[\033[01;32m\] % \[\033[00m\]'
 
 
-#export CC="clang"
-#export CXX="clang++"
+# export CC="clang"
+# export CXX="clang++"
