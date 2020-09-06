@@ -6,7 +6,7 @@
 #include <cuda_runtime.h>
 #include <cuda.h>
 #include <curand.h>
-#define N 32
+#define N 64
 
 __global__ void helloworld(void)
 {
@@ -22,11 +22,11 @@ __global__ void mul(int *a, int *b, int *sum)
     __shared__ int c[N];
     c[threadIdx.x] = a[threadIdx.x] * b[threadIdx.x];
     __syncthreads();
-    for (int i = N / 4; i > 0; i = i / 4)
+    for (int i = N / 2; i > 0; i = i / 2)
     {
         if (threadIdx.x < i)
         {
-            c[threadIdx.x] += (c[threadIdx.x + i] + c[threadIdx.x + 2 * i] + c[threadIdx.x + 3 * i]);
+            c[threadIdx.x] += (c[threadIdx.x + i]);
         }
         __syncthreads();
     }
