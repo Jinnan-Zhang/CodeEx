@@ -6,7 +6,8 @@
                 "${workspaceFolder}/**",
                 "~/tools/include/",
                 "/afs/ihep.ac.cn/soft/lqcd/root/6.18.00/include/**",
-                "${ROOTSYS}/include/**"
+                "${ROOTSYS}/include/**",
+                "/usr/local/cuda/include/**"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",
