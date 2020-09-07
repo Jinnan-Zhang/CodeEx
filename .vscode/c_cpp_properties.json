@@ -7,7 +7,9 @@
                 "~/tools/include/",
                 "/afs/ihep.ac.cn/soft/lqcd/root/6.18.00/include/**",
                 "${ROOTSYS}/include/**",
-                "/usr/local/cuda/include/**"
+                "/usr/local/cuda/include/**",
+                "/usr/local/cuda-11.0/include/**",
+                "/usr/local/cuda-11.0/targets/x86_64-linux/include/**"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",
