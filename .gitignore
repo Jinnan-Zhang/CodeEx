@@ -9,3 +9,4 @@
 /Roottest/data/Bkg/*.root
 /Roottest/TChaintest/*.root
 *.xml
+build
