@@ -26,4 +26,12 @@ PrintTimeChrono(num,"discription")
     printf("Time for calculating %s is %.8f second.\n", _str, dura##_num.count() / 1.e6)
 #endif
 
+#include <cuda_runtime.h>
+
+__global__ void helloworld(void);
+void random_ints(int *a, int n);
+__global__ void mul(int *a, int *b, int *sub_sum);
+void DoVector();
+
+
 #endif

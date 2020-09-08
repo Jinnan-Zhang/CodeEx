@@ -6,7 +6,7 @@
 #include <cuda_runtime.h>
 #include <cuda.h>
 #include <curand.h>
-#include <HelloWorld.cuh>
+#include <HelloWorld.h>
 #define N (2048 * 2048)
 #define THREAD_PER_BLOCK 512
 #define BLOCKS_NUM (N / THREAD_PER_BLOCK)
