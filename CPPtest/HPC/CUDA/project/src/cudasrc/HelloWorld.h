@@ -1,5 +1,5 @@
-#ifndef HelloWorld_cuh
-#define HelloWorld_cuh
+#ifndef HelloWorld_h
+#define HelloWorld_h
 #pragma once
 /*
 usage:

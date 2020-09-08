@@ -11,28 +11,18 @@ if(CUDA_FOUND)
 endif()
 
 #INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/include)
-#INCLUDE_DIRECTORIES(
-#    ${PROJECT_SOURCE_DIR}/src/
-#    ${PROJECT_SOURCE_DIR}/src/cuda/
-#)
-
-add_subdirectory(src)
-
-file(GLOB sources ${PROJECT_SOURCE_DIR}/*/*.cpp ${PROJECT_SOURCE_DIR}/*/*.cu)
-file(GLOB headers ${PROJECT_SOURCE_DIR}/*/*.h ${PROJECT_SOURCE_DIR}/*/*.cuh)
-
-#cuda_add_library(mylib STATIC ${sources} ${headers})
-cuda_add_library(mylib SHARED ${sources} ${headers})
-
-target_compile_features(mylib PUBLIC cxx_std_11)
-
-set_target_properties( mylib
-    PROPERTIES CUDA_SEPARABLE_COMPILATION ON
+INCLUDE_DIRECTORIES(
+    ${PROJECT_SOURCE_DIR}/src/
+    ${PROJECT_SOURCE_DIR}/src/cudasrc/
 )
+
+#add_subdirectory(src)
+
+file(GLOB sources ${PROJECT_SOURCE_DIR}/src/*.cpp ${PROJECT_SOURCE_DIR}/src/*/*.cu)
+file(GLOB headers ${PROJECT_SOURCE_DIR}/src/*.h ${PROJECT_SOURCE_DIR}/*/*.cuh)
+
+cuda_add_library(mylib SHARED ${sources} ${headers})
 
 # Add the executable, link it to the lib
 add_executable( ${name} tmain.cpp)
-set_property(TARGET ${name}
-    PROPERTY CUDA_SEPARABLE_COMPILATION ON    
-)
-target_link_libraries( ${name} PRIVATE mylib)
+target_link_libraries( ${name} mylib)
