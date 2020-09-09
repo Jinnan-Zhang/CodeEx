@@ -31,6 +31,7 @@
 
 int main(int argc, char **argv)
 {
-	DoParticle(argc, argv);
+	// DoParticle(argc, argv);
+	TryThrust(argc, argv);
 	return 0;
 }
