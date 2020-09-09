@@ -31,6 +31,6 @@
 
 int main(int argc, char **argv)
 {
-	DoParticle();
+	DoParticle(argc, argv);
 	return 0;
 }

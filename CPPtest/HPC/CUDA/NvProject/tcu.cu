@@ -12,12 +12,12 @@ __global__ void advanceParticles(float dt, particle * pArray, int nParticles)
 	}
 }
 
-void DoParticle()
+void DoParticle(int argc,  char **argv)
 {
 	cudaError_t error;
 	int n = 1000000;
-	// if(argc > 1)	{ n = atoi(argv[1]);}     // Number of particles
-	// if(argc > 2)	{	srand(atoi(argv[2])); } // Random seed
+	if(argc > 1)	{ n = atoi(argv[1]);}     // Number of particles
+	if(argc > 2)	{	srand(atoi(argv[2])); } // Random seed
 
 	error = cudaGetLastError();
 	if (error != cudaSuccess)

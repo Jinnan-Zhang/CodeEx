@@ -4,4 +4,4 @@
 
 __global__ void advanceParticles(float dt, particle * pArray, int nParticles);
 
-void DoParticle();
+void DoParticle(int , char**);
