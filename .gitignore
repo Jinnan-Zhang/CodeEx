@@ -10,3 +10,4 @@
 /Roottest/TChaintest/*.root
 *.xml
 build
+PythonTest/Crawl/data
