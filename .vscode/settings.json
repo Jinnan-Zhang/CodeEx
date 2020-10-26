@@ -1,5 +1,5 @@
 {
-    "python.pythonPath": "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\Python37_64\\python.exe",
+    "python.pythonPath": "C:\\Users\\zjnti\\AppData\\Local\\Microsoft\\WindowsApps\\python.exe",
     "python.linting.pylintEnabled": false,
     "python.linting.enabled": true,
     "files.associations": {
