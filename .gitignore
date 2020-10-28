@@ -5,6 +5,7 @@
 *.err.*
 *.out.*
 *.out
+*.npz
 /Roottest/data/*.root
 /Roottest/data/Bkg/*.root
 /Roottest/TChaintest/*.root

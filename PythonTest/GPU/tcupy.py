@@ -1,11 +1,33 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-import cupy as cp
 import numpy as np
-import ROOT
+
+
+def get_parser():
+    import argparse
+    parser = argparse.ArgumentParser(description="Options in this test")
+    parser.add_argument("--Mul",
+                        action="store_true",
+                        help="Test matrix multiply")
+    parser.set_defaults(Mul=False)
+    parser.add_argument("--Mul-file",
+                        default="../plots/Contour/DataProfile.txt",
+                        help="Test matrix multiply input filename")
+
+    parser.add_argument("--numpy-IO",
+                        action="store_true",
+                        help="Test numpy file IO")
+    parser.set_defaults(numpy_IO=False)
+    parser.add_argument("--numpy-IO-file",
+                        default="tnumpy",
+                        help="Test numpy file IO filename")
+
+    return parser
 
 
 def MatMultiply(filename="../plots/Contour/DataProfile.txt"):
+    import ROOT
+    import cupy as cp
     data = np.loadtxt(filename)
     R_x = data[:, 0].reshape(100, 50)
     Cos_y = data[:, 1].reshape(100, 50)
@@ -17,5 +39,16 @@ def MatMultiply(filename="../plots/Contour/DataProfile.txt"):
     print(ans_gpu)
 
 
+def t_npIO(filename):
+    x_data = np.linspace(0, 10)
+    np.savez(filename,x_data=x_data)
+
 if __name__ == "__main__":
-    MatMultiply()
+    parser = get_parser()
+    args = parser.parse_args()
+    if args.Mul:
+        MatMultiply(filename=args.Mul_file)
+    elif args.numpy_IO:
+        t_npIO(args.numpy_IO_file)
+
+    # MatMultiply()
