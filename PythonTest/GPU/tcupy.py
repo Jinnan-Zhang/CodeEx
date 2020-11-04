@@ -36,12 +36,15 @@ def MatMultiply(filename="../plots/Contour/DataProfile.txt"):
     M_gpu = cp.asarray(Response_M)
     print(M_gpu[0][0])
     ans_gpu = cp.dot(cp.asarray(R_x[:, 0]), M_gpu)
+    print("GPU:")
     print(ans_gpu)
-
+    print("CPU:")
+    print(np.dot(R_x[:, 0], Response_M))
 
 def t_npIO(filename):
     x_data = np.linspace(0, 10)
-    np.savez(filename,x_data=x_data)
+    np.savez(filename, x_data=x_data)
+
 
 if __name__ == "__main__":
     parser = get_parser()
