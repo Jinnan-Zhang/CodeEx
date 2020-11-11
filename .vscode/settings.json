@@ -70,5 +70,6 @@
     },
     "python.formatting.provider": "yapf",
     "python.linting.mypyEnabled": false,
-    "python.linting.banditEnabled": true
+    "python.linting.banditEnabled": true,
+    "python.pythonPath": "C:\\Users\\zjnti\\AppData\\Local\\Microsoft\\WindowsApps\\python.exe"
 }
