@@ -4,6 +4,7 @@
 *.pcm
 *.err.*
 *.out.*
+core
 *.out
 *.npz
 /Roottest/data/*.root

@@ -34,12 +34,15 @@ def MatMultiply(filename="../plots/Contour/DataProfile.txt"):
     nPE_z = data[:, 2].reshape(100, 50)
     Response_M = np.matrix(nPE_z)
     M_gpu = cp.asarray(Response_M)
-    print(M_gpu[0][0])
     ans_gpu = cp.dot(cp.asarray(R_x[:, 0]), M_gpu)
     print("GPU:")
-    print(ans_gpu)
+    # print(ans_gpu)
     print("CPU:")
-    print(np.dot(R_x[:, 0], Response_M))
+    ans_cpu = np.dot(R_x[:, 0], Response_M)
+    # print(ans_cpu)
+    diff = cp.asnumpy(ans_gpu) - ans_cpu
+    print("diff:\n", diff)
+
 
 def t_npIO(filename):
     x_data = np.linspace(0, 10)
