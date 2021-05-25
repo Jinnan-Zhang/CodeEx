@@ -8,19 +8,24 @@ def get_parser():
     parser = argparse.ArgumentParser(description="Options in this test")
     parser.add_argument("--Mul",
                         action="store_true",
+                        default=False,
                         help="Test matrix multiply")
-    parser.set_defaults(Mul=False)
     parser.add_argument("--Mul-file",
                         default="../plots/Contour/DataProfile.txt",
                         help="Test matrix multiply input filename")
 
     parser.add_argument("--numpy-IO",
                         action="store_true",
+                        default=False,
                         help="Test numpy file IO")
-    parser.set_defaults(numpy_IO=False)
     parser.add_argument("--numpy-IO-file",
                         default="tnumpy",
                         help="Test numpy file IO filename")
+    parser.add_argument('-D',
+                        '--tDot',
+                        action='store_true',
+                        default=False,
+                        help='Test the dot operation.')
 
     return parser
 
@@ -49,6 +54,12 @@ def t_npIO(filename):
     np.savez(filename, x_data=x_data)
 
 
+def Test_dot():
+    import cupy as cp
+    a = cp.asarray(range(5))
+    print(a)
+
+
 if __name__ == "__main__":
     parser = get_parser()
     args = parser.parse_args()
@@ -56,5 +67,7 @@ if __name__ == "__main__":
         MatMultiply(filename=args.Mul_file)
     elif args.numpy_IO:
         t_npIO(args.numpy_IO_file)
+    if args.tDot:
+        Test_dot()
 
     # MatMultiply()
