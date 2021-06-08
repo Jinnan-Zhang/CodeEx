@@ -55,9 +55,14 @@ def t_npIO(filename):
 
 
 def Test_dot():
-    import cupy as cp
-    a = cp.asarray(range(5))
-    print(a)
+    try:
+        import cupy as np
+    except:
+        import numpy as np
+    # import numpy as np
+    A = np.random.rand(1024,1024)
+    B = np.random.rand(1024,1024)
+    print(np.matmul(A, B))
 
 
 if __name__ == "__main__":
