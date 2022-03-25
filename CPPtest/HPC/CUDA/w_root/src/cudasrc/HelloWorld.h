@@ -27,6 +27,11 @@ PrintTimeChrono(num,"discription")
 #endif
 
 #include <cuda_runtime.h>
+#include <vector>
+#include <cstdio>
+#include <cstdlib>
+#include <cublas_v2.h>
+#include "cublas_utils.h"
 
 __global__ void helloworld(void);
 void random_ints(int *a, int n);

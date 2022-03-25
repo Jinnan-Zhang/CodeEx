@@ -1,5 +1,5 @@
-//Purpose: test return arrays
-//need avoid using static variable.
+// Purpose: test return arrays
+// need avoid using static variable.
 #include <iostream>
 #include <vector>
 using namespace std;
@@ -14,48 +14,49 @@ PrintTimeChrono(num,"discription")
 #include <chrono>
 
 #define StartTimeChrono(_num) \
-    auto start##_num = std::chrono::high_resolution_clock::now()
+  auto start##_num = std::chrono::high_resolution_clock::now()
 
 #define StopTimeChrono(_num) \
-    auto stop##_num = std::chrono::high_resolution_clock::now()
+  auto stop##_num = std::chrono::high_resolution_clock::now()
 
 #ifdef _WIN32
-#define PrintTimeChrono(_num, _str)                                                                    \
-    auto dura##_num = std::chrono::duration_cast<std::chrono::microseconds>(stop##_num - start##_num); \
-    printf("Time for calculating %s is %f millisecond.\n", _str, dura##_num.count())
+#define PrintTimeChrono(_num, _str)                                                                  \
+  auto dura##_num = std::chrono::duration_cast<std::chrono::microseconds>(stop##_num - start##_num); \
+  printf("Time for calculating %s is %f millisecond.\n", _str, dura##_num.count())
 #else
-#define PrintTimeChrono(_num, _str)                                                                    \
-    auto dura##_num = std::chrono::duration_cast<std::chrono::microseconds>(stop##_num - start##_num); \
-    printf("Time for calculating %s is %f second.\n", _str, dura##_num.count() / 1.e6)
+#define PrintTimeChrono(_num, _str)                                                                  \
+  auto dura##_num = std::chrono::duration_cast<std::chrono::microseconds>(stop##_num - start##_num); \
+  printf("Time for calculating %s is %f second.\n", _str, dura##_num.count() / 1.e6)
 #endif
 double *GetArr();
 #include <map>
-#include <TXMLEngine.h>
+// #include <TXMLEngine.h>
+#include <vector>
 #define xmlfilePath "../../Roottest/xml/JUNOGlobalConfigs.xml"
-const double LoadXMLConfig(const char *VariableName,
-                           const char *XMLNameSpace,
-                           const char *filename)
-{
-    TXMLEngine tXML;
-    XMLDocPointer_t tXMLDoc = tXML.ParseFile(filename);
-    XMLNodePointer_t mainNode = tXML.DocGetRootElement(tXMLDoc);
-    XMLNodePointer_t tNode0 = tXML.GetChild(mainNode);
-    XMLNsPointer_t tNS = tXML.GetNS(tNode0);
-    while (tNode0 != NULL)
-    {
-        if (tNS != NULL && strcmp(XMLNameSpace, tXML.GetNSName(tNS)) == 0)
-        {
-            if (strcmp(VariableName, tXML.GetNodeName(tNode0)) == 0)
-            {
-                return std::stod(std::string(tXML.GetNodeContent(tNode0)));
-            }
-        }
-        tNode0 = tXML.GetNext(tNode0);
-        tNS = tXML.GetNS(tNode0);
-    }
-    printf("VariableName:%s or XMLNameSpace:%s not FOUND!\n", VariableName, XMLNameSpace);
-    return 0;
-}
+// const double LoadXMLConfig(const char *VariableName,
+//                            const char *XMLNameSpace,
+//                            const char *filename)
+// {
+//     TXMLEngine tXML;
+//     XMLDocPointer_t tXMLDoc = tXML.ParseFile(filename);
+//     XMLNodePointer_t mainNode = tXML.DocGetRootElement(tXMLDoc);
+//     XMLNodePointer_t tNode0 = tXML.GetChild(mainNode);
+//     XMLNsPointer_t tNS = tXML.GetNS(tNode0);
+//     while (tNode0 != NULL)
+//     {
+//         if (tNS != NULL && strcmp(XMLNameSpace, tXML.GetNSName(tNS)) == 0)
+//         {
+//             if (strcmp(VariableName, tXML.GetNodeName(tNode0)) == 0)
+//             {
+//                 return std::stod(std::string(tXML.GetNodeContent(tNode0)));
+//             }
+//         }
+//         tNode0 = tXML.GetNext(tNode0);
+//         tNS = tXML.GetNS(tNode0);
+//     }
+//     printf("VariableName:%s or XMLNameSpace:%s not FOUND!\n", VariableName, XMLNameSpace);
+//     return 0;
+// }
 double *GetArr()
 {
     static double Target[10];
@@ -65,75 +66,91 @@ double *GetArr()
     }
     return Target;
 }
-void TArr()
-{
-    double N = 3e8;
-    double a[5] = {1, 3, 4, 2, 0};
-    vector<double> b = {1, 3, 4, 2, 0};
-    map<int, double> c = {{1, 1}, {2, 3}, {3, 4}, {4, 2}, {0, 0}};
-    double sum(0);
-    StartTimeChrono(1);
-    for (int i = 0; i < N; i++)
-    {
-        sum += b[2];
-    }
-    StopTimeChrono(1);
-    PrintTimeChrono(1, "vector");
-    sum = 0;
-    StartTimeChrono(2);
-    for (int i = 0; i < N; i++)
-    {
-        sum += a[2];
-    }
-    StopTimeChrono(2);
-    PrintTimeChrono(2, "array");
-    sum = 0;
-    double cc = LoadXMLConfig("sinsq12", "JUNOYB", xmlfilePath);
-    StartTimeChrono(3);
-    for (int i = 0; i < N; i++)
-    {
-        // double cc = 1;
-        // sum += c[2];
-        sum += cc;
-    }
-    StopTimeChrono(3);
-    PrintTimeChrono(3, "xml");
-}
+// void TArr()
+// {
+//     double N = 3e8;
+//     double a[5] = {1, 3, 4, 2, 0};
+//     vector<double> b = {1, 3, 4, 2, 0};
+//     map<int, double> c = {{1, 1}, {2, 3}, {3, 4}, {4, 2}, {0, 0}};
+//     double sum(0);
+//     StartTimeChrono(1);
+//     for (int i = 0; i < N; i++)
+//     {
+//         sum += b[2];
+//     }
+//     StopTimeChrono(1);
+//     PrintTimeChrono(1, "vector");
+//     sum = 0;
+//     StartTimeChrono(2);
+//     for (int i = 0; i < N; i++)
+//     {
+//         sum += a[2];
+//     }
+//     StopTimeChrono(2);
+//     PrintTimeChrono(2, "array");
+//     sum = 0;
+//     double cc = LoadXMLConfig("sinsq12", "JUNOYB", xmlfilePath);
+//     StartTimeChrono(3);
+//     for (int i = 0; i < N; i++)
+//     {
+//         // double cc = 1;
+//         // sum += c[2];
+//         sum += cc;
+//     }
+//     StopTimeChrono(3);
+//     PrintTimeChrono(3, "xml");
+// }
 
 void newArr()
 {
-    double a[3] = {1, 20, 0};
-    vector<double> b = {1, 2, 1};
-    double *c;
-    c = new double[3];
-    double N = 1e9;
+    int N = 10000000;
     double Sum = 0;
     StartTimeChrono(1);
+    double a[3] = {1, 20, 0};
     for (int i = 0; i < N; i++)
     {
-        Sum += a[1];
+        Sum += a[i % 3];
     }
+    // printf("Sum: %f\n",Sum);
     StopTimeChrono(1);
-    PrintTimeChrono(1,"array");
+    PrintTimeChrono(1, "array");
     Sum = 0;
     StartTimeChrono(2);
+    vector<double> b = {1, 2, 1};
     for (int i = 0; i < N; i++)
     {
-        Sum += b[1];
+        Sum += b[i % 3];
     }
+    // printf("Sum: %f\n",Sum);
     StopTimeChrono(2);
-    PrintTimeChrono(2,"vector");
+    PrintTimeChrono(2, "vector");
     Sum = 0;
     StartTimeChrono(3);
+    double *c;
+    c = new double[3];
     for (int i = 0; i < N; i++)
     {
-        Sum += c[1];
+        Sum += c[i % 3];
     }
+    // printf("Sum: %f\n",Sum);
     StopTimeChrono(3);
-    PrintTimeChrono(3,"new Array");
+    PrintTimeChrono(3, "new Array");
 }
-int Arrays()
+
+template <typename T>
+std::vector<std::vector<T>> GetMatProdcut(T ava)
+{
+    std::vector<std::vector<T>> C(10, std::vector<T>(10, ava));
+
+    return C;
+}
+
+// int Arrays()
+int main()
 {
     newArr();
+    // TArr();
+    // std::vector<std::vector<double>> B ( GetMatProdcut(10.0));
+
     return 0;
 }

@@ -67,6 +67,10 @@
         "set": "cpp",
         "string": "cpp",
         "string_view": "cpp",
+        "allocator": "cpp",
+        "bit": "cpp",
+        "codecvt": "cpp",
+        "__nullptr": "cpp"
     },
     "python.formatting.provider": "yapf",
     "python.linting.mypyEnabled": false,

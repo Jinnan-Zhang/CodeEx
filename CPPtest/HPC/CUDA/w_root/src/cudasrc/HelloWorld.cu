@@ -1,17 +1,15 @@
 /*
-* @compile: nvcc -o HelloWorld.cu.o HelloWorld.cu
-*/
+ * @compile: nvcc -o HelloWorld.cu.o HelloWorld.cu
+ */
 #include <stdio.h>
 #include <stdlib.h>
 #include <cuda_runtime.h>
 #include <cuda.h>
 #include <curand.h>
-#include <HelloWorld.h>
+#include "HelloWorld.h"
 #define N (2048 * 2048)
 #define THREAD_PER_BLOCK 512
 #define BLOCKS_NUM (N / THREAD_PER_BLOCK)
-
-
 
 __global__ void helloworld(void)
 {
@@ -42,8 +40,8 @@ __global__ void mul(int *a, int *b, int *sub_sum)
 
 void DoVector()
 {
-    int *a, *b, *sub_sum, sum;  //host copies
-    int *d_a, *d_b, *d_sub_sum; //device copies
+    int *a, *b, *sub_sum, sum;  // host copies
+    int *d_a, *d_b, *d_sub_sum; // device copies
     int size = N * sizeof(int);
 
     cudaMalloc((void **)&d_a, size);

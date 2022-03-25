@@ -4,11 +4,28 @@ set(name tmain)
 PROJECT(${name} LANGUAGES CXX CUDA)
 add_compile_options(-O2)
 
+SET(CMAKE_BUILD_TYPE "Debug")
+SET(CMAKE_CXX_FLAGS_DEBUG "$ENV{CXXFLAGS} -O0 -g2 -ggdb")
+SET(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O3")
+SET(CMAKE_CXX_FLAGS_DEBUG "$ENV{CXXFLAGS} -O0 -Wall -g2 -ggdb")
+SET(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O3 -Wall")
+
 # CUDA
 set(CMAKE_THREAD_LIBS_INIT "-lpthread")
 find_package(CUDA REQUIRED MODULE)
 if(CUDA_FOUND)
     message("CUDA FOUND")
+endif()
+
+#--
+#Set omp
+#--
+FIND_PACKAGE( OpenMP REQUIRED)
+if(OPENMP_FOUND)
+    message("OPENMP FOUND")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS} -lfftw3")
 endif()
 
 
@@ -43,4 +60,4 @@ set_target_properties( mylib
 # Add the executable, link it to the lib
 add_executable( ${name} tmain.cpp)
 set_target_properties(${name} PROPERTIES CUDA_SEPARABLE_COMPILATION ON)
-target_link_libraries( ${name} mylib ${ROOT_LIBRARIES})
+target_link_libraries( ${name} mylib ${ROOT_LIBRARIES} -lcublas)
