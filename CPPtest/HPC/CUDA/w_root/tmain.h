@@ -6,7 +6,7 @@
 #include <cstdlib>
 #include <cublas_v2.h>
 #include "cublas_utils.h"
-
+#include "time_macro.h"
 // return alpha*A*B+beta*C: a m x k matrix
 //* @param alpha: The prodcution coefficient
 //* @param A: input matrix 1-d as array, true shape m x n
@@ -61,6 +61,7 @@ std::vector<T> &GetMatProdcut(const std::vector<T> A, const int m, const int n, 
     /* step 3: compute */
     CUBLAS_CHECK(
         cublasDgemm(cublasH, transa, transb, m, n, k, &alpha, d_A, lda, d_B, ldb, &beta, d_C, ldc));
+
 
     /* step 4: copy data to host */
     CUDA_CHECK(cudaMemcpyAsync(C.data(), d_C, sizeof(T) * C.size(), cudaMemcpyDeviceToHost,

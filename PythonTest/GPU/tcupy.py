@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+from turtle import up
 import numpy as np
+import uproot
 
 
 def get_parser():
@@ -13,7 +15,6 @@ def get_parser():
     parser.add_argument("--Mul-file",
                         default="../plots/Contour/DataProfile.txt",
                         help="Test matrix multiply input filename")
-
     parser.add_argument("--numpy-IO",
                         action="store_true",
                         default=False,
@@ -26,6 +27,11 @@ def get_parser():
                         action='store_true',
                         default=False,
                         help='Test the dot operation.')
+    parser.add_argument('-R',
+                        '--Response',
+                        action='store_true',
+                        default=False,
+                        help='Test response matrix.')
 
     return parser
 
@@ -60,9 +66,14 @@ def Test_dot():
     except:
         import numpy as np
     # import numpy as np
-    A = np.random.rand(1024,1024)
-    B = np.random.rand(1024,1024)
+    A = np.random.rand(1024, 1024)
+    B = np.random.rand(1024, 1024)
     print(np.matmul(A, B))
+
+
+def T_Mres():
+    file_response=uproot.open("respMatrix_fill.root")
+    
 
 
 if __name__ == "__main__":
@@ -74,5 +85,7 @@ if __name__ == "__main__":
         t_npIO(args.numpy_IO_file)
     if args.tDot:
         Test_dot()
+    if args.Response:
+        T_Mres()
 
     # MatMultiply()
